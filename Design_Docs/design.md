@@ -9,11 +9,16 @@
 
 1. [Introduction](#1-introduction)
 2. [System Overview](#2-system-overview)
+   - 2.1 [High-Level Architecture](#21-high-level-architecture)
+   - 2.2 [Data Flow](#22-data-flow)
+   - 2.3 [Technology Stack](#23-technology-stack)
+   - 2.4 [Design Decision Rationale](#24-design-decision-rationale)
 3. [Module Design](#3-module-design)
 4. [Threat Output Schema](#4-threat-output-schema)
 5. [Phase 1 — Tasks](#5-phase-1--tasks)
 6. [Phase 1 — Task Summary](#6-phase-1--task-summary)
 7. [Technical Risks and Mitigations](#7-technical-risks-and-mitigations)
+8. [Approach Comparison: LLM-Based vs. Agent-Based](#8-approach-comparison-llm-based-vs-agent-based-threat-modeling)
 
 ---
 
@@ -51,26 +56,26 @@ The system is composed of **five loosely coupled modules** forming a linear proc
 ```mermaid
 graph LR
     subgraph INPUT["Input Layer"]
-        A["Terraform Files\n(.tf / HCL)"]
-        B["Design Documents\n(.md / .txt)"]
+        A["Terraform Files<br>(.tf / HCL)"]
+        B["Design Documents<br>(.md / .txt)"]
     end
 
     subgraph PARSE["Parse Layer"]
-        C["IaC Parser\npython-hcl2"]
-        D["Document Parser\nChunking Logic"]
+        C["IaC Parser<br>python-hcl2"]
+        D["Document Parser<br>Chunking Logic"]
     end
 
     subgraph FUSE["Fusion Layer"]
-        E["Context Builder\nPrompt Assembly"]
-        F["Prompt Templates\nprompts/*.txt"]
+        E["Context Builder<br>Prompt Assembly"]
+        F["Prompt Templates<br>prompts/*.txt"]
     end
 
     subgraph INFER["Inference Layer"]
-        G["LLM Client\nOpenAI / Anthropic / Ollama"]
+        G["LLM Client<br>OpenAI / Anthropic / Ollama"]
     end
 
     subgraph RENDER["Output Layer"]
-        H["Report Renderer\ntext / JSON / PDF"]
+        H["Report Renderer<br>text / JSON / PDF"]
     end
 
     A --> C
@@ -121,6 +126,172 @@ sequenceDiagram
 | **Testing** | `pytest` + `pytest-cov` | Standard Python testing; coverage reporting for CI |
 | **Version Control** | Git + GitHub Actions | CI/CD hooks; automated test runs on every push |
 
+### 2.4 Design Decision Rationale
+
+This section documents the reasoning behind major architectural and technology choices, including alternatives considered and key trade-offs.
+
+#### 2.4.1 LLM-Based Threat Generation vs. Alternatives
+
+**Decision:** Use a single-shot LLM call to generate threats from fused context (IaC + design documents).
+
+**Alternatives Considered:**
+
+1. **Rules-based engine** — Hard-coded Terraform anti-patterns → threats
+   - *Pros:* Deterministic, no API costs, fast, transparent output
+   - *Cons:* Limited to known patterns; cannot reason about domain logic or design intent; does not scale to new threat types; high maintenance burden as IaC evolves
+2. **Multi-step agent loop** — Agent iteratively queries knowledge base, refines IaC parsing, asks clarifying questions
+   - *Pros:* Flexible, can handle ambiguity, transparent reasoning chain
+   - *Cons:* High latency (5–10 API calls per analysis), expensive, difficult to control output quality, harder to evaluate and debug
+3. **Hybrid approach** — Rules engine + LLM fallback for unknown patterns
+   - *Pros:* Combines determinism with flexibility
+   - *Cons:* High implementation complexity; rules maintenance overhead; unclear when to invoke LLM
+
+**Rationale:** LLM-based single-shot approach chosen because:
+- **Scalability:** LLMs generalize well to unseen threat types without code changes
+- **Cost efficiency:** One API call per analysis is lower-cost than agent loops
+- **Design comprehension:** LLMs can reason about narrative design intent alongside IaC configuration
+- **Phase-appropriate:** Evaluating on LLM core capability first; agent complexity is deferred to Phase 2 if needed
+- **Measurable:** Single prompt makes output quality directly attributable to prompt engineering
+
+**Risk mitigation:** Hallucination is controlled via grounding instructions (Section 3.4) that require threats to reference named resources. Output schema is explicit in the prompt, reducing format compliance issues.
+
+#### 2.4.2 Linear Pipeline vs. Adaptive Flow
+
+**Decision:** Process inputs through a fixed, sequential pipeline: Parse → Fuse → Infer → Render.
+
+**Alternatives Considered:**
+
+1. **Adaptive flow** — Route inputs dynamically (e.g., IaC-only vs. design-heavy paths early-exit if confidence is low)
+   - *Pros:* Can skip unnecessary processing; potential for early warnings
+   - *Cons:* Complex state management; harder to test; less predictable for CI/CD
+2. **Iterative refinement** — Generate initial threats, then ask LLM to refine based on feedback
+   - *Pros:* Higher output quality; allows iterative narrowing of scope
+   - *Cons:* Multiple LLM calls; latency; user experience uncertainty
+
+**Rationale:** Linear pipeline chosen because:
+- **Simplicity:** Straightforward data flow, easy to test and debug
+- **Predictability:** Deterministic order enables reproducible results and CI/CD integration
+- **Phase 1 scope:** Linear design is sufficient for IaC-only analysis; adaptive logic is Phase 2 enhancement
+- **Composability:** Each module is independently testable; easy to add pre/post-processing hooks later
+
+#### 2.4.3 Technology Stack: Python + Click/Typer vs. Go/Rust
+
+**Decision:** Implement in Python 3.11+ with Click or Typer for CLI.
+
+**Alternatives Considered:**
+
+1. **Go** — Fast, compiled, native binary, built-in concurrency
+   - *Pros:* Single binary distribution, minimal dependencies, fast startup
+   - *Cons:* Fewer mature LLM client libraries; HCL parsing less mature; steeper learning curve for team
+2. **Rust** — Compile-time safety, performance
+   - *Pros:* Memory-safe; very fast
+   - *Cons:* Slow to develop, extremely steep learning curve, overkill for I/O-bound threat generation task
+
+**Rationale:** Python chosen because:
+- **Ecosystem:** Rich LLM libraries (OpenAI, Anthropic SDKs), mature HCL parsing (`python-hcl2`), robust CLI frameworks
+- **Rapid development:** Key for research phase; allows quick iteration on prompt engineering
+- **Accessibility:** Python is the lingua franca of security tooling; easier for security teams to extend
+- **Testability:** pytest is industry-standard; straightforward mocking of API calls
+- **Performance adequate:** Threat modeling is I/O-bound (LLM latency dominates), not CPU-bound; Python overhead negligible
+
+#### 2.4.4 HCL Parsing: `python-hcl2` vs. Raw Text Extraction
+
+**Decision:** Use `python-hcl2` library for principled HCL2 parsing.
+
+**Alternatives Considered:**
+
+1. **Raw text regex extraction** — Pattern-match resource blocks using regex
+   - *Pros:* Single dependency, maximum control, no parsing failures
+   - *Cons:* Fragile; breaks on comments, complex expressions, variable interpolation; misses nested blocks; false positives
+2. **Call Terraform itself** — Shell out to `terraform show -json` to get computed state
+   - *Pros:* Authoritative parsing, includes computed values
+   - *Cons:* Requires Terraform binary; cannot run without cloud credentials; slower; not suitable for disconnected environments
+
+**Rationale:** `python-hcl2` chosen because:
+- **Correctness:** Proper syntax-aware parsing; handles nested blocks, interpolation, and expressions
+- **Lightweight:** Pure Python library; no external tool dependency
+- **Offline:** Works without Terraform binary or cloud credentials
+- **Graceful failure:** Raises clear `ParseError` if syntax is invalid; fallback to raw text extraction for recovery is future enhancement
+
+**Risk mitigation:** Phase 1 fixtures deliberately avoid complex `terraform for_each` and `dynamic` blocks. Phase 2 will add raw-text fallback for unparseable sections (Section 7, Risk 1).
+
+#### 2.4.5 Context Fusion: Single Prompt vs. Multi-Step Reasoning
+
+**Decision:** Fuse IaC summary and design chunks into a single structured prompt delivered to LLM in one call.
+
+**Alternatives Considered:**
+
+1. **Separate prompts** — First analyse IaC, then analyse design, then compare; merge results
+   - *Pros:* Simpler individual prompts; easier to measure which source contributes which threats
+   - *Cons:* 3x API calls; inconsistent STRIDE categorization; harder to detect design-vs-IaC discrepancies
+2. **Chain-of-thought** — Ask LLM to list assumptions, then check assumptions against design
+   - *Pros:* Transparent reasoning; explicit handling of discrepancies
+   - *Cons:* Multiple API calls; harder to control output format; high token budget
+
+**Rationale:** Single-prompt fusion chosen because:
+- **Discrepancy detection:** Simultaneous access to both sources enables LLM to identify conflicts directly
+- **Cost:** One call instead of three; lower latency for user
+- **Consistency:** Single LLM invocation ensures threat categories are consistent across both inputs
+- **Research value:** Tests core hypothesis — LLM can fuse multi-source context effectively (Research Question 1)
+
+#### 2.4.6 Output Schema: Flat JSON vs. Hierarchical
+
+**Decision:** Return threats as a flat JSON array (Section 4) rather than grouped by STRIDE category or component.
+
+**Alternatives Considered:**
+
+1. **Hierarchical structure** — Group threats by STRIDE category and/or component in nested objects
+   - *Pros:* Naturally groups related threats; easier to filter by category
+   - *Cons:* Different tools have different grouping preferences; schema less stable across LLM models
+2. **CSV or plain text** — Simple tabular format
+   - *Pros:* Human-readable; easy to import into spreadsheets
+   - *Cons:* Loses semantic structure; harder for programmatic post-processing
+
+**Rationale:** Flat JSON array chosen because:
+- **Parser agnostic:** LLM easily generates arrays without complex nesting logic
+- **Tool flexibility:** Consumers of the output can re-group threats however they need (by category, component, severity, etc.)
+- **Schema stability:** Flat structure is harder for LLM to produce with schema violations
+- **CLI rendering:** Report Renderer can easily group for display (Section 3.6) without changing schema
+
+#### 2.4.7 Pluggable LLM Providers: Abstract Interface vs. Configuration-Driven
+
+**Decision:** Abstract LLM client behind an interface; concrete provider classes (OpenAI, Anthropic, Ollama) implement a common `generate()` method.
+
+**Alternatives Considered:**
+
+1. **Configuration-driven (if-else in single class)** — One LLM class with conditional branches for each provider
+   - *Pros:* Less code; straightforward for simple cases
+   - *Cons:* Violates open-closed principle; adding providers risks subtle bugs; hard to test in isolation
+2. **Dependency injection** — Pass provider as a strategy object at runtime
+   - *Pros:* Maximum flexibility; easy to swap implementations
+   - *Cons:* Extra boilerplate for simple use case; overkill for initial phase
+
+**Rationale:** Abstract interface chosen because:
+- **Testability:** Each provider can be mocked independently
+- **Extensibility:** Phase 2 can add new providers (e.g., Groq, vLLM) without modifying CLI code
+- **Clarity:** Each provider's dependencies and error handling are isolated and explicit
+- **Evolution:** Interface can evolve to support streaming, cost tracking, token logging without breaking existing providers
+
+#### 2.4.8 Test Coverage: Unit + Mocked Integration vs. Live E2E
+
+**Decision:** Phase 1 CI/CD runs unit tests and mocked integration tests; live LLM testing deferred to manual evaluation runs.
+
+**Alternatives Considered:**
+
+1. **Always live LLM tests** — CI pipeline calls real APIs on every commit
+   - *Pros:* Catches real-world failures; most realistic
+   - *Cons:* Expensive (API charges per commit); flaky (model output non-deterministic); slow (5–10s per test); hard to debug
+2. **No automated tests** — Manual testing only
+   - *Pros:* No test infrastructure overhead
+   - *Cons:* Very high risk of regressions; no CI/CD safety net; scales poorly as codebase grows
+
+**Rationale:** Unit + mocked integration chosen because:
+- **Velocity:** Fast feedback loop (< 1s tests); developers can iterate without API costs
+- **Reliability:** No flakiness; deterministic test results
+- **Cost:** CI remains free; LLM evaluation is a deliberate, recorded experiment (Section P1-T07)
+- **Separation of concerns:** Tests verify pipeline logic; evaluation framework (separate tool) measures output quality
+- **Safety:** Mock failures catch obvious bugs; live tests then verify prompt quality
+
 ---
 
 ## 3. Module Design
@@ -157,15 +328,15 @@ The IaC Parser reads `.tf` files and produces a normalised **ResourceMap** using
 
 ```mermaid
 flowchart TD
-    A["Input: .tf File Paths"] --> B{Directory\nor files?}
-    B -->|Directory| C["glob **/*.tf\nrecursive=True"]
+    A["Input: .tf File Paths"] --> B{Directory<br>or files?}
+    B -->|Directory| C["glob **/*.tf<br>recursive=True"]
     B -->|Files| D["Direct file list"]
-    C --> E["Read and Parse HCL\nvia python-hcl2"]
+    C --> E["Read and Parse HCL<br>via python-hcl2"]
     D --> E
-    E --> F{Parse\nsuccessful?}
-    F -->|No| G["Raise ParseError\n+ human-readable message"]
-    F -->|Yes| H["Extract Blocks:\nresource / provider\nvariable / data / module"]
-    H --> I["Redact sensitive values\npatterns: password, secret, key, token"]
+    E --> F{Parse<br>successful?}
+    F -->|No| G["Raise ParseError<br>+ human-readable message"]
+    F -->|Yes| H["Extract Blocks:<br>resource / provider<br>variable / data / module"]
+    H --> I["Redact sensitive values<br>patterns: password, secret, key, token"]
     I --> J["Return ResourceMap dict"]
 ```
 
@@ -191,14 +362,14 @@ The Document Parser segments the design document into chunks that fit within the
 
 ```mermaid
 flowchart LR
-    A["Raw Document\n.md / .txt"] --> B["Split at\nHeading boundaries"]
-    B --> C{Section size\n> 1,500 tokens?}
-    C -->|No| D["Keep section\nas single chunk"]
-    C -->|Yes| E["Split at\nparagraph boundaries"]
-    E --> F["Add 100-token\noverlap between chunks"]
-    D --> G["Prepend section\nmetadata header"]
+    A["Raw Document<br>.md / .txt"] --> B["Split at<br>Heading boundaries"]
+    B --> C{Section size<br>> 1,500 tokens?}
+    C -->|No| D["Keep section<br>as single chunk"]
+    C -->|Yes| E["Split at<br>paragraph boundaries"]
+    E --> F["Add 100-token<br>overlap between chunks"]
+    D --> G["Prepend section<br>metadata header"]
     F --> G
-    G --> H["Output: List of\nheading + text tuples"]
+    G --> H["Output: List of<br>heading + text tuples"]
 ```
 
 | Parameter | Value | Configurable |
@@ -215,12 +386,12 @@ The Context Builder is the **most architecturally significant module** — it im
 
 ```mermaid
 graph TD
-    A["Prompt Template\nprompts/system_iac_only.txt\nor system_multisource.txt"]
-    B["IaC Resource Summary\nserialised JSON"]
-    C["Design Document Chunks\nwhen --doc is provided"]
-    D["Context Builder\nbuild_prompt()"]
-    E["Assembled Prompt Dict\nsystem message + user message"]
-    F["TokenBudgetExceededWarning\nif > 3,000 tokens"]
+    A["Prompt Template<br>prompts/system_iac_only.txt<br>or system_multisource.txt"]
+    B["IaC Resource Summary<br>serialised JSON"]
+    C["Design Document Chunks<br>when --doc is provided"]
+    D["Context Builder<br>build_prompt()"]
+    E["Assembled Prompt Dict<br>system message + user message"]
+    F["TokenBudgetExceededWarning<br>if > 3,000 tokens"]
 
     A --> D
     B --> D
@@ -720,4 +891,157 @@ graph LR
 
 ---
 
-*Document end. Phase 2 (Design Document Ingestion and Context Fusion) tasks will be added following Phase 1 completion.*
+## 8. Approach Comparison: LLM-Based vs. Agent-Based Threat Modeling
+
+Before finalizing Phase 1 implementation, this section evaluates the chosen LLM-based approach against a potential agent-based alternative. This comparison informs decisions about Phase 2 enhancements and whether a pivot is warranted based on Phase 1 evaluation results.
+
+### 8.1 Approach Definitions
+
+#### LLM-Based (Current Design)
+
+**Architecture:** Single stateless LLM call that receives fused context (IaC + design documents) and produces complete threat list in one pass.
+
+**Flow:**
+```
+Input → Parse → Fuse Context → [LLM Single Call] → Parse Output → Render
+```
+
+**Characteristics:**
+- One API call per analysis
+- Fixed prompt structure
+- LLM operates as a "semantic classifier" rather than an autonomous agent
+- Output quality entirely depends on prompt engineering
+
+#### Agent-Based (Alternative Under Evaluation)
+
+**Architecture:** Multi-step autonomous agent that iteratively refines threat analysis, queries a knowledge base, and may request clarification or additional information.
+
+**Potential Flow:**
+```
+Input → Initial Parse → [Agent Loop:
+  - Generate initial threat hypotheses
+  - Query knowledge base for precedents
+  - Identify ambiguities or gaps
+  - Decide: refine analysis OR request input OR return result
+] → Final Threats → Render
+```
+
+**Characteristics:**
+- Multiple API calls (typically 5–10 per analysis)
+- Dynamic flow controlled by agent decision-making
+- LLM acts as autonomous reasoning engine
+- Output quality depends on prompt quality + agent workflow design + knowledge base quality
+
+### 8.2 Detailed Comparison
+
+#### 8.2.1 Capability: Task Complexity & Adaptability
+
+| Dimension | LLM-Based | Agent-Based | Winner |
+|-----------|-----------|-------------|--------|
+| **IaC-only analysis** | Excellent — single call covers all resources | Excellent — but with overhead of multi-step loop | LLM-Based |
+| **Design-vs-IaC discrepancy detection** | Good — LLM can reason across sources simultaneously | Very Good — agent can iteratively explore conflicts | Agent-Based |
+| **Novel threat types** | Good — LLM generalizes to unseen patterns | Excellent — agent can extend reasoning via knowledge base | Agent-Based |
+| **Ambiguity handling** | Moderate — LLM must resolve ambiguity in single pass | Excellent — agent can ask for clarification or defer decision | Agent-Based |
+| **Complex security architectures** | Moderate — token limits and single-pass reasoning constrain depth | Good — agent can break complex analysis into steps | Agent-Based |
+| **Transparency of reasoning** | Limited — LLM output is a "black box" | Excellent — can trace each step and decision | Agent-Based |
+
+**Verdict:** Agent-based is more capable but at significantly higher complexity cost. LLM-based is sufficient for Phase 1 IaC-only and Phase 2 design fusion scope.
+
+#### 8.2.2 Cost: Financial, Computational, Developmental
+
+| Cost Type | LLM-Based | Agent-Based | Difference |
+|-----------|-----------|-------------|----------|
+| **Per-analysis API cost** | 1 call (~1,000–3,000 tokens) ≈ $0.01–$0.10 | 5–10 calls (~5,000–15,000 tokens cumulative) ≈ $0.05–$0.50 | LLM 5–10× cheaper per analysis |
+| **Per-analysis latency** | 2–5 seconds | 10–30 seconds (serial calls) | LLM 2–6× faster |
+| **Development time (Phase 1)** | ~25 hours estimated | ~60–80 hours (agent framework, workflow design, knowledge base) | LLM 2.5–3× faster to implement |
+| **Maintenance burden** | Low — update prompts when model changes | High — maintain agent logic, KB, update workflows | LLM significantly lighter |
+| **Testing complexity** | Moderate — mock LLM calls | High — mock multi-step flows, handle emergent behaviors | LLM simpler to test |
+| **Compute infrastructure** | Minimal — CLI-only, stateless | Moderate — may need state management, persisted KB | LLM leaner |
+
+**Verdict:** LLM-based is significantly cheaper (5–10× per analysis) and faster to develop. Agent-based justified only if capability gains are substantial and non-negotiable.
+
+#### 8.2.3 Output Quality: Consistency, Accuracy, Hallucination
+
+| Quality Metric | LLM-Based | Agent-Based | Notes |
+|---|---|---|---|
+| **Hallucination rate** | Moderate (5–15% with grounding) | Potentially lower (verification steps) | Agent can validate threats against KB; LLM alone prone to inventing components |
+| **STRIDE categorization consistency** | Moderate (dependent on prompt clarity) | Good (agent can enforce categories via workflow) | Agent loop allows re-categorization if initial categorization is wrong |
+| **Coverage (recall)** | Moderate–Good (depends on model, prompt) | Good–Excellent (agent explores multiple angles) | Agent can ask "what about X threat?" as explicit step |
+| **Precision (false positives)** | Moderate (LLM may over-generalize) | Good (agent can verify with KB, design doc) | Agent can ask "is this a real threat given the stated mitigations?" |
+| **Output determinism** | Non-deterministic (LLM temperature > 0) | Non-deterministic (plus agent non-determinism) | Both require temperature tuning; LLM slightly simpler to control |
+| **Discrepancy quality** | Good (simultaneous IaC + design view) | Excellent (iterative comparison possible) | Agent can ask "what does design say about S3 security?" as explicit step |
+
+**Verdict:** Agent-based likely produces higher-quality threats, but LLM-based is viable if prompt engineering is strong. Trade-off is quality vs. cost/speed.
+
+#### 8.2.4 Integration Complexity: CLI, CI/CD, Extensibility
+
+| Integration Aspect | LLM-Based | Agent-Based | Notes |
+|---|---|---|---|
+| **CI/CD integration** | Simple — stateless, deterministic inputs/outputs | Complex — may need long-running job timeout, state cleanup |
+| **User experience** | Instant (2–5s feedback) | Slower (10–30s feedback); user may wonder what's happening |
+| **Extensibility (Phase 2)** | Straightforward — add design chunks to context, update prompt | Requires redesign — agent must know how to weight design vs. IaC |
+| **Error recovery** | Simple — if LLM fails, re-run | Moderate — must resume from last valid agent state or restart |
+| **Debugging** | Easy — inspect prompt and output | Hard — trace through multi-step logic, understand agent decisions |
+| **Prompt iteration** | Fast — update .txt file, re-run tests | Slower — changes to agent logic require workflow re-validation |
+
+**Verdict:** LLM-based is far simpler to integrate and operates naturally within CLI paradigm. Agent-based requires more infrastructure and operational thinking.
+
+### 8.3 Decision Matrix: Which Approach for This Project?
+
+#### 8.3.1 Evaluation Criteria (Ranked by Priority)
+
+1. **Time-to-evaluation** (Weight: High) — Need credible Phase 1 results by Month 1 to inform pivot decisions
+2. **Cost-efficiency** (Weight: High) — Limited budget for API usage and infrastructure
+3. **Output quality** (Weight: Medium) — Must achieve ≥ 80% recall on test scenarios to be viable
+4. **Maintainability** (Weight: Medium) — Need to iterate quickly based on evaluation feedback
+5. **Extensibility to Phase 2** (Weight: Medium) — Must support design document integration
+6. **Transparency** (Weight: Low) — Nice-to-have for explainability; not critical for Phase 1
+
+#### 8.3.2 Scoring Summary
+
+| Criterion | LLM-Based | Agent-Based | Winner |
+|-----------|-----------|-------------|--------|
+| **Time-to-evaluation** | 9/10 | 4/10 | **LLM** (2.5–3× faster) |
+| **Cost-efficiency** | 10/10 | 6/10 | **LLM** (5–10× cheaper) |
+| **Output quality** | 6/10 (contingent on prompting) | 8/10 (better with workflow) | **Agent** (marginal win) |
+| **Maintainability** | 8/10 | 5/10 | **LLM** (simpler iteration loop) |
+| **Extensibility** | 7/10 | 7/10 | Tie |
+| **Transparency** | 4/10 | 8/10 | **Agent** |
+
+**Weighted Score:**
+- **LLM-Based:** (9×0.25) + (10×0.25) + (6×0.20) + (8×0.20) + (7×0.05) + (4×0.05) = **8.0 / 10**
+- **Agent-Based:** (4×0.25) + (6×0.25) + (8×0.20) + (5×0.20) + (7×0.05) + (8×0.05) = **5.9 / 10**
+
+### 8.3.3 Recommendation
+
+**Primary recommendation: Proceed with LLM-based approach (current design) for Phase 1.**
+
+**Rationale:**
+- Achieves critical Phase 1 goals (IaC parsing, threat generation, evaluation framework) 2.5× faster
+- Cost 5–10× lower, enabling extensive prompt iteration and evaluation
+- Output quality gap vs. agent is not prohibitive if prompt engineering is rigorous
+- If Phase 1 evaluation reveals quality shortfalls (< 75% recall), agent-based can be evaluated as Phase 2 evolution
+
+**Phase 2 decision point:**
+
+After Phase 1 completion (late March), evaluate results using this checklist:
+
+| Condition | Outcome | Decision |
+|-----------|---------|----------|
+| Recall ≥ 80% & Hallucination < 10% on trivial scenarios | ✓ | **Continue with LLM** — Phase 2 adds design document support |
+| 65–80% recall, high hallucination on complex artifacts | ⚠ | **Consider agent loop for verification** — verify threats against KB before returning |
+| Recall < 65% OR hallucination > 20% | ✗ | **Pivot to agent-based** — LLM-only insufficient even with prompting |
+| Mixed results (good on IaC, poor on design intent) | ⚠ | **Hybrid approach** — LLM for IaC, agent for design reasoning |
+
+### 8.4 Future Directions for Agent-Based Evolution
+
+If Phase 1 results warrant agent exploration, Phase 2+ can implement:
+
+1. **Verification agent:** LLM generates initial threats; second LLM call verifies each threat against design constraints
+2. **Knowledge base agent:** Maintain indexed threat precedents (OWASP, CVE database, prior analyses) and query during evaluation
+3. **Iterative refinement:** User feedback loop — user provides corrections, agent learns and refines for subsequent runs
+4. **Cost-aware agent:** Multi-tier reasoning — rule-based fast path first, agent loop only if high confidence is required
+
+---
+
+*Document end. Phase 2 (Design Document Ingestion and Context Fusion) tasks will be added following Phase 1 completion and Phase 1 evaluation results.*
