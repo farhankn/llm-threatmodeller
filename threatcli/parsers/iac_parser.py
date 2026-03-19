@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
@@ -9,6 +10,9 @@ import hcl2
 
 SENSITIVE_TOKENS = ("password", "secret", "key", "token")
 REDACTED_VALUE = "[REDACTED]"
+MAX_LIST_ITEMS = 10
+MAX_STRING_LENGTH = 100
+MAX_SUMMARY_CHARS = 8000
 
 
 class ParseError(ValueError):
@@ -33,6 +37,49 @@ def parse_iac(paths: Sequence[str | Path]) -> dict[str, Any]:
 
     resource_map["variables"] = sorted(set(resource_map["variables"]))
     return resource_map
+
+
+def serialize_resource_map(resource_map: dict[str, Any], char_budget: int = MAX_SUMMARY_CHARS) -> str:
+    """Serialize ResourceMap into a compact JSON summary for LLM prompts."""
+    summary = {
+        "resources": [_summarize_resource(resource) for resource in resource_map.get("resources", [])],
+        "providers": [_summarize_value(provider) for provider in resource_map.get("providers", [])],
+        "variables": _summarize_value(resource_map.get("variables", [])),
+        "data_sources": [_summarize_resource(source) for source in resource_map.get("data_sources", [])],
+        "modules": [_summarize_value(module) for module in resource_map.get("modules", [])],
+    }
+
+    text = json.dumps(summary, indent=2)
+    if len(text) <= char_budget:
+        return text
+
+    # If still too large, progressively trim least important sections first.
+    summary["variables"] = []
+    text = json.dumps(summary, indent=2)
+    if len(text) <= char_budget:
+        return text
+
+    summary["modules"] = []
+    text = json.dumps(summary, indent=2)
+    if len(text) <= char_budget:
+        return text
+
+    summary["data_sources"] = []
+    text = json.dumps(summary, indent=2)
+    if len(text) <= char_budget:
+        return text
+
+    for resource in summary["resources"]:
+        if isinstance(resource, dict):
+            resource["attributes"] = "[omitted due to budget]"
+
+    text = json.dumps(summary, indent=2)
+    if len(text) <= char_budget:
+        return text
+
+    # Final safeguard: truncate by characters while preserving valid JSON string type.
+    overflow = len(text) - char_budget
+    return json.dumps({"summary": text[: char_budget - 32], "truncated_chars": overflow}, indent=2)
 
 
 def discover_tf_files(paths: Iterable[str | Path]) -> list[Path]:
@@ -149,6 +196,65 @@ def _extract_modules(resource_map: dict[str, Any], blocks: Any) -> None:
             if isinstance(attributes, dict):
                 module.update(attributes)
             resource_map["modules"].append(module)
+
+
+def _summarize_resource(resource: Any) -> dict[str, Any]:
+    if not isinstance(resource, dict):
+        return {}
+
+    return {
+        "type": resource.get("type"),
+        "name": resource.get("name"),
+        "attributes": _summarize_value(resource.get("attributes", {})),
+    }
+
+
+def _summarize_value(value: Any) -> Any:
+    if value == REDACTED_VALUE:
+        return REDACTED_VALUE
+
+    if isinstance(value, dict):
+        if _looks_like_policy(value):
+            statements = value.get("Statement", [])
+            statement_count = len(statements) if isinstance(statements, list) else 0
+            return f"[inline policy, {statement_count} statements]"
+
+        if len(value) > MAX_LIST_ITEMS:
+            return f"[inline JSON, {len(value)} keys]"
+
+        result: dict[str, Any] = {}
+        for key, nested in value.items():
+            summarized = _summarize_value(nested)
+            if summarized is not None:
+                result[key] = summarized
+        return result
+
+    if isinstance(value, list):
+        items = [_summarize_value(item) for item in value]
+        compact_items = [item for item in items if item is not None]
+        if len(compact_items) <= MAX_LIST_ITEMS:
+            return compact_items
+
+        remaining = len(compact_items) - MAX_LIST_ITEMS
+        return compact_items[:MAX_LIST_ITEMS] + [f"...and {remaining} more"]
+
+    if isinstance(value, bool):
+        return value
+
+    if isinstance(value, (int, float)):
+        return value
+
+    if isinstance(value, str):
+        if len(value) <= MAX_STRING_LENGTH:
+            return value
+        return f"[string, {len(value)} chars]"
+
+    return None
+
+
+def _looks_like_policy(value: dict[str, Any]) -> bool:
+    lowered = {key.lower() for key in value}
+    return "statement" in lowered and "version" in lowered
 
 
 def _redact_sensitive_values(value: Any) -> Any:
