@@ -1,0 +1,12 @@
+[
+  {
+    "threat_id": "T-005",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_policy.wildcard_admin",
+    "description": "Wildcard IAM policy grants broad actions and resources, enabling privilege escalation.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": ["aws_iam_policy.wildcard_admin.policy.Action = \"*\""]
+  }
+]

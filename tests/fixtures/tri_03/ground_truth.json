@@ -1,0 +1,22 @@
+[
+  {
+    "threat_id": "T-003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.app_db",
+    "description": "Publicly accessible database may expose sensitive records over the network.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": ["aws_db_instance.app_db.publicly_accessible = true"]
+  },
+  {
+    "threat_id": "T-004",
+    "stride_category": "Tampering",
+    "component": "aws_db_instance.app_db",
+    "description": "Skipping final snapshots weakens forensic and rollback integrity after destructive changes.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "Medium",
+    "references": ["aws_db_instance.app_db.skip_final_snapshot = true"]
+  }
+]

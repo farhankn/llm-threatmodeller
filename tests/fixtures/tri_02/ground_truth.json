@@ -1,0 +1,12 @@
+[
+  {
+    "threat_id": "T-002",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_security_group.ssh_open",
+    "description": "SSH exposed to the internet allows brute-force and credential stuffing against privileged access paths.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": ["aws_security_group.ssh_open.ingress.cidr_blocks = [\"0.0.0.0/0\"]"]
+  }
+]

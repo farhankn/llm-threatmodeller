@@ -1,0 +1,12 @@
+[
+  {
+    "threat_id": "T-006",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.handler",
+    "description": "Sensitive API key is stored in plaintext Lambda environment variables.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "Medium",
+    "references": ["aws_lambda_function.handler.environment.variables.API_KEY"]
+  }
+]

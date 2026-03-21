@@ -1,0 +1,12 @@
+[
+  {
+    "threat_id": "T-001",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.public_bucket",
+    "description": "Public-read bucket ACL may expose stored data to unauthenticated users.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": ["aws_s3_bucket.public_bucket.acl = \"public-read\""]
+  }
+]
