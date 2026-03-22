@@ -36,5 +36,5 @@ include-package-data = true
 include = ["threatcli*"]
 
 [tool.pytest.ini_options]
-addopts = "-q"
+addopts = "-q --import-mode=importlib"
 testpaths = ["tests"]
