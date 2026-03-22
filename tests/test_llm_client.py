@@ -4,6 +4,7 @@ from types import SimpleNamespace
 import pytest
 
 from threatcli.llm_client import (
+    GeminiClient,
     LLMError,
     LLMHTTPError,
     OllamaClient,
@@ -27,13 +28,25 @@ class _FakeSession:
         self._responses = responses
         self.post_calls = 0
         self.get_calls = 0
+        self.last_post_url: str | None = None
+        self.last_post_params: dict | None = None
+        self.last_post_json: dict | None = None
+        self.last_get_url: str | None = None
+        self.last_get_params: dict | None = None
 
     def post(self, *_args, **_kwargs) -> _FakeResponse:
+        if _args:
+            self.last_post_url = _args[0]
+        self.last_post_params = _kwargs.get("params")
+        self.last_post_json = _kwargs.get("json")
         response = self._responses[min(self.post_calls, len(self._responses) - 1)]
         self.post_calls += 1
         return response
 
     def get(self, *_args, **_kwargs) -> _FakeResponse:
+        if _args:
+            self.last_get_url = _args[0]
+        self.last_get_params = _kwargs.get("params")
         response = self._responses[min(self.get_calls, len(self._responses) - 1)]
         self.get_calls += 1
         return response
@@ -49,6 +62,14 @@ def test_openai_client_requires_api_key(monkeypatch: pytest.MonkeyPatch) -> None
 
     with pytest.raises(LLMError):
         OpenAIClient(openai_client=object())
+
+
+def test_gemini_client_requires_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+
+    with pytest.raises(LLMError):
+        GeminiClient(session=_FakeSession([_FakeResponse(200, {})]))
 
 
 def test_retry_with_backoff_retries_retryable_errors(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -154,6 +175,17 @@ def test_get_llm_client_builds_openai_instance(monkeypatch: pytest.MonkeyPatch) 
     assert isinstance(client, OpenAIClient)
 
 
+def test_get_llm_client_builds_gemini_instance(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GEMINI_API_KEY", "gemini-key")
+
+    client = get_llm_client(
+        "gemini",
+        session=_FakeSession([_FakeResponse(200, {"candidates": []})]),
+    )
+
+    assert isinstance(client, GeminiClient)
+
+
 def test_openai_client_reads_api_key_from_env(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("OPENAI_API_KEY", "env-key")
 
@@ -182,6 +214,95 @@ def test_openai_generate_raises_when_content_missing(monkeypatch: pytest.MonkeyP
     fake_client = SimpleNamespace(chat=SimpleNamespace(completions=_FakeCompletions()))
 
     client = OpenAIClient(openai_client=fake_client)
+
+    with pytest.raises(LLMError):
+        client.generate({"system": "sys", "user": "usr"})
+
+
+def test_gemini_generate_success(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GEMINI_API_KEY", "gemini-key")
+
+    session = _FakeSession(
+        [
+            _FakeResponse(
+                200,
+                {
+                    "candidates": [
+                        {
+                            "content": {
+                                "parts": [{"text": "threat output"}],
+                            }
+                        }
+                    ]
+                },
+            )
+        ]
+    )
+    client = GeminiClient(session=session)
+
+    output = client.generate({"system": "sys", "user": "usr"}, temperature=0.3)
+
+    assert output == "threat output"
+    assert session.post_calls == 1
+    assert session.last_post_url is not None
+    assert "generateContent" in session.last_post_url
+    assert session.last_post_params == {"key": "gemini-key"}
+    assert session.last_post_json is not None
+    assert session.last_post_json["generationConfig"]["temperature"] == 0.3
+
+
+def test_gemini_validate_checks_models_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GOOGLE_API_KEY", "google-key")
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+
+    session = _FakeSession([_FakeResponse(200, {"models": []})])
+    client = GeminiClient(session=session)
+
+    client.validate()
+
+    assert session.get_calls == 1
+    assert session.last_get_url is not None
+    assert session.last_get_url.endswith("/v1beta/models")
+    assert session.last_get_params == {"key": "google-key"}
+
+
+def test_gemini_generate_retries_then_succeeds(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GEMINI_API_KEY", "gemini-key")
+    delays: list[float] = []
+    monkeypatch.setattr("threatcli.llm_client.time.sleep", lambda delay: delays.append(delay))
+
+    session = _FakeSession(
+        [
+            _FakeResponse(503, {}),
+            _FakeResponse(
+                200,
+                {
+                    "candidates": [
+                        {
+                            "content": {
+                                "parts": [{"text": "ok"}],
+                            }
+                        }
+                    ]
+                },
+            ),
+        ]
+    )
+    client = GeminiClient(session=session)
+
+    output = client.generate({"system": "sys", "user": "usr"})
+
+    assert output == "ok"
+    assert session.post_calls == 2
+    assert delays == [1.0]
+
+
+def test_gemini_generate_raises_on_missing_text(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GEMINI_API_KEY", "gemini-key")
+    monkeypatch.setattr("threatcli.llm_client.time.sleep", lambda _delay: None)
+
+    session = _FakeSession([_FakeResponse(200, {"candidates": [{"content": {"parts": [{}]}}]})])
+    client = GeminiClient(session=session)
 
     with pytest.raises(LLMError):
         client.generate({"system": "sys", "user": "usr"})

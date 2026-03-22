@@ -17,6 +17,13 @@ pip install -e ".[dev]"
 ```bash
 python -m threatcli --help
 python -m threatcli analyze --iac path/to/main.tf --format text
+python -m threatcli analyze --iac path/to/main.tf --provider gemini --format json
 ```
 
 More commands and providers are implemented incrementally.
+
+## Provider Configuration
+
+- OpenAI: set `OPENAI_API_KEY`
+- Gemini: set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`)
+- Ollama: run local server at `http://localhost:11434`

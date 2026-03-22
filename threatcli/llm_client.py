@@ -41,10 +41,12 @@ def get_llm_client(provider: str, **kwargs: Any) -> LLMClient:
 
     if normalized == "openai":
         return OpenAIClient(**kwargs)
+    if normalized == "gemini":
+        return GeminiClient(**kwargs)
     if normalized == "ollama":
         return OllamaClient(**kwargs)
 
-    raise LLMError(f"Unsupported provider '{provider}'. Expected one of: openai, ollama")
+    raise LLMError(f"Unsupported provider '{provider}'. Expected one of: openai, gemini, ollama")
 
 
 class OpenAIClient(LLMClient):
@@ -173,6 +175,90 @@ class OllamaClient(LLMClient):
         return _retry_with_backoff(_call, max_retries=self.max_retries, base_delay=self.base_delay)
 
 
+class GeminiClient(LLMClient):
+    """Google Gemini REST client using the Generative Language API."""
+
+    def __init__(
+        self,
+        *,
+        api_key: str | None = None,
+        model: str = "gemini-1.5-flash",
+        base_url: str = "https://generativelanguage.googleapis.com",
+        api_version: str = "v1beta",
+        timeout: float = 60.0,
+        max_retries: int = 3,
+        base_delay: float = 1.0,
+        session: requests.Session | Any | None = None,
+    ) -> None:
+        self.api_key = api_key or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        self.model = model
+        self.base_url = base_url.rstrip("/")
+        self.api_version = api_version
+        self.timeout = timeout
+        self.max_retries = max_retries
+        self.base_delay = base_delay
+        self._session = session or requests.Session()
+
+        if not self.api_key:
+            raise LLMError("GEMINI_API_KEY or GOOGLE_API_KEY is not set")
+
+    def validate(self) -> None:
+        if not self.api_key:
+            raise LLMError("GEMINI_API_KEY or GOOGLE_API_KEY is not set")
+
+        try:
+            response = self._session.get(
+                f"{self.base_url}/{self.api_version}/models",
+                params={"key": self.api_key},
+                timeout=self.timeout,
+            )
+        except requests.RequestException as exc:
+            raise LLMError(f"Unable to reach Gemini API at {self.base_url}: {exc}") from exc
+
+        if response.status_code != 200:
+            raise LLMHTTPError(
+                f"Gemini health check failed with status {response.status_code}",
+                status_code=response.status_code,
+            )
+
+    def generate(self, prompt: dict[str, str], temperature: float = 0.1) -> str:
+        payload = {
+            "system_instruction": {
+                "parts": [{"text": prompt.get("system", "")}],
+            },
+            "contents": [
+                {
+                    "role": "user",
+                    "parts": [{"text": prompt.get("user", "")}],
+                }
+            ],
+            "generationConfig": {
+                "temperature": temperature,
+            },
+        }
+
+        def _call() -> str:
+            try:
+                response = self._session.post(
+                    f"{self.base_url}/{self.api_version}/models/{self.model}:generateContent",
+                    params={"key": self.api_key},
+                    json=payload,
+                    timeout=self.timeout,
+                )
+            except requests.RequestException as exc:
+                raise LLMError(f"Gemini request failed: {exc}") from exc
+
+            if response.status_code != 200:
+                raise LLMHTTPError(
+                    f"Gemini returned status {response.status_code}",
+                    status_code=response.status_code,
+                )
+
+            return _extract_gemini_text(response.json())
+
+        return _retry_with_backoff(_call, max_retries=self.max_retries, base_delay=self.base_delay)
+
+
 def _retry_with_backoff(
     fn: Callable[[], str],
     *,
@@ -222,3 +308,33 @@ def _extract_status_code(error: Exception) -> int | None:
             return response_status
 
     return None
+
+
+def _extract_gemini_text(data: dict[str, Any]) -> str:
+    candidates = data.get("candidates", [])
+    if not isinstance(candidates, list) or not candidates:
+        raise LLMError("Gemini response did not include candidates")
+
+    first = candidates[0]
+    if not isinstance(first, dict):
+        raise LLMError("Gemini response candidate is malformed")
+
+    content = first.get("content", {})
+    if not isinstance(content, dict):
+        raise LLMError("Gemini response content is malformed")
+
+    parts = content.get("parts", [])
+    if not isinstance(parts, list):
+        raise LLMError("Gemini response content.parts is malformed")
+
+    text_parts = []
+    for part in parts:
+        if isinstance(part, dict):
+            text = part.get("text")
+            if isinstance(text, str) and text.strip():
+                text_parts.append(text)
+
+    if not text_parts:
+        raise LLMError("Gemini response did not include text content")
+
+    return "\n".join(text_parts)

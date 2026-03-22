@@ -69,7 +69,7 @@ def analyze(
     iac: list[Path] = typer.Option(..., "--iac", "-i", help="Terraform file or directory paths."),
     format: str = typer.Option("text", "--format", "-f", help="Output format: text|json|pdf."),
     output: Path | None = typer.Option(None, "--output", "-o", help="Output file path for file output."),
-    provider: str = typer.Option("openai", "--provider", help="LLM provider: openai|ollama."),
+    provider: str = typer.Option("openai", "--provider", help="LLM provider: openai|gemini|ollama."),
     temperature: float = typer.Option(0.5, "--temperature", help="LLM temperature (0.0-1.0)."),
     model: str | None = typer.Option(None, "--model", help="Optional model override for provider."),
 ) -> None:
