@@ -50,7 +50,7 @@ def test_token_budget_truncates_modules_before_variables(tmp_path: Path) -> None
 
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
-        prompt = build_iac_prompt(resource_map, token_budget=65, system_prompt_path=prompt_file)
+        prompt = build_iac_prompt(resource_map, token_budget=80, system_prompt_path=prompt_file)
 
     assert any(isinstance(item.message, TokenBudgetExceededWarning) for item in caught)
     summary = _extract_summary_from_user_prompt(prompt["user"])

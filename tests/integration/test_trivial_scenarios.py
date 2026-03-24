@@ -92,4 +92,4 @@ def test_analyze_nonexistent_path_returns_non_zero() -> None:
     )
 
     assert result.exit_code != 0
-    assert "Path does not exist" in result.stdout
+    assert "Path does not exist" in result.output
