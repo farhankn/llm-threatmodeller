@@ -9,8 +9,9 @@ from typing import Any
 import typer
 
 from threatcli import __version__
-from threatcli.context_builder import build_iac_prompt
+from threatcli.context_builder import build_iac_prompt, build_multisource_prompt
 from threatcli.llm_client import LLMError, get_llm_client
+from threatcli.parsers.doc_parser import parse_document
 from threatcli.parsers.iac_parser import ParseError, parse_iac
 from threatcli.renderer import render_json, render_text
 
@@ -67,11 +68,17 @@ def _emit_output(content: str, output: Path | None) -> None:
 @app.command()
 def analyze(
     iac: list[Path] = typer.Option(..., "--iac", "-i", help="Terraform file or directory paths."),
+    doc: Path | None = typer.Option(None, "--doc", help="Optional design doc path (.md/.txt)."),
     format: str = typer.Option("text", "--format", "-f", help="Output format: text|json|pdf."),
     output: Path | None = typer.Option(None, "--output", "-o", help="Output file path for file output."),
     provider: str = typer.Option("openai", "--provider", help="LLM provider: openai|gemini|ollama."),
     temperature: float = typer.Option(0.5, "--temperature", help="LLM temperature (0.0-1.0)."),
     model: str | None = typer.Option(None, "--model", help="Optional model override for provider."),
+    dry_run: bool = typer.Option(
+        False,
+        "--dry-run",
+        help="Print built prompt context and skip LLM call.",
+    ),
 ) -> None:
     """Analyze infrastructure and generate threats."""
     normalized_format = format.strip().lower()
@@ -86,7 +93,15 @@ def analyze(
 
     try:
         resource_map = parse_iac(iac)
-        prompt = build_iac_prompt(resource_map)
+        if doc is not None:
+            chunks = parse_document(doc)
+            prompt = build_multisource_prompt(resource_map, chunks)
+        else:
+            prompt = build_iac_prompt(resource_map)
+
+        if dry_run:
+            _emit_output(render_json([{"mode": "dry-run", "prompt": prompt}]), output)
+            return
 
         client_kwargs: dict[str, Any] = {}
         if model:

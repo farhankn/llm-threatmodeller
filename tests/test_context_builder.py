@@ -2,7 +2,8 @@ import json
 import warnings
 from pathlib import Path
 
-from threatcli.context_builder import TokenBudgetExceededWarning, build_iac_prompt
+from threatcli.context_builder import TokenBudgetExceededWarning, build_iac_prompt, build_multisource_prompt
+from threatcli.parsers.doc_parser import DocumentChunk
 
 
 def _extract_summary_from_user_prompt(user_prompt: str) -> dict:
@@ -86,3 +87,34 @@ def test_token_budget_eventually_truncates_variables(tmp_path: Path) -> None:
 
     assert summary["modules"] == []
     assert summary["variables"] == []
+
+
+def test_build_multisource_prompt_contains_design_context(tmp_path: Path) -> None:
+    prompt_file = tmp_path / "multisource.txt"
+    prompt_file.write_text("MULTI PROMPT", encoding="utf-8")
+
+    resource_map = {
+        "resources": [{"type": "aws_lambda_function", "name": "handler", "attributes": {"runtime": "python3.12"}}],
+        "providers": [],
+        "variables": [],
+        "data_sources": [],
+        "modules": [],
+    }
+    chunks = [
+        DocumentChunk(
+            chunk_id="chunk_001",
+            heading="Security",
+            heading_level=2,
+            text="Lambda must not be internet-accessible.",
+            section_index=0,
+            token_estimate=9,
+            has_overlap=False,
+        )
+    ]
+
+    prompt = build_multisource_prompt(resource_map, chunks, system_prompt_path=prompt_file)
+
+    assert prompt["system"] == "MULTI PROMPT"
+    assert "### Design Document Context" in prompt["user"]
+    assert "chunk_001" in prompt["user"]
+    assert "internet-accessible" in prompt["user"]
