@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import time
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import Any, Callable
 
 import requests
@@ -62,7 +63,7 @@ class OpenAIClient(LLMClient):
         base_delay: float = 1.0,
         openai_client: Any | None = None,
     ) -> None:
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        self.api_key = api_key or _resolve_api_key("OPENAI_API_KEY")
         self.model = model
         self.timeout = timeout
         self.max_retries = max_retries
@@ -183,17 +184,27 @@ class GeminiClient(LLMClient):
         *,
         api_key: str | None = None,
         model: str = "gemini-1.5-flash",
-        base_url: str = "https://generativelanguage.googleapis.com",
-        api_version: str = "v1beta",
+        base_url: str | None = None,
+        api_version: str | None = None,
+        api_mode: str | None = None,
         timeout: float = 60.0,
         max_retries: int = 3,
         base_delay: float = 1.0,
         session: requests.Session | Any | None = None,
     ) -> None:
-        self.api_key = api_key or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        self.api_key = api_key or _resolve_api_key("GEMINI_API_KEY", "GOOGLE_API_KEY")
         self.model = model
-        self.base_url = base_url.rstrip("/")
-        self.api_version = api_version
+        self.api_mode = (api_mode or os.getenv("GEMINI_API_MODE", "generative")).strip().lower()
+        default_base_url = (
+            "https://aiplatform.googleapis.com"
+            if self.api_mode == "vertex"
+            else "https://generativelanguage.googleapis.com"
+        )
+        default_api_version = "v1" if self.api_mode == "vertex" else "v1beta"
+        resolved_base_url = base_url or os.getenv("GEMINI_BASE_URL") or default_base_url
+        resolved_api_version = api_version or os.getenv("GEMINI_API_VERSION") or default_api_version
+        self.base_url = resolved_base_url.rstrip("/")
+        self.api_version = resolved_api_version
         self.timeout = timeout
         self.max_retries = max_retries
         self.base_delay = base_delay
@@ -205,6 +216,8 @@ class GeminiClient(LLMClient):
     def validate(self) -> None:
         if not self.api_key:
             raise LLMError("GEMINI_API_KEY or GOOGLE_API_KEY is not set")
+        if self.api_mode == "vertex":
+            return
 
         try:
             response = self._session.get(
@@ -222,25 +235,18 @@ class GeminiClient(LLMClient):
             )
 
     def generate(self, prompt: dict[str, str], temperature: float = 0.1) -> str:
-        payload = {
-            "system_instruction": {
-                "parts": [{"text": prompt.get("system", "")}],
-            },
-            "contents": [
-                {
-                    "role": "user",
-                    "parts": [{"text": prompt.get("user", "")}],
-                }
-            ],
-            "generationConfig": {
-                "temperature": temperature,
-            },
-        }
+        payload = _build_gemini_payload(prompt, temperature, api_mode=self.api_mode)
 
         def _call() -> str:
             try:
+                endpoint = _build_gemini_endpoint(
+                    base_url=self.base_url,
+                    api_version=self.api_version,
+                    model=self.model,
+                    api_mode=self.api_mode,
+                )
                 response = self._session.post(
-                    f"{self.base_url}/{self.api_version}/models/{self.model}:generateContent",
+                    endpoint,
                     params={"key": self.api_key},
                     json=payload,
                     timeout=self.timeout,
@@ -338,3 +344,64 @@ def _extract_gemini_text(data: dict[str, Any]) -> str:
         raise LLMError("Gemini response did not include text content")
 
     return "\n".join(text_parts)
+
+
+def _build_gemini_endpoint(*, base_url: str, api_version: str, model: str, api_mode: str) -> str:
+    if api_mode == "vertex":
+        return f"{base_url}/{api_version}/publishers/google/models/{model}:generateContent"
+    return f"{base_url}/{api_version}/models/{model}:generateContent"
+
+
+def _build_gemini_payload(prompt: dict[str, str], temperature: float, *, api_mode: str) -> dict[str, Any]:
+    if api_mode == "vertex":
+        combined_text = f"{prompt.get('system', '').strip()}\n\n{prompt.get('user', '').strip()}".strip()
+        return {
+            "contents": [
+                {
+                    "role": "user",
+                    "parts": [{"text": combined_text}],
+                }
+            ],
+            "generationConfig": {
+                "temperature": temperature,
+                "responseMimeType": "application/json",
+            },
+        }
+
+    return {
+        "system_instruction": {
+            "parts": [{"text": prompt.get("system", "")}],
+        },
+        "contents": [
+            {
+                "role": "user",
+                "parts": [{"text": prompt.get("user", "")}],
+            }
+        ],
+        "generationConfig": {
+            "temperature": temperature,
+            "responseMimeType": "application/json",
+        },
+    }
+
+
+def _resolve_api_key(*env_names: str) -> str | None:
+    for env_name in env_names:
+        direct = os.getenv(env_name)
+        if direct:
+            return direct
+
+        file_env = os.getenv(f"{env_name}_FILE")
+        if not file_env:
+            continue
+
+        key_path = Path(file_env)
+        try:
+            key = key_path.read_text(encoding="utf-8").strip()
+        except OSError as exc:
+            raise LLMError(f"Unable to read API key file '{key_path}': {exc}") from exc
+
+        if key:
+            return key
+
+    return None

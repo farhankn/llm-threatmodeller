@@ -27,3 +27,25 @@ More commands and providers are implemented incrementally.
 - OpenAI: set `OPENAI_API_KEY`
 - Gemini: set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`)
 - Ollama: run local server at `http://localhost:11434`
+
+For Vertex API-key usage with Gemini, set:
+
+- `GEMINI_API_MODE=vertex`
+- `GEMINI_BASE_URL=https://aiplatform.googleapis.com` (optional override in code path if exposed)
+- Use a Vertex-supported model name (for example `gemini-2.5-flash-lite`)
+
+You can also load keys from files using:
+
+- `OPENAI_API_KEY_FILE`
+- `GEMINI_API_KEY_FILE`
+- `GOOGLE_API_KEY_FILE`
+
+Each `*_FILE` variable should point to a local file containing only the key text.
+
+Example local setup:
+
+```bash
+cp .env.example .env
+# edit .env, then:
+export $(grep -v '^#' .env | xargs)
+```

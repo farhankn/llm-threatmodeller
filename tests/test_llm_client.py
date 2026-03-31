@@ -249,6 +249,59 @@ def test_gemini_generate_success(monkeypatch: pytest.MonkeyPatch) -> None:
     assert session.last_post_params == {"key": "gemini-key"}
     assert session.last_post_json is not None
     assert session.last_post_json["generationConfig"]["temperature"] == 0.3
+    assert session.last_post_json["generationConfig"]["responseMimeType"] == "application/json"
+
+
+def test_gemini_vertex_generate_uses_publishers_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GEMINI_API_KEY", "gemini-key")
+    monkeypatch.setenv("GEMINI_API_MODE", "vertex")
+
+    session = _FakeSession(
+        [
+            _FakeResponse(
+                200,
+                {
+                    "candidates": [
+                        {
+                            "content": {
+                                "parts": [{"text": "vertex output"}],
+                            }
+                        }
+                    ]
+                },
+            )
+        ]
+    )
+    client = GeminiClient(
+        session=session,
+        base_url="https://aiplatform.googleapis.com",
+        api_version="v1",
+        model="gemini-2.5-flash-lite",
+    )
+
+    output = client.generate({"system": "sys", "user": "usr"}, temperature=0.4)
+
+    assert output == "vertex output"
+    assert session.last_post_url is not None
+    assert "/publishers/google/models/gemini-2.5-flash-lite:generateContent" in session.last_post_url
+    assert session.last_post_json is not None
+    assert "system_instruction" not in session.last_post_json
+    assert session.last_post_json["generationConfig"]["temperature"] == 0.4
+    assert session.last_post_json["generationConfig"]["responseMimeType"] == "application/json"
+
+
+def test_gemini_vertex_validate_skips_models_probe(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GEMINI_API_KEY", "gemini-key")
+    monkeypatch.setenv("GEMINI_API_MODE", "vertex")
+    session = _FakeSession([_FakeResponse(500, {})])
+    client = GeminiClient(
+        session=session,
+        base_url="https://aiplatform.googleapis.com",
+        api_version="v1",
+    )
+
+    client.validate()
+    assert session.get_calls == 0
 
 
 def test_gemini_validate_checks_models_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
