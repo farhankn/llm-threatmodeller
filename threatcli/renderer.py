@@ -33,3 +33,8 @@ def render_text(threats: list[dict[str, Any]]) -> str:
 def render_json(threats: list[dict[str, Any]]) -> str:
     """Render threats as a JSON string."""
     return json.dumps(threats, indent=2)
+
+
+def filter_discrepancies(threats: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Return only threats marked as design-vs-IaC discrepancies."""
+    return [threat for threat in threats if bool(threat.get("discrepancy_flag"))]

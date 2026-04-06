@@ -35,6 +35,8 @@ def _load_ground_truth(case_id: str) -> list[dict[str, Any]]:
         ("tri_03", {"Information Disclosure", "Tampering"}, "aws_db_instance.app_db"),
         ("tri_04", {"Elevation of Privilege"}, "aws_iam_policy.wildcard_admin"),
         ("tri_05", {"Information Disclosure"}, "aws_lambda_function.handler"),
+        ("adv_01", {"Information Disclosure", "Elevation of Privilege"}, "aws_iam_policy.wildcard_admin"),
+        ("adv_02", {"Information Disclosure", "Elevation of Privilege"}, "aws_security_group.bastion"),
     ],
 )
 def test_trivial_scenario_pipeline_with_mocked_llm(
@@ -81,6 +83,44 @@ def test_trivial_scenario_pipeline_with_mocked_llm(
 
     assert expected_categories.issubset(categories)
     assert expected_component in components
+
+
+def test_advanced_multidoc_pipeline_with_mocked_llm(monkeypatch: pytest.MonkeyPatch) -> None:
+    case_id = "adv_02"
+    ground_truth = _load_ground_truth(case_id)
+
+    monkeypatch.setattr(
+        "threatcli.cli.get_llm_client",
+        lambda _provider, **_kwargs: _FakeLLMClient(ground_truth),
+    )
+
+    runner = CliRunner()
+    case_dir = FIXTURES_ROOT / case_id
+    tf_path = str(case_dir / "main.tf")
+    doc_a = str(case_dir / "design-overview.md")
+    doc_b = str(case_dir / "design-operations.txt")
+
+    result = runner.invoke(
+        app,
+        [
+            "analyze",
+            "--iac",
+            tf_path,
+            "--doc",
+            doc_a,
+            "--doc",
+            doc_b,
+            "--format",
+            "json",
+            "--provider",
+            "openai",
+        ],
+    )
+
+    assert result.exit_code == 0, result.stdout
+    output_threats = json.loads(result.stdout)
+    assert output_threats
+    assert any(threat["component"] == "aws_security_group.bastion" for threat in output_threats)
 
 
 def test_analyze_nonexistent_path_returns_non_zero() -> None:

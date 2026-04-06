@@ -18,9 +18,18 @@ pip install -e ".[dev]"
 python -m threatcli --help
 python -m threatcli analyze --iac path/to/main.tf --format text
 python -m threatcli analyze --iac path/to/main.tf --provider gemini --format json
+python -m threatcli analyze --iac path/to/main.tf --doc design.md --doc-dir docs/ --format json
 ```
 
 More commands and providers are implemented incrementally.
+
+### Document ingestion controls
+
+- `--doc`: include one or more specific `.md` / `.txt` files
+- `--doc-dir`: include all `.md` / `.txt` files under a directory
+- `--max-doc-tokens`: cap total document tokens ingested (default `15000`)
+- `--max-chunk-tokens`: control chunk size (default `1500`)
+- `--overlap-tokens`: control chunk overlap (default `100`)
 
 ## Provider Configuration
 

@@ -1,0 +1,22 @@
+[
+  {
+    "threat_id": "B-001",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_security_group.bastion",
+    "description": "Bastion security group allows SSH from 0.0.0.0/0, increasing remote compromise risk.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Design says bastion access must be restricted to office VPN CIDRs.",
+    "severity": "High",
+    "references": ["aws_security_group.bastion.ingress.cidr_blocks = [\"0.0.0.0/0\"]"]
+  },
+  {
+    "threat_id": "B-002",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.artifacts",
+    "description": "Artifacts bucket lacks explicit encryption controls in IaC and may store sensitive build outputs.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Design requires encryption at rest for artifact storage.",
+    "severity": "Medium",
+    "references": ["aws_s3_bucket.artifacts"]
+  }
+]

@@ -11,9 +11,9 @@ import typer
 from threatcli import __version__
 from threatcli.context_builder import build_iac_prompt, build_multisource_prompt
 from threatcli.llm_client import LLMError, get_llm_client
-from threatcli.parsers.doc_parser import parse_document
+from threatcli.parsers.doc_parser import parse_documents
 from threatcli.parsers.iac_parser import ParseError, parse_iac
-from threatcli.renderer import render_json, render_text
+from threatcli.renderer import filter_discrepancies, render_json, render_text
 
 app = typer.Typer(help="Threat modeling CLI for IaC analysis.")
 
@@ -156,7 +156,31 @@ def _emit_output(content: str, output: Path | None) -> None:
 @app.command()
 def analyze(
     iac: list[Path] = typer.Option(..., "--iac", "-i", help="Terraform file or directory paths."),
-    doc: Path | None = typer.Option(None, "--doc", help="Optional design doc path (.md/.txt)."),
+    doc: list[Path] = typer.Option(
+        [],
+        "--doc",
+        help="Optional design doc file(s) or directory path(s) (.md/.txt). Repeat --doc for multiple inputs.",
+    ),
+    doc_dir: list[Path] = typer.Option(
+        [],
+        "--doc-dir",
+        help="Optional directory containing design docs (.md/.txt). Repeat --doc-dir for multiple directories.",
+    ),
+    max_doc_tokens: int = typer.Option(
+        15000,
+        "--max-doc-tokens",
+        help="Maximum total design-document tokens to ingest before truncation.",
+    ),
+    max_chunk_tokens: int = typer.Option(
+        1500,
+        "--max-chunk-tokens",
+        help="Maximum tokens per document chunk.",
+    ),
+    overlap_tokens: int = typer.Option(
+        100,
+        "--overlap-tokens",
+        help="Overlap tokens between adjacent chunks.",
+    ),
     format: str = typer.Option("text", "--format", "-f", help="Output format: text|json|pdf."),
     output: Path | None = typer.Option(None, "--output", "-o", help="Output file path for file output."),
     provider: str = typer.Option("openai", "--provider", help="LLM provider: openai|gemini|ollama."),
@@ -166,6 +190,11 @@ def analyze(
         False,
         "--dry-run",
         help="Print built prompt context and skip LLM call.",
+    ),
+    discrepancies_only: bool = typer.Option(
+        False,
+        "--discrepancies-only",
+        help="Show only threats with discrepancy_flag=true.",
     ),
 ) -> None:
     """Analyze infrastructure and generate threats."""
@@ -178,11 +207,20 @@ def analyze(
     if normalized_format == "pdf":
         typer.echo("Error: PDF output is not implemented in Phase 1.", err=True)
         raise typer.Exit(code=1)
+    if max_doc_tokens <= 0 or max_chunk_tokens <= 0 or overlap_tokens < 0:
+        typer.echo("Error: Invalid document token options.", err=True)
+        raise typer.Exit(code=1)
 
     try:
         resource_map = parse_iac(iac)
-        if doc is not None:
-            chunks = parse_document(doc)
+        all_doc_inputs = [*doc, *doc_dir]
+        if all_doc_inputs:
+            chunks = parse_documents(
+                all_doc_inputs,
+                max_chunk_tokens=max_chunk_tokens,
+                overlap_tokens=overlap_tokens,
+                max_doc_tokens=max_doc_tokens,
+            )
             prompt = build_multisource_prompt(resource_map, chunks)
         else:
             prompt = build_iac_prompt(resource_map)
@@ -200,6 +238,8 @@ def analyze(
 
         raw_output = client.generate(prompt=prompt, temperature=temperature)
         threats = parse_threats(raw_output)
+        if discrepancies_only:
+            threats = filter_discrepancies(threats)
 
         rendered = render_text(threats) if normalized_format == "text" else render_json(threats)
         _emit_output(rendered, output)

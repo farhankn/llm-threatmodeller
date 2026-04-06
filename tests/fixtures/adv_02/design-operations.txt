@@ -1,0 +1,3 @@
+Operational exceptions should be tracked and time-bounded.
+Open security group ingress to 0.0.0.0/0 is considered emergency-only.
+SSH hardening and key rotation are mandatory controls for bastion hosts.

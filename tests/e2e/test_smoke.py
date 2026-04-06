@@ -7,6 +7,7 @@ from typer.testing import CliRunner
 from threatcli.cli import app
 
 FIXTURE_FILE = Path(__file__).resolve().parents[1] / "fixtures" / "tri_01" / "main.tf"
+ADV_FIXTURE_DIR = Path(__file__).resolve().parents[1] / "fixtures" / "adv_02"
 
 
 class _FakeLLMClient:
@@ -91,3 +92,27 @@ def test_smoke_json_output_file(
 def test_help_command(runner: CliRunner) -> None:
     result = runner.invoke(app, ["--help"])
     assert result.exit_code == 0
+
+
+def test_smoke_multidoc_input(monkeypatch: pytest.MonkeyPatch, runner: CliRunner) -> None:
+    monkeypatch.setattr("threatcli.cli.get_llm_client", lambda _provider, **_kwargs: _FakeLLMClient())
+
+    result = runner.invoke(
+        app,
+        [
+            "analyze",
+            "--iac",
+            str(ADV_FIXTURE_DIR / "main.tf"),
+            "--doc",
+            str(ADV_FIXTURE_DIR / "design-overview.md"),
+            "--doc",
+            str(ADV_FIXTURE_DIR / "design-operations.txt"),
+            "--format",
+            "text",
+            "--provider",
+            "openai",
+        ],
+    )
+
+    assert result.exit_code == 0, result.stdout
+    assert "Information Disclosure" in result.stdout

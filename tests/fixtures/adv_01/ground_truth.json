@@ -1,0 +1,22 @@
+[
+  {
+    "threat_id": "A-001",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.logs",
+    "description": "Public-read logs bucket can expose sensitive operational data.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Design requires logs to be internal-only.",
+    "severity": "High",
+    "references": ["aws_s3_bucket.logs.acl = \"public-read\""]
+  },
+  {
+    "threat_id": "A-002",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_policy.wildcard_admin",
+    "description": "Wildcard IAM policy grants broad permissions and enables privilege escalation.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Design requires least privilege IAM policies.",
+    "severity": "High",
+    "references": ["aws_iam_policy.wildcard_admin.policy.Action = \"*\""]
+  }
+]
