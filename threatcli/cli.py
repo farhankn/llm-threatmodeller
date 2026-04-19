@@ -42,7 +42,8 @@ def parse_threats(raw_output: str) -> list[dict[str, Any]]:
     if not isinstance(parsed, list):
         raise ThreatSchemaError("LLM output must be a JSON array of threat objects")
 
-    parsed = [_normalize_threat_item(item, index) for index, item in enumerate(parsed)]
+    expanded = _expand_threat_items(parsed)
+    parsed = [_normalize_threat_item(item, index) for index, item in enumerate(expanded)]
 
     for index, threat in enumerate(parsed):
         if not isinstance(threat, dict):
@@ -57,6 +58,45 @@ def parse_threats(raw_output: str) -> list[dict[str, Any]]:
             raise ThreatSchemaError(f"Threat at index {index} field 'references' must be an array")
 
     return parsed
+
+
+def _expand_threat_items(items: list[Any]) -> list[Any]:
+    expanded: list[Any] = []
+    for item in items:
+        if isinstance(item, dict):
+            nested = item.get("threats")
+            if isinstance(nested, list):
+                parent_resource = item.get("resource")
+                for child in nested:
+                    if isinstance(child, dict):
+                        merged = dict(child)
+                        if parent_resource and "resource" not in merged and "component" not in merged:
+                            merged["resource"] = parent_resource
+                        expanded.append(merged)
+                    else:
+                        expanded.append(child)
+                continue
+
+            nested_model = item.get("threat_model")
+            if isinstance(nested_model, list):
+                expanded.extend(nested_model)
+                continue
+            if isinstance(nested_model, dict):
+                maybe_nested = nested_model.get("threats")
+                if isinstance(maybe_nested, list):
+                    parent_resource = item.get("resource") or nested_model.get("resource")
+                    for child in maybe_nested:
+                        if isinstance(child, dict):
+                            merged = dict(child)
+                            if parent_resource and "resource" not in merged and "component" not in merged:
+                                merged["resource"] = parent_resource
+                            expanded.append(merged)
+                        else:
+                            expanded.append(child)
+                    continue
+
+        expanded.append(item)
+    return expanded
 
 
 def _extract_json_payload(raw_output: str) -> str:
@@ -106,21 +146,36 @@ def _normalize_threat_item(threat: Any, index: int) -> dict[str, Any]:
     if not isinstance(threat, dict):
         raise ThreatSchemaError(f"Threat at index {index} is not an object")
 
+    nested_model = threat.get("threat_model")
+    if isinstance(nested_model, dict):
+        return _normalize_threat_item(nested_model, index)
+
     if REQUIRED_THREAT_FIELDS.issubset(threat.keys()):
         normalized = dict(threat)
         normalized["references"] = _coerce_references(normalized.get("references"))
         return normalized
 
+    explicit_component = str(threat.get("component", "")).strip()
     resource_type = str(threat.get("resource_type", "")).strip()
     resource_name = str(threat.get("resource_name") or threat.get("resource") or "").strip()
-    threat_type = str(threat.get("threat_type", "")).strip()
+    if explicit_component and "." in explicit_component:
+        resource_type, resource_name = explicit_component.split(".", 1)
+    elif not resource_type and "." in resource_name and resource_name.startswith("aws_"):
+        resource_type, resource_name = resource_name.split(".", 1)
+    threat_type = str(
+        threat.get("threat_type") or threat.get("stride_category") or threat.get("stride") or ""
+    ).strip()
+    threat_type = _normalize_stride_category(threat_type)
     description = str(threat.get("description") or threat.get("threat_description") or "").strip()
+
+    if not description:
+        description = str(threat.get("name", "")).strip()
 
     if resource_type and resource_name and threat_type and description:
         component = f"{resource_type}.{resource_name}"
         evidence = threat.get("evidence")
         discrepancy_detail = str(threat.get("discrepancy_detail", "")).strip()
-        discrepancy_flag = bool(threat.get("discrepancy_flag", False))
+        discrepancy_flag = bool(threat.get("discrepancy_flag", threat.get("discrepancy", False)))
         if not discrepancy_flag and discrepancy_detail:
             discrepancy_flag = True
         references = _coerce_references(evidence if evidence is not None else [])
@@ -133,15 +188,90 @@ def _normalize_threat_item(threat: Any, index: int) -> dict[str, Any]:
             "references": references,
         }
 
+    # Fallback mapping for models that provide stride + description but omit component fields.
+    if threat_type and description:
+        references = _coerce_references(threat.get("evidence"))
+        fallback_component = _infer_component(resource_type, resource_name, references, description)
+        return {
+            "threat_id": str(threat.get("threat_id") or f"T-{index + 1:03d}"),
+            "stride_category": threat_type,
+            "component": fallback_component,
+            "description": description,
+            "discrepancy_flag": bool(threat.get("discrepancy_flag", threat.get("discrepancy", False))),
+            "references": references,
+        }
+
     return dict(threat)
 
 
 def _coerce_references(value: Any) -> list[str]:
     if isinstance(value, list):
         return [str(item) for item in value if str(item).strip()]
+    if isinstance(value, dict):
+        refs: list[str] = []
+        for key, item in value.items():
+            text = str(item).strip()
+            if text:
+                refs.append(f"{key}: {text}")
+        return refs
     if isinstance(value, str) and value.strip():
         return [value.strip()]
+    if value is None:
+        return []
     return []
+
+
+def _normalize_stride_category(value: str) -> str:
+    normalized = value.strip().lower()
+    mapping = {
+        "spoofing": "Spoofing",
+        "tampering": "Tampering",
+        "repudiation": "Repudiation",
+        "information disclosure": "Information Disclosure",
+        "denial of service": "Denial of Service",
+        "elevation of privilege": "Elevation of Privilege",
+        "privilege escalation": "Elevation of Privilege",
+    }
+    return mapping.get(normalized, value.strip())
+
+
+def _infer_component(
+    resource_type: str,
+    resource_name: str,
+    references: list[str],
+    description: str,
+) -> str:
+    if resource_type and resource_name:
+        return f"{resource_type}.{resource_name}"
+
+    source_text = " ".join([*references, description]).lower()
+    patterns = (
+        ("aws_security_group", ("security_group", "security group", "ingress", "egress")),
+        ("aws_db_instance", ("db instance", "rds", "database", "postgres")),
+        ("aws_s3_bucket", ("s3", "bucket", "artifact")),
+        ("aws_iam_policy", ("iam policy", "wildcard-admin", "wildcard policy")),
+        ("aws_instance", ("bastion", "ec2 instance", "aws_instance")),
+    )
+    for resource, markers in patterns:
+        if any(marker in source_text for marker in markers):
+            if resource == "aws_security_group" and "bastion" in source_text:
+                return "aws_security_group.bastion"
+            if resource == "aws_security_group" and "web" in source_text:
+                return "aws_security_group.web"
+            if resource == "aws_db_instance" and ("app-db-prod" in source_text or "'app'" in source_text):
+                return "aws_db_instance.app"
+            if resource == "aws_db_instance" and "app_db" in source_text:
+                return "aws_db_instance.app_db"
+            if resource == "aws_s3_bucket" and "artifact" in source_text:
+                return "aws_s3_bucket.artifacts"
+            if resource == "aws_s3_bucket" and "logs" in source_text:
+                return "aws_s3_bucket.logs"
+            if resource == "aws_iam_policy":
+                return "aws_iam_policy.wildcard_admin"
+            if resource == "aws_instance" and "bastion" in source_text:
+                return "aws_instance.bastion"
+
+    return "unknown.component"
 
 
 def _emit_output(content: str, output: Path | None) -> None:

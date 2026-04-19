@@ -1,0 +1,98 @@
+import json
+from pathlib import Path
+
+from threatcli.evaluation.comparator import build_known_components, compare, load_ground_truth, load_llm_output
+
+
+def test_load_ground_truth_from_fixture() -> None:
+    data = load_ground_truth("tests/fixtures/tri_01/ground_truth.json")
+    assert isinstance(data, list)
+    assert data[0]["component"] == "aws_s3_bucket.public_bucket"
+
+
+def test_load_llm_output_from_string() -> None:
+    output = '[{"threat_id":"X","stride_category":"Information Disclosure","component":"aws_s3_bucket.public_bucket","description":"x","discrepancy_flag":false,"references":[]}]'
+    data = load_llm_output(output)
+    assert len(data) == 1
+    assert data[0]["threat_id"] == "X"
+
+
+def test_build_known_components() -> None:
+    resource_map = {
+        "resources": [{"type": "aws_s3_bucket", "name": "public_bucket", "attributes": {}}],
+        "providers": [],
+        "variables": [],
+        "data_sources": [],
+        "modules": [],
+    }
+    known = build_known_components(resource_map)
+    assert "aws_s3_bucket" in known
+    assert "public_bucket" in known
+    assert "aws_s3_bucket.public_bucket" in known
+
+
+def test_compare_computes_metrics() -> None:
+    gt = [
+        {
+            "threat_id": "T-1",
+            "stride_category": "Information Disclosure",
+            "component": "aws_s3_bucket.public_bucket",
+            "description": "x",
+            "discrepancy_flag": True,
+            "references": [],
+        }
+    ]
+    out = [
+        {
+            "threat_id": "O-1",
+            "stride_category": "Information Disclosure",
+            "component": "aws_s3_bucket.public_bucket",
+            "description": "x",
+            "discrepancy_flag": True,
+            "references": [],
+        },
+        {
+            "threat_id": "O-2",
+            "stride_category": "Tampering",
+            "component": "aws_unknown.x",
+            "description": "x",
+            "discrepancy_flag": False,
+            "references": [],
+        },
+    ]
+    resource_map = {
+        "resources": [{"type": "aws_s3_bucket", "name": "public_bucket", "attributes": {}}],
+        "providers": [],
+        "variables": [],
+        "data_sources": [],
+        "modules": [],
+    }
+    result = compare(out, gt, resource_map)
+    assert result["tp"] == 1
+    assert result["fp"] == 1
+    assert result["fn"] == 0
+    assert result["precision"] == 0.5
+    assert result["recall"] == 1.0
+    assert result["ddr"] == 1.0
+    assert result["hallucination_rate"] == 0.5
+
+
+def test_load_llm_output_from_file(tmp_path: Path) -> None:
+    p = tmp_path / "out.json"
+    p.write_text(
+        json.dumps(
+            [
+                {
+                    "threat_id": "T-1",
+                    "stride_category": "Spoofing",
+                    "component": "aws_iam_role.app",
+                    "description": "x",
+                    "discrepancy_flag": False,
+                    "references": [],
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    data = load_llm_output(str(p))
+    assert data[0]["component"] == "aws_iam_role.app"
