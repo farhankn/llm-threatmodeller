@@ -126,3 +126,16 @@ def test_parse_threats_expands_nested_threat_model_threats_with_parent_resource(
     threats = parse_threats(payload)
     assert len(threats) == 1
     assert threats[0]["component"] == "aws_security_group.bastion"
+
+
+def test_parse_threats_normalizes_resource_grouped_items_without_explicit_category() -> None:
+    payload = (
+        '[{"resource":"aws_security_group.bastion","type":"aws_security_group","threats":['
+        '{"stride":"Attackers can gain unauthorized access.","description":"SSH open from world","discrepancy":true}'
+        "]}]"
+    )
+    threats = parse_threats(payload)
+    assert len(threats) == 1
+    assert threats[0]["component"] == "aws_security_group.bastion"
+    assert threats[0]["references"] == []
+    assert threats[0]["discrepancy_flag"] is True

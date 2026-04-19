@@ -1,0 +1,42 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could send abnormally large or malformed voice input streams through the API Gateway, potentially overwhelming the system's processing capacity or causing the Lambda functions to crash.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could exploit vulnerabilities in the Lambda functions to gain unauthorized access to sensitive data and AWS services.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could compromise user accounts through credential brute-forcing, weak password policies, or authentication bypass attempts.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Improper configuration of cross-account access for AI/ML services could lead to unauthorized data access or resource manipulation.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could attempt to manipulate or replace Kinesis streams to intercept or modify voice processing data.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

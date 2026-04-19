@@ -1,0 +1,50 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Quantum computation results may be transmitted or stored without proper encryption, potentially exposing sensitive cryptographic data to unauthorized access or interception.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The quantum computing cluster is deployed in a single region, creating a single point of failure and potential availability risks.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "While the VPC includes public and private subnets, there might be insufficient network segmentation between quantum computing resources and other components.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "While Secrets Manager is used, there might be insufficient rotation and management of secrets used in quantum computations and cryptographic operations.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "While CloudWatch and Timestream are used, there might be gaps in monitoring and logging of quantum computing operations and security events.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Potential leakage of quantum state information during computation or transmission between Braket and processing components.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

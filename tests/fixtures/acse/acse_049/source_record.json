@@ -1,0 +1,292 @@
+{
+  "name": "ml-platform",
+  "architecture": "ml-platform/architecture.png",
+  "architecture_description": "ml-platform/diagram.py",
+  "threat_model": "ml-platform/threat-model.json",
+  "infra_as_code": "ml-platform/cdk/",
+  "ground_truth": [
+    {
+      "threatID": "THREAT-001",
+      "threatName": "Unauthorized Access to ML Model Artifacts",
+      "affectedComponents": [
+        "modelArtifactsBucket",
+        "processedDataBucket",
+        "sagemakerExecutionRole",
+        "ecsTaskRole"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Tampering"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control",
+          "A02:2021-Cryptographic Failures"
+        ],
+        "mitreATT&CK": [
+          "T1530 - Data from Cloud Storage Object"
+        ]
+      },
+      "cwe": "CWE-284",
+      "vulnerabilityDetails": {
+        "howItWorks": "Misconfigured S3 bucket policies, IAM roles with overly permissive access, or lack of encryption could allow unauthorized access to model artifacts. The CDK code shows S3 buckets with various IAM role access grants that need careful review.",
+        "exploitationScenario": "An attacker with access to overly permissive IAM credentials could download model artifacts from S3, potentially extracting proprietary ML models or sensitive training data."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "Medium",
+        "availability": "Low"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-001-A",
+          "description": "Implement strict S3 bucket policies with least privilege access",
+          "implementationDetails": "1. Review and restrict IAM role permissions (sagemakerExecutionRole, ecsTaskRole)\n2. Enable S3 bucket versioning and encryption\n3. Implement S3 bucket policies that explicitly deny unencrypted data uploads\n4. Enable S3 access logging and CloudTrail object-level logging",
+          "awsServiceContext": [
+            "S3",
+            "IAM",
+            "CloudTrail",
+            "KMS"
+          ]
+        },
+        {
+          "recommendationID": "REC-001-B",
+          "description": "Enhance encryption controls for model artifacts",
+          "implementationDetails": "1. Use AWS KMS customer managed keys instead of S3-managed keys\n2. Implement mandatory encryption in transit using TLS\n3. Set up key rotation policies\n4. Monitor KMS key usage through CloudTrail",
+          "awsServiceContext": [
+            "KMS",
+            "S3",
+            "CloudTrail"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code shows S3 bucket creation with some security controls (blockPublicAccess, enforceSSL). However, the encryption configuration could be strengthened by using KMS CMKs, and IAM roles could be more granular. The lifecycle rules and logging configurations are present but could be enhanced."
+    },
+    {
+      "threatID": "THREAT-002",
+      "threatName": "API Gateway Authentication Bypass",
+      "affectedComponents": [
+        "api_gateway",
+        "cognito",
+        "userPool",
+        "userPoolClient"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1078 - Valid Accounts"
+        ]
+      },
+      "cwe": "CWE-287",
+      "vulnerabilityDetails": {
+        "howItWorks": "The API Gateway uses Cognito user pools for authentication, but misconfigurations in the authorizer settings or token validation could create authentication bypass opportunities.",
+        "exploitationScenario": "An attacker might attempt to bypass authentication by manipulating JWT tokens, exploiting token validation issues, or finding unprotected API routes."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-002-A",
+          "description": "Strengthen API Gateway authentication controls",
+          "implementationDetails": "1. Enable token validation caching with appropriate TTL\n2. Implement proper CORS policies\n3. Enable WAF protection with rate limiting\n4. Add request validation for all endpoints\n5. Implement proper error handling to prevent information disclosure",
+          "awsServiceContext": [
+            "API Gateway",
+            "Cognito",
+            "WAF"
+          ]
+        },
+        {
+          "recommendationID": "REC-002-B",
+          "description": "Enhance Cognito user pool security",
+          "implementationDetails": "1. Enable advanced security features in Cognito\n2. Implement MFA for sensitive operations\n3. Set strong password policies\n4. Configure proper token expiration times\n5. Enable Cognito user pool analytics and monitoring",
+          "awsServiceContext": [
+            "Cognito",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code configures basic Cognito authentication with API Gateway, but could benefit from additional security measures like WAF rules, request validation, and proper CORS configuration. The current implementation allows email/username sign-in but could be strengthened with MFA and advanced security features."
+    },
+    {
+      "threatID": "THREAT-003",
+      "threatName": "ML Model Poisoning via Training Data",
+      "affectedComponents": [
+        "raw_data",
+        "processed_data",
+        "glue_jobs",
+        "training"
+      ],
+      "frameworks": {
+        "stride": [
+          "Tampering",
+          "Repudiation"
+        ],
+        "owaspTop10": [
+          "A08:2021-Software and Data Integrity Failures"
+        ],
+        "mitreATT&CK": [
+          "T1565 - Data Manipulation"
+        ]
+      },
+      "cwe": "CWE-915",
+      "vulnerabilityDetails": {
+        "howItWorks": "Attackers could manipulate training data during ingestion or processing phases, potentially poisoning the ML model training process. This could happen through compromised IAM credentials or vulnerabilities in the data processing pipeline.",
+        "exploitationScenario": "An attacker with access to the data pipeline could inject malicious training samples or modify existing data, causing the model to learn incorrect patterns or exhibit biased behavior."
+      },
+      "impact": {
+        "confidentiality": "Medium",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-003-A",
+          "description": "Implement robust data validation and integrity checks",
+          "implementationDetails": "1. Add data validation in Glue ETL jobs\n2. Implement checksums for training data\n3. Set up versioning for training datasets\n4. Add anomaly detection for data ingestion\n5. Implement audit trails for data modifications",
+          "awsServiceContext": [
+            "Glue",
+            "S3",
+            "CloudTrail",
+            "CloudWatch"
+          ]
+        },
+        {
+          "recommendationID": "REC-003-B",
+          "description": "Enhance training pipeline security",
+          "implementationDetails": "1. Implement data quality checks in the training pipeline\n2. Add model validation steps\n3. Set up monitoring for unusual training patterns\n4. Implement rollback mechanisms for compromised models\n5. Add data lineage tracking",
+          "awsServiceContext": [
+            "SageMaker",
+            "Step Functions",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code shows a data processing pipeline using Glue and S3, but could benefit from additional integrity controls. The Step Functions state machine could include validation steps, and CloudWatch metrics could be used for anomaly detection."
+    },
+    {
+      "threatID": "THREAT-004",
+      "threatName": "Container Escape in Batch Inference",
+      "affectedComponents": [
+        "ecs",
+        "ecsTaskDefinition",
+        "batchInferenceLambda"
+      ],
+      "frameworks": {
+        "stride": [
+          "Elevation of Privilege",
+          "Tampering"
+        ],
+        "owaspTop10": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "mitreATT&CK": [
+          "T1611 - Container Escape"
+        ]
+      },
+      "cwe": "CWE-266",
+      "vulnerabilityDetails": {
+        "howItWorks": "Misconfigured container security settings, excessive privileges, or vulnerabilities in the container runtime could allow attackers to escape the container boundary.",
+        "exploitationScenario": "An attacker who can execute code within the inference container might exploit container runtime vulnerabilities or misconfigured capabilities to gain access to the host system."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "High"
+      },
+      "likelihood": "Low",
+      "recommendations": [
+        {
+          "recommendationID": "REC-004-A",
+          "description": "Implement container security best practices",
+          "implementationDetails": "1. Use minimal base images\n2. Implement container image scanning\n3. Configure proper resource limits\n4. Remove unnecessary capabilities\n5. Implement proper logging and monitoring",
+          "awsServiceContext": [
+            "ECS",
+            "ECR",
+            "CloudWatch"
+          ]
+        },
+        {
+          "recommendationID": "REC-004-B",
+          "description": "Enhance ECS task security",
+          "implementationDetails": "1. Use SELinux or AppArmor profiles\n2. Implement proper task role permissions\n3. Enable ECS Exec logging\n4. Configure network security groups\n5. Enable container insights",
+          "awsServiceContext": [
+            "ECS",
+            "IAM",
+            "CloudWatch",
+            "VPC"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code configures Fargate tasks with basic security settings, but could benefit from additional hardening measures. The task definition should be reviewed for security best practices and unnecessary privileges should be removed."
+    },
+    {
+      "threatID": "THREAT-005",
+      "threatName": "Sensitive Data Exposure in Logs and Metrics",
+      "affectedComponents": [
+        "cloudwatch",
+        "event_bridge",
+        "api_gateway",
+        "lambda_fn"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A04:2021-Insecure Design"
+        ],
+        "mitreATT&CK": [
+          "T1552 - Unsecured Credentials"
+        ]
+      },
+      "cwe": "CWE-532",
+      "vulnerabilityDetails": {
+        "howItWorks": "Sensitive information might be inadvertently logged in CloudWatch Logs, exposed in error messages, or included in monitoring metrics. This could include API keys, model parameters, or sensitive training data.",
+        "exploitationScenario": "An attacker with access to CloudWatch Logs could mine the logs for sensitive information, such as temporary credentials, internal system states, or debugging information that reveals system vulnerabilities."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "Low",
+        "availability": "Low"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-005-A",
+          "description": "Implement proper log sanitization",
+          "implementationDetails": "1. Configure log field masking\n2. Implement proper error handling\n3. Set up log retention policies\n4. Enable log encryption\n5. Implement proper log access controls",
+          "awsServiceContext": [
+            "CloudWatch",
+            "API Gateway",
+            "Lambda"
+          ]
+        },
+        {
+          "recommendationID": "REC-005-B",
+          "description": "Enhance monitoring security",
+          "implementationDetails": "1. Review and sanitize metric names and values\n2. Implement proper metric access controls\n3. Configure appropriate metric retention\n4. Set up alerts for sensitive data patterns\n5. Enable audit logging for metric access",
+          "awsServiceContext": [
+            "CloudWatch",
+            "EventBridge",
+            "IAM"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code configures basic logging for various services, but needs additional controls for log content sanitization and access control. CloudWatch log groups should be configured with encryption and proper retention policies."
+    }
+  ],
+  "design_doc": "#!/usr/bin/env python3\n\n\"\"\"\nAWS Machine Learning Model Training and Inference Platform\nThis diagram illustrates a comprehensive ML platform architecture on AWS,\nwith user authentication flow, API integration, training pipeline, and inference services.\nIt demonstrates the end-to-end workflow from data ingestion to model deployment.\n\"\"\"\n\n# --- Network related imports ---\nfrom diagrams.aws.network import APIGateway, VPC, ElasticLoadBalancing as ELB\nfrom diagrams.aws.network import Route53\n\n# --- Compute related imports ---\nfrom diagrams.aws.compute import EC2, Lambda, Batch\nfrom diagrams.aws.compute import ElasticContainerService as ECS\nfrom diagrams.aws.compute import ElasticKubernetesService as EKS\n\n# --- ML related imports ---\nfrom diagrams.aws.ml import Sagemaker\nfrom diagrams.aws.ml import SagemakerModel, SagemakerNotebook, SagemakerTrainingJob\n\n# --- Storage related imports ---\nfrom diagrams.aws.storage import S3, EFS\nfrom diagrams.aws.storage import SimpleStorageServiceS3Bucket as S3Bucket\n\n# --- Database related imports ---\nfrom diagrams.aws.database import Dynamodb, RDS\n\n# --- Integration related imports ---\nfrom diagrams.aws.integration import StepFunctions, Eventbridge, SQS\n\n# --- Security related imports ---\nfrom diagrams.aws.security import IAM, Cognito, WAF, SecretsManager\n\n# --- Analytics related imports ---\nfrom diagrams.aws.analytics import Glue, Athena, Kinesis, KinesisDataAnalytics\n\n# --- Monitoring related imports ---\nfrom diagrams.aws.management import Cloudwatch, SystemsManagerParameterStore\n\n# --- General diagram imports ---\nfrom diagrams import Diagram, Cluster, Edge\nfrom diagrams.aws.general import Users\n\n# Graph attributes for better visualization\ngraph_attr = {\n    \"fontsize\": \"45\",\n    \"bgcolor\": \"white\",\n    \"splines\": \"spline\",\n    \"pad\": \"2.0\",\n    \"nodesep\": \"0.8\",\n    \"ranksep\": \"1.0\",\n    \"labelloc\": \"t\",\n    \"label\": \"\"\"\n\n    Connection Types Legend\n    \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\n    \u2500\u2500\u2500 (Blue)      User Traffic Flow\n    \u2500\u2500\u2500 (Green)     API Calls\n    \u2500\u2500\u2500 (Orange)    Authentication/Authorization\n    \u2500\u2500\u2500 (Red)       Data Flow\n    \u2500\u2500\u2500 (Purple)    Model Training Flow\n    \u2500\u2500\u2500 (Brown)     Inference Flow\n    \u2500\u2500\u2500 (Gray)      Monitoring & Logging\n    \n    \"\"\",\n    \"fontname\": \"Helvetica\",\n}\n\n# Create the diagram\nwith Diagram(\n    name=\"AWS ML Training & Inference Platform\",\n    filename=\"ml_platform\",\n    direction=\"TB\",\n    show=True,\n    graph_attr=graph_attr,\n    outformat=\"png\"\n):\n    # External Users\n    users = Users(\"Data Scientists\\n& ML Engineers\")\n    \n    # AWS Account Boundary\n    with Cluster(\"AWS Account\"):\n        # Security and Authentication Layer\n        with Cluster(\"Security & Authentication\"):\n            cognito = Cognito(\"User Authentication\")\n            iam = IAM(\"IAM Roles & Policies\")\n            secrets = SecretsManager(\"API Keys & Secrets\")\n            waf = WAF(\"Web Application\\nFirewall\")\n        \n        # API Layer\n        with Cluster(\"API Layer\"):\n            api_gateway = APIGateway(\"ML Platform APIs\")\n            dns = Route53(\"DNS\")\n        \n        # Data Ingestion & Storage\n        with Cluster(\"Data Management\"):\n            # Data Storage\n            with Cluster(\"Storage\"):\n                raw_data = S3Bucket(\"Raw Data\")\n                processed_data = S3Bucket(\"Processed Data\")\n                model_artifacts = S3Bucket(\"Model Artifacts\")\n                \n            # Data Processing\n            with Cluster(\"Data Processing\"):\n                glue_jobs = Glue(\"ETL Jobs\")\n                athena = Athena(\"Data Query\")\n                kinesis = Kinesis(\"Streaming Data\")\n        \n        # ML Training Infrastructure\n        with Cluster(\"ML Training\"):\n            # Training Orchestration\n            step_functions = StepFunctions(\"Training\\nOrchestration\")\n            \n            # SageMaker Components\n            with Cluster(\"SageMaker\"):\n                notebook = SagemakerNotebook(\"Development\\nEnvironment\")\n                training = SagemakerTrainingJob(\"Training Jobs\")\n                sm_model = SagemakerModel(\"Model Registry\")\n            \n            # Batch Processing\n            batch = Batch(\"Batch Processing\")\n        \n        # Inference Infrastructure\n        with Cluster(\"ML Inference\"):\n            # Real-time Inference\n            with Cluster(\"Real-time Inference\"):\n                sagemaker = Sagemaker(\"Inference\\nEndpoints\")\n                lb = ELB(\"Load Balancer\")\n            \n            # Batch Inference\n            with Cluster(\"Batch Inference\"):\n                lambda_fn = Lambda(\"Inference\\nHandler\")\n                ecs = ECS(\"Container\\nServices\")\n        \n        # Monitoring & Logging\n        with Cluster(\"Monitoring\"):\n            cloudwatch = Cloudwatch(\"Metrics & Logs\")\n            event_bridge = Eventbridge(\"Event Routing\")\n            \n        # Metadata Store\n        dynamodb = Dynamodb(\"Metadata Store\")\n\n    # Define connections\n    \n    # User Access Flow\n    users >> Edge(color=\"blue\", label=\"1. Access\") >> dns\n    dns >> Edge(color=\"blue\") >> waf\n    waf >> Edge(color=\"blue\", label=\"2. Route\") >> api_gateway\n    \n    # Authentication Flow\n    api_gateway >> Edge(color=\"orange\", label=\"3. Authenticate\") >> cognito\n    cognito >> Edge(color=\"orange\", label=\"4. Verify\") >> iam\n    api_gateway >> Edge(color=\"green\") >> secrets\n    \n    # Data Scientist Workflow\n    users >> Edge(color=\"blue\", style=\"dashed\", label=\"Development\") >> notebook\n    \n    # Data Flow\n    users >> Edge(color=\"red\", style=\"dashed\", label=\"Upload Data\") >> raw_data\n    raw_data >> Edge(color=\"red\") >> glue_jobs\n    glue_jobs >> Edge(color=\"red\") >> processed_data\n    kinesis >> Edge(color=\"red\", style=\"dashed\") >> raw_data\n    \n    # Training Flow\n    api_gateway >> Edge(color=\"green\", label=\"5. Start Training\") >> step_functions\n    step_functions >> Edge(color=\"purple\") >> training\n    processed_data >> Edge(color=\"purple\", style=\"dashed\") >> training\n    training >> Edge(color=\"purple\") >> sm_model\n    training >> Edge(color=\"purple\") >> model_artifacts\n    \n    # Batch Processing\n    step_functions >> Edge(color=\"purple\", style=\"dashed\") >> batch\n    batch >> Edge(color=\"purple\") >> model_artifacts\n    \n    # Inference Flow - Real-time\n    api_gateway >> Edge(color=\"green\", label=\"6a. Inference Request\") >> lb\n    lb >> Edge(color=\"brown\") >> sagemaker\n    sagemaker >> Edge(color=\"brown\", style=\"dashed\") >> sm_model\n    \n    # Inference Flow - Batch\n    api_gateway >> Edge(color=\"green\", label=\"6b. Batch Inference\") >> lambda_fn\n    lambda_fn >> Edge(color=\"brown\") >> ecs\n    ecs >> Edge(color=\"brown\", style=\"dashed\") >> model_artifacts\n    \n    # Metadata Management\n    training >> Edge(color=\"green\", style=\"dotted\") >> dynamodb\n    sagemaker >> Edge(color=\"green\", style=\"dotted\") >> dynamodb\n    \n    # Monitoring\n    training >> Edge(color=\"gray\") >> cloudwatch\n    sagemaker >> Edge(color=\"gray\") >> cloudwatch\n    lambda_fn >> Edge(color=\"gray\") >> cloudwatch\n    \n    # Event Routing\n    cloudwatch >> Edge(color=\"gray\", style=\"dashed\") >> event_bridge\n    event_bridge >> Edge(color=\"gray\", style=\"dashed\", label=\"Alerts\") >> api_gateway\n",
+  "terraform": "# ACSE-Eval IaC source path (dataset-relative):\n# ml-platform/cdk/\n# Pull IaC files from dataset repository and replace this placeholder.\n"
+}

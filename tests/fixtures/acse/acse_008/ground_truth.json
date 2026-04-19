@@ -1,0 +1,66 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "A threat actor could intercept and modify API calls between the mobile client and API Gateway, potentially compromising game integrity by manipulating game actions, scores, or user data.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Attackers could attempt to bypass Cognito authentication by forging or stealing authentication tokens, potentially gaining unauthorized access to user accounts and game features.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Distributed Denial of Service attacks targeting the CloudFront CDN could prevent users from downloading game assets and affect game availability.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "NoSQL injection attacks against DynamoDB queries could lead to unauthorized access to user data or manipulation of game state information.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Vulnerabilities in game logic Lambda functions could be exploited to manipulate game mechanics, enable cheating, or bypass game rules.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Race conditions in leaderboard updates could be exploited to manipulate rankings or create inconsistent game states.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-007",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Unauthorized access to Kinesis streams could expose sensitive user behavior and game analytics data.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-008",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Inadequate logging of game actions could allow cheating or malicious behavior to go undetected.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

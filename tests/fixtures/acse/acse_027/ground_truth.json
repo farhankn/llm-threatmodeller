@@ -1,0 +1,58 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Attackers may attempt to bypass access controls to directly access documents stored in S3 buckets, potentially leading to data breaches.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Attackers may attempt to inject malicious SQL code through document metadata fields that are stored in the RDS database.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Document contents or PII might be inadvertently logged to CloudWatch Logs through application logging or Lambda function execution logs.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Insufficient key rotation and management practices could lead to prolonged exposure if encryption keys are compromised.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Inadequate session management could allow attackers to hijack user sessions or perform replay attacks.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Race conditions in the document processing pipeline could lead to data corruption or processing errors.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-007",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Improper access controls on document references could allow unauthorized access to documents through URL manipulation.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

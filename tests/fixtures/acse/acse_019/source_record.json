@@ -1,0 +1,291 @@
+{
+  "name": "cryptocurrency",
+  "architecture": "cryptocurrency/architecture.png",
+  "architecture_description": "cryptocurrency/diagram.py",
+  "threat_model": "cryptocurrency/threat-model.json",
+  "infra_as_code": "cryptocurrency/cdk/",
+  "ground_truth": [
+    {
+      "threatID": "THREAT-001",
+      "threatName": "Insufficient Authentication Controls for Critical Operations",
+      "affectedComponents": [
+        "APIGateway",
+        "WalletService",
+        "KeyStore",
+        "WalletDB"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1078 - Valid Accounts"
+        ]
+      },
+      "cwe": "CWE-308",
+      "vulnerabilityDetails": {
+        "howItWorks": "The current authentication system relies solely on API keys or single-factor authentication, making it vulnerable to credential theft and replay attacks.",
+        "exploitationScenario": "An attacker who obtains valid credentials could access the wallet service and perform unauthorized transactions without requiring a second authentication factor."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "Critical",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-001-A",
+          "description": "Implement AWS Cognito with MFA for user authentication",
+          "implementationDetails": "Configure Cognito User Pools with mandatory MFA for all users. Integrate with API Gateway using Cognito Authorizers. Require MFA for all critical operations including wallet access and transactions.",
+          "awsServiceContext": [
+            "Cognito",
+            "APIGateway",
+            "SecretsManager"
+          ]
+        },
+        {
+          "recommendationID": "REC-001-B",
+          "description": "Implement step-up authentication for high-value transactions",
+          "implementationDetails": "Add additional verification steps for transactions above certain thresholds or for sensitive wallet operations.",
+          "awsServiceContext": [
+            "Lambda",
+            "APIGateway"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Consider using AWS IAM Access Analyzer to monitor resource policies and identify unintended access. Implement AWS Organizations SCP to enforce MFA usage across accounts."
+    },
+    {
+      "threatID": "THREAT-002",
+      "threatName": "Insufficient Logging and Monitoring Coverage",
+      "affectedComponents": [
+        "All Components",
+        "CloudWatch",
+        "APIGateway",
+        "Lambda",
+        "ECS",
+        "ManagedBlockchain"
+      ],
+      "frameworks": {
+        "stride": [
+          "Repudiation"
+        ],
+        "owaspTop10": [
+          "A09:2021-Security Logging and Monitoring Failures"
+        ],
+        "mitreATT&CK": [
+          "T1562 - Impair Defenses"
+        ]
+      },
+      "cwe": "CWE-223",
+      "vulnerabilityDetails": {
+        "howItWorks": "While basic logging is implemented, there's no centralized security monitoring solution or comprehensive audit trail for security-relevant events.",
+        "exploitationScenario": "An attacker could perform reconnaissance or execute attacks without detection due to inadequate monitoring and alerting."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "High"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-002-A",
+          "description": "Implement comprehensive security monitoring",
+          "implementationDetails": "Enable AWS GuardDuty for threat detection, AWS Security Hub for security posture management, and AWS Config for configuration monitoring. Set up CloudWatch Logs Insights for advanced log analysis.",
+          "awsServiceContext": [
+            "GuardDuty",
+            "SecurityHub",
+            "Config",
+            "CloudWatch"
+          ]
+        },
+        {
+          "recommendationID": "REC-002-B",
+          "description": "Implement centralized logging with proper retention",
+          "implementationDetails": "Set up centralized logging to an S3 bucket with proper encryption and retention policies. Enable CloudTrail with log file validation for all regions.",
+          "awsServiceContext": [
+            "S3",
+            "CloudTrail",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Consider using AWS OpenSearch Service for log analytics and visualization. Implement AWS EventBridge rules for automated incident response."
+    },
+    {
+      "threatID": "THREAT-003",
+      "threatName": "Privileged Account Misuse and Backdoor Risk",
+      "affectedComponents": [
+        "WalletService",
+        "TransactionProcessors",
+        "WalletDB",
+        "BlockchainNetwork"
+      ],
+      "frameworks": {
+        "stride": [
+          "Tampering",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control"
+        ],
+        "mitreATT&CK": [
+          "T1548 - Abuse Elevation Control Mechanism"
+        ]
+      },
+      "cwe": "CWE-250",
+      "vulnerabilityDetails": {
+        "howItWorks": "Administrative accounts may have direct database access or ability to modify transaction processing logic, potentially allowing unauthorized manipulation of user accounts or transactions.",
+        "exploitationScenario": "A malicious admin could modify wallet balances, inject fraudulent transactions, or manipulate transaction processing rules."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "Critical",
+        "availability": "High"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-003-A",
+          "description": "Implement strict separation of duties",
+          "implementationDetails": "Create distinct IAM roles with least privilege access. Require multiple approvals for sensitive operations. Implement AWS Organizations with separate accounts for different environments.",
+          "awsServiceContext": [
+            "IAM",
+            "Organizations",
+            "KMS"
+          ]
+        },
+        {
+          "recommendationID": "REC-003-B",
+          "description": "Implement comprehensive audit logging for admin actions",
+          "implementationDetails": "Enable detailed CloudTrail logging for all API calls. Set up automated alerts for sensitive administrative actions. Implement immutable audit logs.",
+          "awsServiceContext": [
+            "CloudTrail",
+            "CloudWatch",
+            "S3"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS KMS with multi-region keys and mandatory key rotation. Implement AWS IAM Access Analyzer to continuously monitor for overly permissive policies."
+    },
+    {
+      "threatID": "THREAT-004",
+      "threatName": "Blockchain-Specific Attack Vectors",
+      "affectedComponents": [
+        "ManagedBlockchain",
+        "MiningNodes",
+        "TransactionProcessors",
+        "BlockchainNetwork"
+      ],
+      "frameworks": {
+        "stride": [
+          "Tampering",
+          "Denial of Service"
+        ],
+        "owaspTop10": [
+          "A04:2021-Insecure Design"
+        ],
+        "mitreATT&CK": [
+          "T1498 - Network Denial of Service"
+        ]
+      },
+      "cwe": "CWE-841",
+      "vulnerabilityDetails": {
+        "howItWorks": "Attackers could attempt to control majority of mining power, execute double-spending attacks, or exploit smart contract vulnerabilities.",
+        "exploitationScenario": "An attacker gains control of multiple mining nodes to manipulate transaction validation or executes a double-spending attack during high-value transactions."
+      },
+      "impact": {
+        "confidentiality": "Medium",
+        "integrity": "Critical",
+        "availability": "Critical"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-004-A",
+          "description": "Implement blockchain-specific monitoring",
+          "implementationDetails": "Deploy monitoring for mining power distribution, transaction patterns, and smart contract execution. Set up alerts for unusual patterns or potential attacks.",
+          "awsServiceContext": [
+            "CloudWatch",
+            "Lambda",
+            "EventBridge"
+          ]
+        },
+        {
+          "recommendationID": "REC-004-B",
+          "description": "Implement transaction verification safeguards",
+          "implementationDetails": "Require multiple confirmations for high-value transactions. Implement time delays and additional verification for suspicious patterns.",
+          "awsServiceContext": [
+            "Lambda",
+            "Step Functions",
+            "DynamoDB"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Leverage AWS Managed Blockchain's built-in security features. Consider implementing AWS Shield Advanced for DDoS protection."
+    },
+    {
+      "threatID": "THREAT-005",
+      "threatName": "Insufficient Key Management Controls",
+      "affectedComponents": [
+        "KMS",
+        "SecretsManager",
+        "WalletService",
+        "KeyStore"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "mitreATT&CK": [
+          "T1552 - Unsecured Credentials"
+        ]
+      },
+      "cwe": "CWE-320",
+      "vulnerabilityDetails": {
+        "howItWorks": "While encryption is implemented, there might be weaknesses in key rotation, access controls, or backup procedures for cryptographic materials.",
+        "exploitationScenario": "An attacker gaining access to key material could decrypt sensitive wallet data or forge transactions."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "Critical",
+        "availability": "High"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-005-A",
+          "description": "Enhance key management controls",
+          "implementationDetails": "Implement automatic key rotation, strict access controls, and secure key backup procedures. Use separate keys for different purposes.",
+          "awsServiceContext": [
+            "KMS",
+            "SecretsManager",
+            "CloudHSM"
+          ]
+        },
+        {
+          "recommendationID": "REC-005-B",
+          "description": "Implement secure key backup procedures",
+          "implementationDetails": "Set up secure backup procedures for key material with proper encryption and access controls. Consider using AWS CloudHSM for additional security.",
+          "awsServiceContext": [
+            "KMS",
+            "S3",
+            "CloudHSM"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Consider using AWS CloudHSM for additional security. Implement AWS Backup for secure key material backups."
+    }
+  ],
+  "design_doc": "#!/usr/bin/env python3\nfrom diagrams import Diagram, Cluster, Edge\nfrom diagrams.aws.compute import EC2, ECS, Lambda, EKS\nfrom diagrams.aws.database import Dynamodb, ElastiCache\nfrom diagrams.aws.integration import Eventbridge, MQ, SNS, SQS\nfrom diagrams.aws.network import ELB, VPC, APIGateway, CloudFront\nfrom diagrams.aws.security import KMS, WAF, Shield, SecretsManager\nfrom diagrams.aws.storage import S3\nfrom diagrams.aws.analytics import Kinesis\nfrom diagrams.aws.blockchain import ManagedBlockchain\n\n# Diagram configuration\ngraph_attr = {\n    \"fontsize\": \"45\",\n    \"bgcolor\": \"white\",\n    \"splines\": \"spline\",\n    \"pad\": \"1.5\",\n}\n\nwith Diagram(\n    \"AWS Cryptocurrency Blockchain Architecture\",\n    show=True,\n    direction=\"TB\",\n    graph_attr=graph_attr,\n    filename=\"data/cyptocurrency/architecture\",\n    outformat=\"png\"\n) as diag:\n    # Edge configurations\n    edge_config = {\n        \"color\": \"black\",\n        \"style\": \"bold\",\n    }\n\n    # Frontend/API Layer\n    with Cluster(\"Frontend & API Layer\"):\n        cdn = CloudFront(\"CDN\")\n        waf = WAF(\"WAF\")\n        shield = Shield(\"DDoS Protection\")\n        api = APIGateway(\"API Gateway\")\n\n    # Wallet Management Layer\n    with Cluster(\"Wallet Management\"):\n        wallet_service = Lambda(\"Wallet Service\")\n        key_store = SecretsManager(\"Key Store\")\n        wallet_db = Dynamodb(\"Wallet DB\")\n        backup_storage = S3(\"Wallet Backups\")\n\n    # Blockchain Node Layer\n    with Cluster(\"Blockchain Network\"):\n        blockchain = ManagedBlockchain(\"AWS Managed\\nBlockchain\")\n        node_group = [\n            EC2(\"Mining Node 1\"),\n            EC2(\"Mining Node 2\"),\n            EC2(\"Mining Node 3\")\n        ]\n\n    # Transaction Processing Layer\n    with Cluster(\"Transaction Processing\"):\n        tx_processors = ECS(\"Transaction\\nProcessors\")\n        tx_queue = SQS(\"Transaction Queue\")\n        event_bus = Eventbridge(\"Event Bus\")\n\n    # Data Storage Layer\n    with Cluster(\"Data Storage\"):\n        blockchain_data = S3(\"Blockchain Data\")\n        tx_history = Dynamodb(\"Transaction\\nHistory\")\n        cache = ElastiCache(\"In-Memory Cache\")\n\n    # Analytics Layer\n    with Cluster(\"Real-time Analytics\"):\n        stream = Kinesis(\"Data Streams\")\n        analytics = Lambda(\"Analytics\\nProcessor\")\n\n    # Security Layer\n    with Cluster(\"Security & Encryption\"):\n        key_mgmt = KMS(\"Key Management\")\n\n    # Define connections\n    # Frontend connections\n    cdn >> Edge(**edge_config, label=\"HTTPS\") >> waf\n    waf >> shield\n    shield >> api\n\n    # Wallet management connections\n    api >> Edge(**edge_config, label=\"Wallet Operations\") >> wallet_service\n    wallet_service >> Edge(**edge_config, label=\"Store Keys\") >> key_store\n    wallet_service >> Edge(**edge_config, label=\"Store Data\") >> wallet_db\n    wallet_service >> Edge(**edge_config, label=\"Backup\") >> backup_storage\n    key_mgmt >> Edge(**edge_config, label=\"Encrypt\") >> key_store\n    wallet_service >> Edge(**edge_config, label=\"Query Balance\") >> blockchain\n\n    # API to processing layer\n    api >> Edge(**edge_config, label=\"New Transaction\") >> tx_queue\n    tx_queue >> tx_processors\n\n    # Transaction processing\n    tx_processors >> Edge(**edge_config, label=\"Submit\") >> blockchain\n    blockchain << Edge(**edge_config, label=\"Sync\") << node_group[0]\n    blockchain << Edge(**edge_config, label=\"Sync\") << node_group[1]\n    blockchain << Edge(**edge_config, label=\"Sync\") << node_group[2]\n\n    # Data flow\n    tx_processors >> Edge(**edge_config, label=\"Store\") >> blockchain_data\n    tx_processors >> Edge(**edge_config, label=\"Record\") >> tx_history\n    tx_processors >> Edge(**edge_config, label=\"Cache\") >> cache\n    tx_processors >> Edge(**edge_config, label=\"Update\") >> wallet_db\n\n    # Analytics flow\n    tx_processors >> Edge(**edge_config, label=\"Stream\") >> stream\n    stream >> analytics\n    analytics >> tx_history\n\n    # Security\n    key_mgmt >> Edge(**edge_config, label=\"Encrypt/Decrypt\") >> blockchain\n    key_mgmt >> Edge(**edge_config, label=\"Encrypt/Decrypt\") >> tx_history\n\n    # Event notifications\n    tx_processors >> event_bus\n    event_bus >> Edge(**edge_config, label=\"Notifications\") >> SNS(\"Notifications\")\n",
+  "terraform": "# ACSE-Eval IaC source path (dataset-relative):\n# cryptocurrency/cdk/\n# Pull IaC files from dataset repository and replace this placeholder.\n"
+}

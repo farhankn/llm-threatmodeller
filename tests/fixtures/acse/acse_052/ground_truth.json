@@ -1,0 +1,50 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Threat imported from ACSE-Eval dataset.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Threat imported from ACSE-Eval dataset.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Threat imported from ACSE-Eval dataset.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Threat imported from ACSE-Eval dataset.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Threat imported from ACSE-Eval dataset.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Threat imported from ACSE-Eval dataset.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

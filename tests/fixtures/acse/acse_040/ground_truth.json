@@ -1,0 +1,66 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The Data Lake S3 bucket could potentially expose sensitive human data if misconfigured or if the bucket policies are modified to be less restrictive. While the CDK code shows proper initial configuration with BlockPublicAccess.BLOCK_ALL, changes to these settings could lead to data exposure.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The Cognito User Pool configuration could potentially allow weak passwords and lacks MFA enforcement, which could lead to account compromise.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The SQS task queue could be vulnerable to message injection attacks if proper input validation and message authentication are not implemented.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The DynamoDB tables storing task and response data could expose sensitive information through improper access controls or lack of encryption.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The Task Handler Lambda function could be vulnerable to code injection attacks through environment variables or input data.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The SageMaker ML model could be vulnerable to data poisoning attacks through manipulated training data from the Responses DB.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-007",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The API Gateway could be vulnerable to DDoS attacks or request flooding, potentially affecting system availability.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-008",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The current monitoring setup might miss critical security events due to incomplete logging configuration.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

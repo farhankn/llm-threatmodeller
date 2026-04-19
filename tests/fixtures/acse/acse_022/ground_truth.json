@@ -1,0 +1,42 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Attackers could gain unauthorized access to sensitive digital twin data through misconfigured IAM permissions or compromised credentials, potentially exposing industrial asset information and operational data.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Manipulation or corruption of digital twin data could lead to incorrect simulations, false analytics, and potentially dangerous physical system optimizations.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Single points of failure and lack of redundancy could lead to system-wide outages and loss of digital twin functionality.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Lack of comprehensive monitoring and anomaly detection could allow attacks or system issues to go unnoticed.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Attackers could exploit gaps between simulated and real-world behavior to cause operational disruptions or safety incidents.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

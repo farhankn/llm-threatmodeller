@@ -19,6 +19,9 @@ python -m threatcli --help
 python -m threatcli analyze --iac path/to/main.tf --format text
 python -m threatcli analyze --iac path/to/main.tf --provider gemini --format json
 python -m threatcli analyze --iac path/to/main.tf --doc design.md --doc-dir docs/ --format json
+python -m threatcli evaluation run --fixtures tests/fixtures --provider gemini --model gemini-2.5-flash-lite --include-docs --output evaluation/results/latest_run.json
+python -m threatcli evaluation import-acse --dataset acse_eval_export.json --output-root tests/fixtures/acse
+python -m threatcli evaluation import-acse --dataset data/acse_eval/train_0.parquet --resolve-paths --output-root tests/fixtures/acse
 ```
 
 More commands and providers are implemented incrementally.

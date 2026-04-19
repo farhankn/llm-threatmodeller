@@ -1,0 +1,58 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The architecture lacks explicit TLS configuration and ACM certificate setup for API Gateway and other endpoints, potentially exposing sensitive ML data and model artifacts to interception.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The architecture lacks proper network boundary controls through VPC configuration, potentially exposing internal services to unauthorized access.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Use of unsafe serialization formats (like pickle) in model artifacts could lead to code execution when models are loaded.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Lack of proper access controls for model artifacts could lead to intellectual property theft or model tampering.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Insufficient anonymization of training data could lead to PII exposure through model outputs or data breaches.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Lack of load balancing and DNS configuration could lead to service disruptions and reduced reliability.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-007",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Lack of security scanning in the model registry could allow deployment of vulnerable or malicious models.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

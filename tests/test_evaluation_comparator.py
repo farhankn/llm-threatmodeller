@@ -96,3 +96,40 @@ def test_load_llm_output_from_file(tmp_path: Path) -> None:
     )
     data = load_llm_output(str(p))
     assert data[0]["component"] == "aws_iam_role.app"
+
+
+def test_compare_fuzzy_component_and_stride_alias_matching() -> None:
+    gt = [
+        {
+            "threat_id": "T-1",
+            "stride_category": "Elevation of Privilege",
+            "component": "aws_security_group.bastion",
+            "description": "x",
+            "discrepancy_flag": True,
+            "references": [],
+        }
+    ]
+    out = [
+        {
+            "threat_id": "O-1",
+            "stride_category": "Privilege Escalation",
+            "component": "aws_instance.bastion",
+            "description": "x",
+            "discrepancy_flag": True,
+            "references": [],
+        }
+    ]
+    resource_map = {
+        "resources": [
+            {"type": "aws_security_group", "name": "bastion", "attributes": {}},
+            {"type": "aws_instance", "name": "bastion", "attributes": {}},
+        ],
+        "providers": [],
+        "variables": [],
+        "data_sources": [],
+        "modules": [],
+    }
+    result = compare(out, gt, resource_map)
+    assert result["tp"] == 1
+    assert result["fp"] == 0
+    assert result["fn"] == 0

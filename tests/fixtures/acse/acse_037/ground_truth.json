@@ -1,0 +1,50 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Healthcare data processing pipeline may not properly anonymize Protected Health Information (PHI) before storage or transmission, leading to potential HIPAA violations and exposure of sensitive patient data.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The system uses a general Lambda role with broad permissions and lacks fine-grained access controls, potentially allowing unauthorized access to sensitive healthcare data.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The VPC configuration allows broad outbound access and has potential network exposure points through API Gateway and ELB configurations.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The system lacks proper TLS configuration and certificate management through AWS Certificate Manager, potentially exposing data in transit.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The system may not properly manage data retention and deletion according to healthcare compliance requirements.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The system lacks comprehensive monitoring for data exfiltration and may log sensitive information inappropriately.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

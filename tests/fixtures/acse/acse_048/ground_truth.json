@@ -1,0 +1,50 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Despite configured bucket policies, attackers might attempt to access sensitive log data stored in the raw logs S3 bucket through misconfigured IAM permissions, leaked credentials, or SSRF vulnerabilities in the processing Lambda functions.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Attackers could attempt to modify or inject malicious data into the Kinesis streams, potentially affecting log integrity and downstream analysis.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The OpenSearch domain could be exposed to unauthorized access through misconfigured security groups, VPC settings, or compromised IAM credentials.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "The Lambda function processing logs could be vulnerable to code injection through malformed log entries or environment variable manipulation.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Attackers could overwhelm the system by generating excessive logs or triggering resource-intensive processing.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Lack of comprehensive audit logging for system configuration changes could allow unauthorized modifications to go undetected.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

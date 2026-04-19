@@ -1,0 +1,66 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "DynamoDB and Aurora cross-region replication could lead to data inconsistency due to race conditions or network latency issues between regions. This could result in different data versions existing in different regions simultaneously.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "A threat actor could gain unauthorized access to the custom merge logic Lambda function, potentially manipulating the conflict resolution process and affecting data integrity across regions.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Attackers could exploit the multi-region architecture to exfiltrate data by targeting the region with potentially weaker security controls or monitoring.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "A sophisticated attacker could attempt to intercept and manipulate data during cross-region replication, potentially affecting data integrity and confidentiality.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Misconfiguration or unauthorized changes to AWS Config rules could lead to undetected security issues and compliance violations across regions.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Attackers could attempt to overwhelm the Application Load Balancers in either region, potentially affecting service availability across the entire system.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-007",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Inadequate encryption controls for data at rest and in transit could lead to unauthorized access to sensitive information across regions.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-008",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Overly permissive or misconfigured IAM roles could lead to unauthorized access to data across regions.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

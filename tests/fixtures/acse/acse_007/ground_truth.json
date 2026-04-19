@@ -1,0 +1,90 @@
+[
+  {
+    "threat_id": "ACSE-001",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could bypass WAF protections by discovering unprotected endpoints or exploiting gaps in rule configurations. The current WAF implementation only includes the AWS Common Rule Set, which may not provide comprehensive protection against all attack vectors.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-002",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "Biometric data could be intercepted during transmission between the client and CloudFront, or between CloudFront and the API Gateway, potentially exposing sensitive biometric information.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-003",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could capture and replay legitimate biometric authentication requests to gain unauthorized access to the system, bypassing the real-time verification process.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-004",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could overwhelm the API Gateway with a high volume of requests, causing service degradation or denial of service for legitimate users.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-005",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could attempt to manipulate or bypass the Cognito authentication flow to circumvent biometric verification requirements.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-006",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could exploit vulnerabilities in Lambda functions to gain unauthorized access to backend services or execute malicious code.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-007",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could intercept and modify messages in the notification system, potentially leading to misinformation or unauthorized actions.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-008",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could gain unauthorized access to sensitive user metadata through misconfigured DynamoDB IAM policies or exploited application vulnerabilities.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-009",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could attempt to compromise user accounts through automated credential stuffing attacks against the Cognito user pool.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-010",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could exploit Lambda function timeout configurations or resource limits to cause denial of service conditions.",
+    "discrepancy_flag": false,
+    "references": []
+  },
+  {
+    "threat_id": "ACSE-011",
+    "stride_category": "Tampering",
+    "component": "unknown.component",
+    "description": "An attacker could exploit insufficient input validation in the API Gateway to perform various injection attacks.",
+    "discrepancy_flag": false,
+    "references": []
+  }
+]

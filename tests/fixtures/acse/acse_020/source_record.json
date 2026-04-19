@@ -1,0 +1,293 @@
+{
+  "name": "data-viz-platform",
+  "architecture": "data-viz-platform/architecture.png",
+  "architecture_description": "data-viz-platform/diagram.py",
+  "threat_model": "data-viz-platform/threat-model.json",
+  "infra_as_code": "data-viz-platform/cdk/",
+  "ground_truth": [
+    {
+      "threatID": "THREAT-001",
+      "threatName": "Unauthorized S3 Bucket Access via Misconfigured Public Access",
+      "affectedComponents": [
+        "StaticWebsiteBucket",
+        "CloudFront Distribution"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Tampering"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control"
+        ],
+        "mitreATT&CK": [
+          "T1530 - Data from Cloud Storage Object"
+        ]
+      },
+      "cwe": "CWE-284",
+      "vulnerabilityDetails": {
+        "howItWorks": "The S3 bucket hosting the static website has publicReadAccess enabled and BlockPublicAccess settings disabled to allow website hosting. Without proper bucket policies and origin access controls, this could allow unauthorized access to website content.",
+        "exploitationScenario": "An attacker could bypass CloudFront and directly access the S3 bucket URL to retrieve website content or potentially upload malicious content if write permissions are not properly restricted."
+      },
+      "impact": {
+        "confidentiality": "Medium",
+        "integrity": "High",
+        "availability": "Low"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-001-A",
+          "description": "Implement CloudFront Origin Access Identity (OAI) for S3 bucket access",
+          "implementationDetails": "1. Create a CloudFront OAI\n2. Update the S3 bucket policy to only allow access from this OAI\n3. Configure CloudFront to use the OAI when accessing the S3 bucket\n4. Remove direct public read access from the S3 bucket",
+          "awsServiceContext": [
+            "CloudFront",
+            "S3"
+          ]
+        },
+        {
+          "recommendationID": "REC-001-B",
+          "description": "Enhance S3 bucket security configuration",
+          "implementationDetails": "1. Enable S3 Block Public Access settings at the bucket level\n2. Implement strict bucket policies\n3. Enable S3 server access logging\n4. Enable S3 versioning to protect against tampering",
+          "awsServiceContext": [
+            "S3"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS WAF with CloudFront to add an additional layer of protection. Consider implementing S3 Object Lock for critical files."
+    },
+    {
+      "threatID": "THREAT-002",
+      "threatName": "Insecure Data Processing Pipeline",
+      "affectedComponents": [
+        "UploadHandler Lambda",
+        "DataProcessor Lambda",
+        "Raw Data Bucket",
+        "Processed Data Bucket",
+        "SQS Processing Queue"
+      ],
+      "frameworks": {
+        "stride": [
+          "Tampering",
+          "Repudiation",
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A03:2021-Injection",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "mitreATT&CK": [
+          "T1565 - Data Manipulation",
+          "T1190 - Exploit Public-Facing Application"
+        ]
+      },
+      "cwe": "CWE-915",
+      "vulnerabilityDetails": {
+        "howItWorks": "The data processing pipeline accepts raw data uploads, processes them through Lambda functions, and stores results in S3. Without proper validation and sanitization, malicious data could lead to injection attacks or data leakage.",
+        "exploitationScenario": "An attacker could upload specially crafted data that contains malicious code or sensitive information, which could be executed during processing or exposed in visualizations."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-002-A",
+          "description": "Implement comprehensive data validation and sanitization",
+          "implementationDetails": "1. Add input validation in UploadHandler Lambda\n2. Implement data sanitization in DataProcessor Lambda\n3. Add content-type verification for uploads\n4. Implement maximum file size limits",
+          "awsServiceContext": [
+            "Lambda",
+            "S3"
+          ]
+        },
+        {
+          "recommendationID": "REC-002-B",
+          "description": "Enhance data processing security controls",
+          "implementationDetails": "1. Implement AWS KMS encryption for data at rest\n2. Add data classification and handling policies\n3. Implement proper error handling and logging\n4. Add automated sensitive data detection using Amazon Macie",
+          "awsServiceContext": [
+            "KMS",
+            "Macie",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS Macie for sensitive data discovery and protection. Implement AWS KMS for encryption of data at rest and in transit."
+    },
+    {
+      "threatID": "THREAT-003",
+      "threatName": "Insufficient API Security Controls",
+      "affectedComponents": [
+        "API Gateway",
+        "CloudFront Distribution",
+        "Lambda Functions"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Information Disclosure",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control",
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1552 - Unsecured Credentials",
+          "T1550 - Use Alternate Authentication Material"
+        ]
+      },
+      "cwe": "CWE-306",
+      "vulnerabilityDetails": {
+        "howItWorks": "The API Gateway is configured with CORS allowing all origins and methods, and lacks proper authentication mechanisms. While it uses IAM for service-to-service communication, user authentication is not properly implemented.",
+        "exploitationScenario": "An attacker could forge requests to the API endpoints, bypassing intended access controls and potentially accessing or modifying sensitive data."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-003-A",
+          "description": "Implement proper API authentication and authorization",
+          "implementationDetails": "1. Implement Amazon Cognito for user authentication\n2. Add API Gateway authorizers\n3. Restrict CORS settings to specific origins\n4. Implement proper request validation",
+          "awsServiceContext": [
+            "API Gateway",
+            "Cognito"
+          ]
+        },
+        {
+          "recommendationID": "REC-003-B",
+          "description": "Enhance API security controls",
+          "implementationDetails": "1. Enable AWS WAF for API Gateway\n2. Implement rate limiting\n3. Add request throttling\n4. Enable detailed API logging and monitoring",
+          "awsServiceContext": [
+            "WAF",
+            "API Gateway",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use API Gateway request validation, WAF rules, and Cognito user pools for comprehensive API security."
+    },
+    {
+      "threatID": "THREAT-004",
+      "threatName": "Insecure Data Storage Configuration",
+      "affectedComponents": [
+        "DynamoDB Metadata Store",
+        "Raw Data Bucket",
+        "Processed Data Bucket"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Tampering"
+        ],
+        "owaspTop10": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "mitreATT&CK": [
+          "T1530 - Data from Cloud Storage Object",
+          "T1213 - Data from Information Repositories"
+        ]
+      },
+      "cwe": "CWE-311",
+      "vulnerabilityDetails": {
+        "howItWorks": "While the infrastructure uses AWS managed encryption, it lacks customer-managed keys and proper access controls for fine-grained data protection.",
+        "exploitationScenario": "An attacker with access to the AWS environment could potentially access sensitive data if proper encryption and access controls are not in place."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "High",
+        "availability": "Low"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-004-A",
+          "description": "Implement enhanced encryption controls",
+          "implementationDetails": "1. Use AWS KMS customer managed keys for S3 and DynamoDB encryption\n2. Implement encryption in transit\n3. Enable DynamoDB encryption at rest\n4. Implement S3 bucket encryption by default",
+          "awsServiceContext": [
+            "KMS",
+            "S3",
+            "DynamoDB"
+          ]
+        },
+        {
+          "recommendationID": "REC-004-B",
+          "description": "Enhance data access controls",
+          "implementationDetails": "1. Implement fine-grained access controls using IAM policies\n2. Enable S3 object versioning\n3. Implement DynamoDB point-in-time recovery\n4. Enable access logging for all data stores",
+          "awsServiceContext": [
+            "IAM",
+            "S3",
+            "DynamoDB",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS KMS customer managed keys for enhanced control over data encryption. Implement AWS Config rules to monitor encryption settings."
+    },
+    {
+      "threatID": "THREAT-005",
+      "threatName": "Insufficient Monitoring and Incident Response",
+      "affectedComponents": [
+        "CloudWatch",
+        "Lambda Functions",
+        "API Gateway",
+        "S3 Buckets",
+        "DynamoDB Table"
+      ],
+      "frameworks": {
+        "stride": [
+          "Repudiation"
+        ],
+        "owaspTop10": [
+          "A09:2021-Security Logging and Monitoring Failures"
+        ],
+        "mitreATT&CK": [
+          "T1562 - Impair Defenses",
+          "T1078 - Valid Accounts"
+        ]
+      },
+      "cwe": "CWE-778",
+      "vulnerabilityDetails": {
+        "howItWorks": "While basic CloudWatch logging is enabled, the platform lacks comprehensive monitoring, alerting, and automated response capabilities for security events.",
+        "exploitationScenario": "An attacker could perform malicious activities without detection due to insufficient monitoring and alerting."
+      },
+      "impact": {
+        "confidentiality": "Medium",
+        "integrity": "Medium",
+        "availability": "High"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-005-A",
+          "description": "Implement comprehensive monitoring and logging",
+          "implementationDetails": "1. Enable AWS CloudTrail\n2. Configure detailed CloudWatch logging\n3. Enable API Gateway access logging\n4. Implement centralized log aggregation",
+          "awsServiceContext": [
+            "CloudTrail",
+            "CloudWatch",
+            "API Gateway"
+          ]
+        },
+        {
+          "recommendationID": "REC-005-B",
+          "description": "Enhance security monitoring and response",
+          "implementationDetails": "1. Enable AWS GuardDuty\n2. Implement AWS Security Hub\n3. Configure CloudWatch Alarms\n4. Set up automated incident response using EventBridge",
+          "awsServiceContext": [
+            "GuardDuty",
+            "Security Hub",
+            "EventBridge",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Leverage AWS native security services like GuardDuty, Security Hub, and CloudTrail for comprehensive security monitoring and response."
+    }
+  ],
+  "design_doc": "#!/usr/bin/env python3\n\"\"\"\nAWS Serverless Data Visualization Platform Architecture Diagram\n\nThis diagram illustrates a serverless platform for data visualization built on AWS\nservices. The system enables users to upload data, process it automatically, and\ncreate interactive visualizations through a web interface.\n\nKey Features:\n- Serverless data processing\n- Real-time data updates\n- Interactive visualizations\n- Secure data access\n- Multi-user support\n\"\"\"\n\n# --- Network and API related imports ---\nfrom diagrams.aws.network import APIGateway, CloudFront\nfrom diagrams.aws.network import ELB\n\n# --- Compute and Serverless imports ---\nfrom diagrams.aws.compute import Lambda\nfrom diagrams.aws.analytics import Athena, Glue\n\n# --- Storage imports ---\nfrom diagrams.aws.storage import S3\n\n# --- Database imports ---\nfrom diagrams.aws.database import Dynamodb\n\n# --- Analytics and Visualization imports ---\nfrom diagrams.aws.analytics import Quicksight\nfrom diagrams.aws.integration import Eventbridge\n\n# --- Security imports ---\nfrom diagrams.aws.security import IAM\n\n# --- Integration imports ---\nfrom diagrams.aws.integration import SNS, SQS\n\n# --- Monitoring imports ---\nfrom diagrams.aws.management import Cloudwatch\n\n# --- General diagram imports ---\nfrom diagrams import Diagram, Cluster, Edge\nfrom diagrams.onprem.client import Users\n\n# Graph attributes for better visualization\ngraph_attr = {\n    \"fontsize\": \"35\",\n    \"bgcolor\": \"white\",\n    \"splines\": \"polyline\",  # Straight lines for better readability\n    \"pad\": \"2.5\",\n    \"nodesep\": \"1.2\",\n    \"ranksep\": \"1.5\",\n    \"concentrate\": \"false\"  # Keep edges separate for label clarity\n}\n\n# Create the diagram with custom configuration\nwith Diagram(\n    name=\"AWS Serverless Data Visualization Platform\",\n    filename=\"data_viz_platform\",\n    direction=\"TB\",  # Top to bottom for data flow clarity\n    show=True,\n    graph_attr=graph_attr,\n    outformat=\"png\"\n) as diag:\n    \n    # External Users\n    users = Users(\"Platform\\nUsers\")\n    \n    # Frontend Layer\n    with Cluster(\"Frontend Layer\"):\n        cdn = CloudFront(\"CloudFront\\nDistribution\")\n        web_bucket = S3(\"Static Website\\nBucket\")\n    \n    # Authentication Layer\n    with Cluster(\"Authentication & Authorization\"):\n        auth = IAM(\"IAM\\nAuthentication\")\n    \n    # API Layer\n    with Cluster(\"API Layer\"):\n        api = APIGateway(\"Data\\nAPI\")\n        lb = ELB(\"Load\\nBalancer\")\n    \n    # Data Processing Layer\n    with Cluster(\"Data Processing\"):\n        upload_handler = Lambda(\"Upload\\nHandler\")\n        processor = Lambda(\"Data\\nProcessor\")\n        query_handler = Lambda(\"Query\\nHandler\")\n        viz_generator = Lambda(\"Visualization\\nGenerator\")\n    \n    # Data Storage Layer\n    with Cluster(\"Data Storage\"):\n        raw_data = S3(\"Raw Data\\nBucket\")\n        processed_data = S3(\"Processed\\nData\")\n        metadata = Dynamodb(\"Metadata\\nStore\")\n    \n    # Analytics Layer\n    with Cluster(\"Analytics & Visualization\"):\n        athena = Athena(\"Data\\nQuery Engine\")\n        glue = Glue(\"Data\\nCatalog\")\n        quicksight = Quicksight(\"Visualization\\nDashboards\")\n    \n    # Event Processing\n    with Cluster(\"Event Processing\"):\n        events = Eventbridge(\"Event Bus\")\n        notifications = SNS(\"Notifications\")\n        tasks = SQS(\"Processing\\nQueue\")\n    \n    # Monitoring\n    with Cluster(\"Monitoring\"):\n        metrics = Cloudwatch(\"Platform\\nMetrics\")\n    \n    # Define relationships\n    # User Flow\n    users >> Edge(color=\"blue\", label=\"1. Access\\nPlatform\") >> cdn\n    cdn >> Edge(color=\"blue\", label=\"Serve Static\\nContent\") >> web_bucket\n    cdn >> Edge(color=\"blue\", label=\"2. API Requests\") >> api\n    users >> Edge(color=\"green\", label=\"3. IAM Auth\") >> auth\n    api >> Edge(color=\"green\", label=\"Verify IAM\\nCredentials\") >> auth\n    api >> Edge(color=\"blue\", label=\"4. Route Request\") >> lb\n    lb >> Edge(color=\"blue\") >> upload_handler\n    \n    # Data Processing Flow\n    upload_handler >> Edge(color=\"orange\", label=\"5. Store\") >> raw_data\n    upload_handler >> Edge(color=\"orange\") >> tasks\n    tasks >> Edge(color=\"orange\", label=\"6. Process\") >> processor\n    processor >> Edge(color=\"orange\", label=\"Store Results\") >> processed_data\n    processor >> Edge(color=\"blue\", label=\"Update Metadata\") >> metadata\n    \n    # Query Flow\n    users >> Edge(color=\"purple\", label=\"7. Query\") >> cdn\n    api >> Edge(color=\"purple\", label=\"Query Request\") >> query_handler\n    query_handler >> Edge(color=\"purple\", label=\"Execute Query\") >> athena\n    athena >> Edge(color=\"purple\", label=\"Get Schema\") >> glue\n    athena >> Edge(color=\"purple\", label=\"Read Data\") >> processed_data\n    \n    # Visualization Flow\n    query_handler >> Edge(color=\"red\", label=\"Query Results\") >> viz_generator\n    viz_generator >> Edge(color=\"red\", label=\"8. Generate\") >> quicksight\n    quicksight >> Edge(color=\"red\", label=\"9. Display\") >> users\n    \n    # Event Processing\n    [upload_handler, processor, query_handler] >> Edge(\n        color=\"gray\", style=\"dashed\"\n    ) >> events\n    events >> Edge(color=\"gray\", style=\"dashed\", label=\"Trigger\\nNotifications\") >> notifications\n    notifications >> Edge(color=\"gray\", style=\"dashed\", label=\"Send Updates\") >> users\n    \n    # Monitoring Flow\n    [upload_handler, processor, query_handler, viz_generator] >> Edge(\n        color=\"gray\", style=\"dotted\", label=\"Performance\\nMetrics\"\n    ) >> metrics\n\n# Note: The diagram will be saved as 'data_viz_platform.png' in high resolution\n",
+  "terraform": "# ACSE-Eval IaC source path (dataset-relative):\n# data-viz-platform/cdk/\n# Pull IaC files from dataset repository and replace this placeholder.\n"
+}

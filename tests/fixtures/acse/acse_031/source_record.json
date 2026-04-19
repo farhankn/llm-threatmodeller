@@ -1,0 +1,340 @@
+{
+  "name": "enhanced-document-understanding",
+  "architecture": "enhanced-document-understanding/architecture.png",
+  "architecture_description": "enhanced-document-understanding/diagram.py",
+  "threat_model": "enhanced-document-understanding/threat-model.json",
+  "infra_as_code": "enhanced-document-understanding/cdk/",
+  "ground_truth": [
+    {
+      "threatID": "THREAT-001",
+      "threatName": "Document Content Injection Attack",
+      "affectedComponents": [
+        "S3 Raw Documents Bucket",
+        "Step Functions Workflows",
+        "Task Lambdas",
+        "Kendra Index"
+      ],
+      "frameworks": {
+        "stride": [
+          "Tampering",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A03:2021-Injection"
+        ],
+        "mitreATT&CK": [
+          "T1189 - Drive-by Compromise",
+          "T1559 - Inter-Process Communication"
+        ]
+      },
+      "cwe": "CWE-74",
+      "vulnerabilityDetails": {
+        "howItWorks": "Attackers could craft documents containing malicious content that might be interpreted or executed during document processing. This could include JavaScript in PDFs, macro-enabled Office documents, or specially crafted text content designed to exploit vulnerabilities in processing libraries.",
+        "exploitationScenario": "An attacker uploads a PDF containing JavaScript that exploits a vulnerability in the document processing pipeline, potentially gaining execution access to the Lambda environment or poisoning the Kendra index with malicious content."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-001-A",
+          "description": "Implement comprehensive document content validation and sanitization",
+          "implementationDetails": "Add a validation Lambda function in the Step Functions workflow that:\n1. Scans documents for malicious content using AWS Lambda Layers for antivirus scanning\n2. Validates file format and structure\n3. Strips any active content (JavaScript, macros, etc.)\n4. Implements content type whitelisting",
+          "awsServiceContext": [
+            "Lambda",
+            "Step Functions",
+            "S3"
+          ]
+        },
+        {
+          "recommendationID": "REC-001-B",
+          "description": "Enhance Lambda execution environment security",
+          "implementationDetails": "1. Configure Lambda functions with minimal permissions using strict IAM roles\n2. Enable Lambda runtime environment security controls\n3. Implement function timeouts and memory limits\n4. Use AWS Lambda Layers to maintain updated security scanning libraries",
+          "awsServiceContext": [
+            "Lambda",
+            "IAM"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS Lambda Layers to include antivirus scanning capabilities. Consider implementing AWS WAF rules if documents are uploaded through API Gateway. Use S3 Object Lambda to perform content scanning before documents reach processing pipelines."
+    },
+    {
+      "threatID": "THREAT-002",
+      "threatName": "Unauthorized Document Access via Kendra Search",
+      "affectedComponents": [
+        "Kendra Index",
+        "Search Lambda",
+        "API Gateway"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control"
+        ],
+        "mitreATT&CK": [
+          "T1530 - Data from Cloud Storage Object"
+        ]
+      },
+      "cwe": "CWE-284",
+      "vulnerabilityDetails": {
+        "howItWorks": "If Kendra index access controls are not properly configured or maintained, users could potentially search and retrieve content from documents they don't have permission to access.",
+        "exploitationScenario": "A regular user performs a search that returns sensitive information from documents belonging to other users or departments, bypassing intended access restrictions."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "Low",
+        "availability": "Low"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-002-A",
+          "description": "Implement robust ACL management in Kendra",
+          "implementationDetails": "1. Configure Kendra index with user context policy set to USER_TOKEN\n2. Implement ACL sync Lambda to maintain document ACLs in Kendra\n3. Update workflow orchestrator to include ACL information when indexing documents\n4. Modify search Lambda to include user context in Kendra queries",
+          "awsServiceContext": [
+            "Kendra",
+            "Lambda",
+            "DynamoDB"
+          ]
+        },
+        {
+          "recommendationID": "REC-002-B",
+          "description": "Enhance search request validation",
+          "implementationDetails": "1. Implement request validation in API Gateway\n2. Add user context validation in search Lambda\n3. Log all search requests for audit purposes\n4. Implement rate limiting for search requests",
+          "awsServiceContext": [
+            "API Gateway",
+            "Lambda",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use Kendra's built-in access control features including user context filtering. Implement AWS CloudWatch Logs for audit logging of search requests and responses."
+    },
+    {
+      "threatID": "THREAT-003",
+      "threatName": "Exposure of PII in Search Index",
+      "affectedComponents": [
+        "Task Lambdas",
+        "Step Functions Workflows",
+        "Kendra Index",
+        "S3 Raw Documents Bucket"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A04:2021-Insecure Design"
+        ],
+        "mitreATT&CK": [
+          "T1530 - Data from Cloud Storage Object"
+        ]
+      },
+      "cwe": "CWE-359",
+      "vulnerabilityDetails": {
+        "howItWorks": "Documents containing PII are processed and indexed without proper PII detection and redaction, making sensitive personal information searchable and potentially exposable through the search interface.",
+        "exploitationScenario": "A user searches for common patterns like email addresses or social security numbers, potentially retrieving PII from documents across the system."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "Low",
+        "availability": "Low"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-003-A",
+          "description": "Implement PII detection and redaction",
+          "implementationDetails": "1. Add Amazon Comprehend PII detection to the document processing workflow\n2. Implement PII redaction Lambda function\n3. Store original documents with server-side encryption\n4. Maintain separate versions for original and redacted content",
+          "awsServiceContext": [
+            "Comprehend",
+            "Lambda",
+            "S3",
+            "Step Functions"
+          ]
+        },
+        {
+          "recommendationID": "REC-003-B",
+          "description": "Enhance PII handling controls",
+          "implementationDetails": "1. Configure S3 bucket with default encryption\n2. Implement strict access controls for original documents\n3. Set up audit logging for PII detection and redaction processes\n4. Configure DLP policies using Macie",
+          "awsServiceContext": [
+            "S3",
+            "KMS",
+            "CloudWatch",
+            "Macie"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Utilize Amazon Comprehend for PII detection and Amazon Macie for sensitive data discovery. Implement S3 Object Lambda for real-time PII redaction during document access."
+    },
+    {
+      "threatID": "THREAT-004",
+      "threatName": "Pre-signed URL Abuse",
+      "affectedComponents": [
+        "Generate Presigned URL Lambda",
+        "S3 Raw Documents Bucket",
+        "API Gateway"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Repudiation"
+        ],
+        "owaspTop10": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1550 - Use Alternate Authentication Material"
+        ]
+      },
+      "cwe": "CWE-522",
+      "vulnerabilityDetails": {
+        "howItWorks": "If pre-signed URLs are generated with long expiration times or without proper restrictions, they could be shared or reused beyond their intended use, bypassing authentication and authorization controls.",
+        "exploitationScenario": "An authenticated user obtains a pre-signed URL and shares it with unauthorized users who can then upload documents to the system without proper authentication."
+      },
+      "impact": {
+        "confidentiality": "Medium",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-004-A",
+          "description": "Implement strict pre-signed URL controls",
+          "implementationDetails": "1. Set short TTL (5-15 minutes maximum)\n2. Include user-specific metadata requirements\n3. Implement strict content-type restrictions\n4. Add request signing conditions",
+          "awsServiceContext": [
+            "Lambda",
+            "S3"
+          ]
+        },
+        {
+          "recommendationID": "REC-004-B",
+          "description": "Enhance upload monitoring and control",
+          "implementationDetails": "1. Implement upload tracking in DynamoDB\n2. Add rate limiting per user\n3. Set up CloudWatch alarms for unusual upload patterns\n4. Log all pre-signed URL generations and uses",
+          "awsServiceContext": [
+            "DynamoDB",
+            "CloudWatch",
+            "S3"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use S3 bucket policies to enforce additional restrictions on uploads. Implement CloudWatch metrics and alarms to detect potential abuse of pre-signed URLs."
+    },
+    {
+      "threatID": "THREAT-005",
+      "threatName": "Insecure Communication with Kendra",
+      "affectedComponents": [
+        "Kendra Index",
+        "Task Lambdas",
+        "Workflow Orchestrator Lambda"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Tampering"
+        ],
+        "owaspTop10": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "mitreATT&CK": [
+          "T1040 - Network Sniffing"
+        ]
+      },
+      "cwe": "CWE-319",
+      "vulnerabilityDetails": {
+        "howItWorks": "Without proper TLS configuration and certificate validation, communications between system components and Kendra could be intercepted or tampered with.",
+        "exploitationScenario": "An attacker with network access could potentially intercept or modify data being sent to or from the Kendra index during document processing."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Low"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-005-A",
+          "description": "Implement secure communication channels",
+          "implementationDetails": "1. Use TLS 1.2 or higher for all communications\n2. Implement proper certificate validation\n3. Use AWS Certificate Manager for certificate management\n4. Configure security groups to restrict network access",
+          "awsServiceContext": [
+            "ACM",
+            "VPC",
+            "Security Groups"
+          ]
+        },
+        {
+          "recommendationID": "REC-005-B",
+          "description": "Enhance network security controls",
+          "implementationDetails": "1. Implement VPC endpoints for AWS services\n2. Configure network ACLs\n3. Enable VPC Flow Logs\n4. Implement AWS Private Link where applicable",
+          "awsServiceContext": [
+            "VPC",
+            "CloudWatch",
+            "PrivateLink"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS PrivateLink for secure communication with AWS services. Implement VPC endpoints to keep traffic within the AWS network."
+    },
+    {
+      "threatID": "THREAT-006",
+      "threatName": "S3 Bucket Misconfiguration",
+      "affectedComponents": [
+        "S3 Raw Documents Bucket",
+        "CloudFront Distribution"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "mitreATT&CK": [
+          "T1530 - Data from Cloud Storage Object"
+        ]
+      },
+      "cwe": "CWE-732",
+      "vulnerabilityDetails": {
+        "howItWorks": "Improper S3 bucket configuration could allow unauthorized access to documents through public access settings, overly permissive bucket policies, or misconfigured ACLs.",
+        "exploitationScenario": "An attacker discovers a misconfigured bucket policy that allows listing or downloading of documents without proper authentication."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-006-A",
+          "description": "Implement strict S3 bucket controls",
+          "implementationDetails": "1. Enable S3 Block Public Access at bucket and account level\n2. Implement least privilege bucket policies\n3. Enable S3 versioning\n4. Configure default encryption\n5. Enable S3 access logging",
+          "awsServiceContext": [
+            "S3"
+          ]
+        },
+        {
+          "recommendationID": "REC-006-B",
+          "description": "Enhance S3 security monitoring",
+          "implementationDetails": "1. Enable AWS Config rules for S3 configuration monitoring\n2. Set up CloudWatch alarms for suspicious access patterns\n3. Enable AWS GuardDuty for threat detection\n4. Implement regular security assessments using AWS Security Hub",
+          "awsServiceContext": [
+            "Config",
+            "CloudWatch",
+            "GuardDuty",
+            "Security Hub"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS Config rules to monitor S3 bucket configurations. Implement AWS GuardDuty for detecting suspicious S3 access patterns. Use AWS Macie for sensitive data discovery in S3 buckets."
+    }
+  ],
+  "design_doc": "#!/usr/bin/env python3\n# diagram.py\nfrom diagrams import Diagram, Cluster, Edge\nfrom diagrams.onprem.client import Users\n\n# Import AWS service categories\n# Networking & Content Delivery\nfrom diagrams.aws.network import CloudFront, APIGateway\n# Security, Identity, & Compliance\nfrom diagrams.aws.security import Cognito\n# Compute\nfrom diagrams.aws.compute import Lambda\n# Storage\nfrom diagrams.aws.storage import S3\n# Database\nfrom diagrams.aws.database import Dynamodb\n# Application Integration\nfrom diagrams.aws.integration import Eventbridge, StepFunctions\n# Machine Learning\nfrom diagrams.aws.ml import Kendra # Note: Kendra is used for search indexing\n\n\n# Diagram Configuration\ngraph_attr = {\n    \"fontsize\": \"12\",\n    \"bgcolor\": \"white\",\n    \"splines\": \"ortho\", # Use orthogonal lines for cleaner connections\n    \"nodesep\": \"1.0\",   # Increase separation between nodes\n    \"ranksep\": \"1.5\"    # Increase separation between ranks (layers)\n}\n\n# filename determines the output file name, outformat defaults to png\nwith Diagram(\"Enhanced Document Understanding on AWS\", show=False, filename=\"architecture\", direction=\"LR\", graph_attr=graph_attr):\n\n    # External Actors\n    user = Users(\"User\")\n\n    # --- Frontend Layer ---\n    with Cluster(\"Frontend & API Layer\"):\n        # Content Delivery and API Endpoint\n        cloudfront = CloudFront(\"CloudFront Distribution\")\n        api_gateway = APIGateway(\"API Gateway (REST)\")\n\n        # Authentication\n        cognito = Cognito(\"Cognito User Pool\")\n\n        # Lambda function for generating pre-signed URLs\n        # Grouping it here as it's directly invoked via API Gateway for uploads\n        presign_lambda = Lambda(\"Generate Presigned URL Lambda\")\n\n\n    # --- Backend Workflow Core ---\n    with Cluster(\"Backend Workflow Processing\"):\n        # Storage for Original Documents\n        s3_raw_docs = S3(\"S3 Raw Documents Bucket\")\n\n        # Event Handling\n        # Using specific names to differentiate the buses\n        default_event_bus = Eventbridge(\"EventBridge (Default Bus)\")\n        custom_event_bus = Eventbridge(\"EventBridge (Custom Bus)\")\n\n        # Core Orchestration Logic\n        workflow_orchestrator_lambda = Lambda(\"Workflow Orchestrator Lambda\")\n\n        # Configuration Store for Orchestrator\n        config_db = Dynamodb(\"DynamoDB Workflow Config Table\")\n\n        # State Machine for Document Processing Workflows\n        # Representing the multiple potential workflows with one icon\n        step_functions = StepFunctions(\"Step Functions Workflows\\n(Textract, Comprehend, Redact, etc.)\")\n\n        # Lambda functions executed by Step Functions (conceptual representation)\n        # In reality, there would be multiple specific Lambdas\n        processing_lambdas = Lambda(\"Task Lambdas\\n(Extraction, Redaction, etc.)\")\n\n        # Case Management Data\n        case_db = Dynamodb(\"DynamoDB Case Management Table\")\n\n\n    # --- Search Layer (Optional) ---\n    with Cluster(\"Search Layer (Optional)\"):\n        kendra_index = Kendra(\"Kendra Index\")\n        # Lambda function for search queries (assuming it's invoked via API Gateway)\n        search_lambda = Lambda(\"Search Lambda\")\n\n\n    # --- Define Connections ---\n\n    # 1. User Access and Authentication Flow\n    user >> Edge(label=\"1. Access UI\") >> cloudfront\n    cloudfront >> Edge(label=\"2. Forward Request\") >> api_gateway\n    api_gateway >> Edge(label=\"3. Auth Request\") >> cognito\n    cognito >> Edge(label=\"4. Auth Response\") >> api_gateway # Assuming token validation happens via API GW authorizer or backend lambda\n    api_gateway >> Edge(label=\"5. UI/API Response\") >> user # Simplified return path\n\n\n    # 2. Case Creation Flow\n    # Assuming case creation is an API call after authentication\n    api_gateway >> Edge(label=\"6. Create Case Request\") >> workflow_orchestrator_lambda # Or a dedicated Case Mgmt Lambda\n    workflow_orchestrator_lambda >> Edge(label=\"7. Store Case Data\") >> case_db\n\n\n    # 3. Document Upload Flow\n    api_gateway >> Edge(label=\"8. Request Signed URL\") >> presign_lambda\n    presign_lambda >> Edge(label=\"9. Generate URL\", style=\"dashed\") >> s3_raw_docs # Interaction for URL generation logic\n    presign_lambda >> Edge(label=\"10. Signed URL Response\") >> api_gateway\n    api_gateway >> Edge(label=\"11. Provide Signed URL\") >> user\n    user >> Edge(label=\"12. Upload Document (PUT)\") >> s3_raw_docs\n\n\n    # 4. Workflow Triggering Flow\n    s3_raw_docs >> Edge(label=\"13. s3:PutObject Event\") >> default_event_bus\n    default_event_bus >> Edge(label=\"14. Trigger Orchestrator\") >> workflow_orchestrator_lambda\n\n\n    # 5. Workflow Orchestration and Execution Flow\n    workflow_orchestrator_lambda >> Edge(label=\"15. Read Config\") >> config_db\n    workflow_orchestrator_lambda >> Edge(label=\"16. Send Workflow Start Event\") >> custom_event_bus\n    custom_event_bus >> Edge(label=\"17. Trigger State Machine\") >> step_functions\n    step_functions >> Edge(label=\"18. Invoke Task\") >> processing_lambdas # Represents invoking various task lambdas\n    processing_lambdas >> Edge(label=\"19. Task Complete\") >> step_functions # Return control to Step Functions\n\n\n    # 6. Workflow Completion and Update Flow\n    step_functions >> Edge(label=\"20. Workflow Complete Event\") >> custom_event_bus\n    custom_event_bus >> Edge(label=\"21. Notify Orchestrator\") >> workflow_orchestrator_lambda\n    workflow_orchestrator_lambda >> Edge(label=\"22. Read Config (Next Step?)\") >> config_db\n    workflow_orchestrator_lambda >> Edge(label=\"23. Update Case Status\") >> case_db\n    # Loop back if more steps (conceptual): Edge(workflow_orchestrator_lambda, custom_event_bus, label=\"16b. Trigger Next Workflow\", style=\"dashed\", color=\"grey\")\n\n\n    # 7. Search Indexing Flow (Optional)\n    workflow_orchestrator_lambda >> Edge(label=\"24. Write Metadata (Optional)\", style=\"dashed\", color=\"darkgreen\") >> kendra_index\n\n\n    # 8. Search Query Flow (Optional)\n    # Assuming search is initiated via API Gateway\n    api_gateway >> Edge(label=\"25. Search Query (Optional)\", style=\"dashed\", color=\"darkgreen\") >> search_lambda\n    search_lambda >> Edge(label=\"26. Query Index (Optional)\", style=\"dashed\", color=\"darkgreen\") >> kendra_index\n    kendra_index >> Edge(label=\"27. Search Results (Optional)\", style=\"dashed\", color=\"darkgreen\") >> search_lambda\n    search_lambda >> Edge(label=\"28. Return Results (Optional)\", style=\"dashed\", color=\"darkgreen\") >> api_gateway\n\n\n# --- Documentation Notes ---\n# - This diagram represents the architecture described in the AWS Solutions README for Enhanced Document Understanding.\n# - It follows the flow from user interaction, document upload, workflow processing, to optional search indexing.\n# - Specific Lambda functions within the Step Functions workflow (e.g., Textract, Comprehend, Redaction) are grouped conceptually under 'Task Lambdas'.\n# - The interaction between Step Functions and its specific task Lambdas is simplified.\n# - The return path for user responses is simplified, focusing on the main request flow.\n# - Connections related to the optional Kendra search functionality are styled dashed and green.\n# - Error handling, monitoring, and detailed IAM permissions are not explicitly shown but are crucial components in a real-world deployment.\n# - Assumed API Gateway handles routing for various actions (Auth, Case Mgmt, Upload URL, Search).\n# - Requires 'diagrams' package: pip install diagrams ",
+  "terraform": "# ACSE-Eval IaC source path (dataset-relative):\n# enhanced-document-understanding/cdk/\n# Pull IaC files from dataset repository and replace this placeholder.\n"
+}
