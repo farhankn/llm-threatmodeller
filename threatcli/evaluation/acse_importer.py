@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -91,26 +92,54 @@ def _normalize_stride(value: str) -> str:
         "spoofing": "Spoofing",
         "tampering": "Tampering",
         "repudiation": "Repudiation",
+        "access control": "Elevation of Privilege",
+        "resource exhaustion": "Denial of Service",
+        "lateral movement": "Elevation of Privilege",
     }
     return aliases.get(normalized, value.strip() or "Tampering")
 
 
-def _extract_stride_categories(item: dict[str, Any]) -> list[str]:
-    # ACSE source records often store STRIDE under frameworks.stride as a multi-label list.
-    frameworks = item.get("frameworks")
-    if isinstance(frameworks, dict):
-        stride_values = frameworks.get("stride")
-        if isinstance(stride_values, list):
-            categories = [_normalize_stride(str(value)) for value in stride_values if str(value).strip()]
-            if categories:
-                return categories
-        if isinstance(stride_values, str) and stride_values.strip():
-            return [_normalize_stride(stride_values)]
+def _coerce_string_list(value: Any) -> list[str]:
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    if isinstance(value, str) and value.strip():
+        return [value.strip()]
+    return []
 
-    stride = _normalize_stride(
-        str(item.get("stride_category") or item.get("stride") or item.get("category") or item.get("threat_type") or "")
-    )
-    return [stride]
+
+def _extract_frameworks(item: dict[str, Any]) -> dict[str, list[str]]:
+    frameworks = item.get("frameworks")
+    result: dict[str, list[str]] = {}
+    if isinstance(frameworks, dict):
+        stride = [_normalize_stride(value) for value in _coerce_string_list(frameworks.get("stride"))]
+        mitre = _coerce_string_list(frameworks.get("mitreATT&CK"))
+        owasp = _coerce_string_list(frameworks.get("owaspTop10"))
+        if stride:
+            result["stride"] = stride
+        if mitre:
+            result["mitreATT&CK"] = mitre
+        if owasp:
+            result["owaspTop10"] = owasp
+
+    if not result.get("stride"):
+        fallback_stride = _coerce_string_list(
+            item.get("stride_category")
+            or item.get("stride")
+            or item.get("category")
+            or item.get("threat_type")
+        )
+        if fallback_stride:
+            result["stride"] = [_normalize_stride(value) for value in fallback_stride]
+
+    return result
+
+
+def _extract_stride_categories(item: dict[str, Any]) -> list[str]:
+    extracted = _extract_frameworks(item)
+    categories = extracted.get("stride", [])
+    if categories:
+        return categories
+    return ["Tampering"]
 
 
 def _component_to_tf_component(value: str) -> str:
@@ -218,32 +247,40 @@ def normalize_threat_items(item: dict[str, Any], index: int) -> list[dict[str, A
     discrepancy_flag = bool(item.get("discrepancy_flag", item.get("discrepancy", False)))
     references = _extract_references(item)
     categories = _extract_stride_categories(item)
+    frameworks = _extract_frameworks(item)
+    cwe = str(item.get("cwe") or "").strip()
 
     normalized: list[dict[str, Any]] = []
     if len(categories) == 1:
-        normalized.append(
-            {
-                "threat_id": threat_id,
-                "stride_category": categories[0],
-                "component": component,
-                "description": description,
-                "discrepancy_flag": discrepancy_flag,
-                "references": references,
-            }
-        )
+        threat: dict[str, Any] = {
+            "threat_id": threat_id,
+            "stride_category": categories[0],
+            "component": component,
+            "description": description,
+            "discrepancy_flag": discrepancy_flag,
+            "references": references,
+        }
+        if frameworks:
+            threat["frameworks"] = frameworks
+        if cwe:
+            threat["cwe"] = cwe
+        normalized.append(threat)
         return normalized
 
     for category_index, category in enumerate(categories, start=1):
-        normalized.append(
-            {
-                "threat_id": f"{threat_id}-{category_index}",
-                "stride_category": category,
-                "component": component,
-                "description": description,
-                "discrepancy_flag": discrepancy_flag,
-                "references": references,
-            }
-        )
+        threat = {
+            "threat_id": f"{threat_id}-{category_index}",
+            "stride_category": category,
+            "component": component,
+            "description": description,
+            "discrepancy_flag": discrepancy_flag,
+            "references": references,
+        }
+        if frameworks:
+            threat["frameworks"] = frameworks
+        if cwe:
+            threat["cwe"] = cwe
+        normalized.append(threat)
     return normalized
 
 
@@ -321,7 +358,10 @@ def hydrate_records_from_hf_paths(
             try:
                 response = requests.get(url, timeout=timeout_seconds)
                 response.raise_for_status()
-                enriched["design_doc"] = response.text
+                enriched["design_doc"] = _normalize_design_doc(
+                    response.text,
+                    source_path=architecture_description_path,
+                )
             except requests.RequestException:
                 pass
 
@@ -364,7 +404,12 @@ def _hydrate_terraform_from_hf_repo(repo_id: str, infra_path: str, timeout_secon
 
     tf_paths = [path for path in all_paths if path.endswith(".tf")]
     if not tf_paths:
-        return None
+        synthesized = _synthesize_terraform_from_iac_source_files(
+            repo_id=repo_id,
+            all_paths=all_paths,
+            timeout_seconds=timeout_seconds,
+        )
+        return synthesized
 
     rendered_parts: list[str] = []
     for tf_path in tf_paths:
@@ -382,6 +427,145 @@ def _hydrate_terraform_from_hf_repo(repo_id: str, infra_path: str, timeout_secon
     if not rendered_parts:
         return None
     return "\n\n".join(rendered_parts) + "\n"
+
+
+def _synthesize_terraform_from_iac_source_files(
+    *,
+    repo_id: str,
+    all_paths: list[str],
+    timeout_seconds: float,
+) -> str | None:
+    code_paths = [
+        path
+        for path in all_paths
+        if path.endswith((".py", ".ts", ".js"))
+    ]
+    if not code_paths:
+        return None
+
+    # Limit fetch size for importer speed and API usage.
+    selected_paths = code_paths[:20]
+    corpus_parts: list[str] = []
+    for code_path in selected_paths:
+        url = f"https://huggingface.co/datasets/{repo_id}/resolve/main/{code_path}"
+        try:
+            response = requests.get(url, timeout=timeout_seconds)
+            response.raise_for_status()
+        except requests.RequestException:
+            continue
+        text = response.text
+        if text.strip():
+            corpus_parts.append(text)
+
+    if not corpus_parts:
+        return None
+
+    corpus = "\n".join(corpus_parts)
+    resource_hints = _extract_resource_hints_from_code(corpus)
+    if not resource_hints:
+        return None
+
+    blocks: list[str] = [
+        "# Synthesized from CDK/source IaC files (no .tf files available in source path).",
+        "# Resource stubs inferred from IaC code symbols:",
+        "",
+    ]
+    for resource_type, count in sorted(resource_hints.items()):
+        for index in range(count):
+            name = f"{resource_type.replace('aws_', '')}_{index + 1}"
+            blocks.append(f'resource "{resource_type}" "{name}" {{')
+            blocks.append("  tags = {")
+            blocks.append(f'    inferred_from = "{resource_type}"')
+            blocks.append("  }")
+            blocks.append("}")
+            blocks.append("")
+    return "\n".join(blocks).rstrip() + "\n"
+
+
+def _extract_resource_hints_from_code(source: str) -> Counter[str]:
+    lowered = source.lower()
+    hint_patterns: dict[str, tuple[str, ...]] = {
+        "aws_s3_bucket": ("s3.bucket", "bucket(", "aws_s3"),
+        "aws_db_instance": ("rds.databaseinstance", "databaseinstance", "dbinstance"),
+        "aws_security_group": ("ec2.securitygroup", "securitygroup"),
+        "aws_iam_role": ("iam.role", "role("),
+        "aws_iam_policy": ("iam.policy", "managedpolicy"),
+        "aws_lambda_function": ("lambda.function", "aws_lambda"),
+        "aws_ecr_repository": ("ecr.repository", "repository("),
+        "aws_cloudfront_distribution": ("cloudfront",),
+        "aws_route53_zone": ("route53",),
+        "aws_vpc": ("ec2.vpc", "vpc("),
+        "aws_instance": ("ec2.instance", "instance("),
+        "aws_apprunner_service": ("apprunner", "app runner"),
+    }
+
+    counts: Counter[str] = Counter()
+    for resource_type, patterns in hint_patterns.items():
+        matched = any(pattern in lowered for pattern in patterns)
+        if matched:
+            counts[resource_type] = 1
+    return counts
+
+
+def _normalize_design_doc(text: str, *, source_path: str) -> str:
+    stripped = text.strip()
+    if not stripped:
+        return "Imported from ACSE-Eval record.\n"
+    if not source_path.endswith(".py"):
+        return stripped + "\n"
+    if "from diagrams" not in stripped:
+        return stripped + "\n"
+
+    variable_labels: dict[str, str] = {}
+    assign_pattern = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*[^#\n]*\(\s*\"([^\"]+)\"\s*\)", re.MULTILINE)
+    for match in assign_pattern.finditer(stripped):
+        variable_labels[match.group(1)] = match.group(2).strip()
+
+    component_values = sorted(set(variable_labels.values()))
+
+    edge_lines: list[str] = []
+    edge_with_label = re.compile(
+        r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*>>\s*Edge\([^)]*label\s*=\s*\"([^\"]+)\"[^)]*\)\s*>>\s*([A-Za-z_][A-Za-z0-9_]*)",
+        re.MULTILINE,
+    )
+    for match in edge_with_label.finditer(stripped):
+        src = variable_labels.get(match.group(1), match.group(1))
+        lbl = match.group(2).strip()
+        dst = variable_labels.get(match.group(3), match.group(3))
+        edge_lines.append(f"{src} --[{lbl}]--> {dst}")
+
+    if not edge_lines:
+        edge_simple = re.compile(
+            r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*>>\s*([A-Za-z_][A-Za-z0-9_]*)",
+            re.MULTILINE,
+        )
+        for match in edge_simple.finditer(stripped):
+            src = variable_labels.get(match.group(1), match.group(1))
+            dst = variable_labels.get(match.group(2), match.group(2))
+            edge_lines.append(f"{src} --> {dst}")
+
+    lines: list[str] = [
+        "# Architecture Context (Imported from diagrams-as-code)",
+        "",
+        f"- Source path: `{source_path}`",
+        "- Source format: Python diagrams script",
+        "",
+    ]
+    if component_values:
+        lines.append("## Components")
+        lines.extend([f"- {component}" for component in component_values])
+        lines.append("")
+    if edge_lines:
+        lines.append("## Data Flows")
+        lines.extend([f"- {edge}" for edge in edge_lines[:80]])
+        lines.append("")
+
+    lines.append("## Raw Diagram Script")
+    lines.append("```python")
+    lines.append(stripped)
+    lines.append("```")
+    lines.append("")
+    return "\n".join(lines)
 
 
 def _component_to_tf_resource(value: str) -> tuple[str, str]:

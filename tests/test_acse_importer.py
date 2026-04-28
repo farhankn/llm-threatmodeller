@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from threatcli.evaluation.acse_importer import (
+    _normalize_design_doc,
     extract_ground_truth,
     hydrate_records_from_hf_paths,
     import_acse_records,
@@ -95,3 +96,27 @@ def test_extract_ground_truth_preserves_acse_framework_details() -> None:
     assert categories == {"Information Disclosure", "Tampering"}
     assert all(threat["component"].startswith("aws_s3_bucket.") for threat in threats)
     assert all(any("mitreATT&CK" in reference for reference in threat["references"]) for threat in threats)
+    assert all("frameworks" in threat for threat in threats)
+    assert all("mitreATT&CK" in threat["frameworks"] for threat in threats)
+    assert all(threat.get("cwe") == "CWE-200" for threat in threats)
+
+
+def test_normalize_design_doc_from_diagram_py_creates_summary_sections() -> None:
+    script = """
+from diagrams import Diagram, Edge
+from diagrams.onprem.vcs import Github
+from diagrams.aws.devtools import Codebuild
+
+with Diagram("Example", show=False):
+    github = Github("GitHub Source Repo")
+    codebuild = Codebuild("AWS CodeBuild")
+    github >> Edge(label="code push") >> codebuild
+""".strip()
+
+    doc = _normalize_design_doc(script, source_path="example/diagram.py")
+    assert "Architecture Context (Imported from diagrams-as-code)" in doc
+    assert "## Components" in doc
+    assert "GitHub Source Repo" in doc
+    assert "AWS CodeBuild" in doc
+    assert "## Data Flows" in doc
+    assert "code push" in doc

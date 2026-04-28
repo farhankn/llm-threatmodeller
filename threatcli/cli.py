@@ -459,13 +459,28 @@ def evaluation_run(
     ),
     provider: str = typer.Option("openai", "--provider", help="LLM provider."),
     model: str | None = typer.Option(None, "--model", help="Optional model override."),
-    temperature: float = typer.Option(0.5, "--temperature", help="LLM temperature (0.0-1.0)."),
+    temperature: float = typer.Option(0.0, "--temperature", help="LLM temperature (0.0-1.0)."),
     include_docs: bool = typer.Option(
-        False,
-        "--include-docs",
-        help="Include .md/.txt docs in each fixture with repeated --doc.",
+        True,
+        "--include-docs/--no-include-docs",
+        help="Include .md/.txt docs in each fixture to align with IaC+CRC evaluation mode.",
     ),
     repeats: int = typer.Option(1, "--repeats", min=1, help="Number of repeat runs per scenario."),
+    progress: bool = typer.Option(
+        False,
+        "--progress",
+        help="Stream per-scenario progress to stderr while evaluation is running.",
+    ),
+    debug: bool = typer.Option(
+        False,
+        "--debug",
+        help="Emit debug details (analyze command + failure snippets) to stderr.",
+    ),
+    progress_file: Path | None = typer.Option(
+        None,
+        "--progress-file",
+        help="Optional JSON checkpoint file continuously updated during execution.",
+    ),
     output: Path = typer.Option(
         Path("evaluation/results/latest_run.json"),
         "--output",
@@ -491,6 +506,9 @@ def evaluation_run(
             temperature=temperature,
             include_docs=include_docs,
             repeats=repeats,
+            progress=progress,
+            debug=debug,
+            progress_file=progress_file,
         )
         write_run_result(result, output)
         typer.echo(
@@ -498,6 +516,8 @@ def evaluation_run(
             f"{result['aggregate']['total_scenarios']} scenarios succeeded."
         )
         typer.echo(f"Results written to: {output}")
+        if progress_file is not None:
+            typer.echo(f"Progress checkpoints written to: {progress_file}")
     except (OSError, ValueError, ParseError, LLMError) as exc:
         typer.echo(f"Error: {exc}", err=True)
         raise typer.Exit(code=1) from exc

@@ -75,6 +75,12 @@ def test_compare_computes_metrics() -> None:
     assert result["recall"] == 1.0
     assert result["ddr"] == 1.0
     assert result["hallucination_rate"] == 0.5
+    assert result["stride_tfc_tp"] == 1
+    assert result["stride_tfc_total"] == 1
+    assert result["stride_tfc_recall"] == 1.0
+    assert result["mitre_tfc_tp"] == 0
+    assert result["mitre_tfc_total"] == 0
+    assert result["mitre_tfc_recall"] == 0.0
 
 
 def test_load_llm_output_from_file(tmp_path: Path) -> None:
@@ -133,3 +139,39 @@ def test_compare_fuzzy_component_and_stride_alias_matching() -> None:
     assert result["tp"] == 1
     assert result["fp"] == 0
     assert result["fn"] == 0
+
+
+def test_compare_tracks_mitre_framework_coverage_from_references() -> None:
+    gt = [
+        {
+            "threat_id": "GT-1",
+            "stride_category": "Information Disclosure",
+            "component": "aws_s3_bucket.logs",
+            "description": "x",
+            "discrepancy_flag": False,
+            "references": ["mitreATT&CK: T1530 - Data from Cloud Storage Object"],
+            "frameworks": {"mitreATT&CK": ["T1530 - Data from Cloud Storage Object"]},
+        }
+    ]
+    out = [
+        {
+            "threat_id": "OUT-1",
+            "stride_category": "Information Disclosure",
+            "component": "aws_s3_bucket.logs",
+            "description": "x",
+            "discrepancy_flag": False,
+            "references": ["mitreATT&CK: T1530"],
+        }
+    ]
+    resource_map = {
+        "resources": [{"type": "aws_s3_bucket", "name": "logs", "attributes": {}}],
+        "providers": [],
+        "variables": [],
+        "data_sources": [],
+        "modules": [],
+    }
+
+    result = compare(out, gt, resource_map)
+    assert result["mitre_tfc_tp"] == 1
+    assert result["mitre_tfc_total"] == 1
+    assert result["mitre_tfc_recall"] == 1.0

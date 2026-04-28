@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import sys
 import time
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -274,19 +275,35 @@ def _retry_with_backoff(
 ) -> str:
     """Run a call with exponential retry for 429/5xx and transient transport errors."""
     last_error: Exception | None = None
+    debug_enabled = _llm_debug_enabled()
 
     for attempt in range(max_retries):
+        attempt_number = attempt + 1
         try:
+            if debug_enabled:
+                _llm_debug(f"attempt {attempt_number}/{max_retries}: sending request")
             return fn()
         except Exception as exc:  # noqa: BLE001 - provider SDK errors vary by type
             last_error = exc
-            if not _is_retryable_error(exc) or attempt == max_retries - 1:
+            retryable = _is_retryable_error(exc)
+            if debug_enabled:
+                status = _extract_status_code(exc)
+                _llm_debug(
+                    "attempt "
+                    f"{attempt_number}/{max_retries}: {exc.__class__.__name__} "
+                    f"(status={status}, retryable={retryable}) {_truncate_debug(str(exc))}"
+                )
+            if not retryable or attempt == max_retries - 1:
                 break
             delay = base_delay * (backoff_factor**attempt)
+            if debug_enabled:
+                _llm_debug(f"attempt {attempt_number}/{max_retries}: retrying in {delay:.2f}s")
             time.sleep(delay)
 
     message = f"LLM request failed after {max_retries} attempts"
     if last_error is not None:
+        if debug_enabled:
+            _llm_debug(f"all attempts failed: {_truncate_debug(str(last_error))}")
         raise LLMError(f"{message}: {last_error}") from last_error
     raise LLMError(message)
 
@@ -405,3 +422,17 @@ def _resolve_api_key(*env_names: str) -> str | None:
             return key
 
     return None
+
+
+def _llm_debug_enabled() -> bool:
+    return os.getenv("TM_LLM_DEBUG", "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _llm_debug(message: str) -> None:
+    print(f"[llm-debug] {message}", file=sys.stderr, flush=True)
+
+
+def _truncate_debug(message: str, limit: int = 240) -> str:
+    if len(message) <= limit:
+        return message
+    return message[: limit - 3] + "..."
