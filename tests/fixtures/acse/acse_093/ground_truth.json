@@ -1,42 +1,140 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.aws-lambda-createpastefunction",
+    "description": "Insufficient Object-Level Authorization in S3 Lambda functions are granted broad read/write permissions to the entire S3 bucket rather than being scoped to specific objects they need to access. This could allow an attacker who compromises a Lambda function to access or modify any paste content in the bucket. An attacker who successfully exploits a vulnerability in the GetPaste Lambda function could potentially access all paste content in the S3 bucket, not just the specific paste they are authorized to retrieve.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement S3 object-level permissions using dynamic IAM policies"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_lambda_function.aws-lambda-createpastefunction",
+    "description": "Insufficient Object-Level Authorization in S3 Lambda functions are granted broad read/write permissions to the entire S3 bucket rather than being scoped to specific objects they need to access. This could allow an attacker who compromises a Lambda function to access or modify any paste content in the bucket. An attacker who successfully exploits a vulnerability in the GetPaste Lambda function could potentially access all paste content in the S3 bucket, not just the specific paste they are authorized to retrieve.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement S3 object-level permissions using dynamic IAM policies"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.aws-s3-contentstorebucket",
+    "description": "Insufficient Data Encryption at Rest While S3 and DynamoDB are configured with default encryption, they may not be using customer-managed KMS keys, which provide additional control and audit capabilities. If AWS account credentials are compromised, an attacker could potentially access the data using the default AWS managed keys, whereas CMK would provide an additional layer of control and auditing.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-311",
+      "recommendation: Implement KMS Customer-Managed Keys for S3 and DynamoDB encryption"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.aws-apigateway-textpasteapi",
+    "description": "API Cache Poisoning and Information Disclosure The API cache may not properly differentiate between different users' requests or may cache sensitive information, leading to potential information disclosure between users. An attacker could manipulate cache keys or headers to poison the cache with malicious content or retrieve another user's cached paste data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-524",
+      "recommendation: Implement secure cache key generation and management",
+      "recommendation: Implement cache purging on sensitive operations"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-003-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_api_gateway_rest_api.aws-apigateway-textpasteapi",
+    "description": "API Cache Poisoning and Information Disclosure The API cache may not properly differentiate between different users' requests or may cache sensitive information, leading to potential information disclosure between users. An attacker could manipulate cache keys or headers to poison the cache with malicious content or retrieve another user's cached paste data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-524",
+      "recommendation: Implement secure cache key generation and management",
+      "recommendation: Implement cache purging on sensitive operations"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Denial of Service",
+    "component": "aws_lambda_function.aws-lambda-createpastefunction",
+    "description": "Insufficient Input Validation Leading to DoS Without proper input validation, attackers could submit maliciously crafted paste content or metadata that could consume excessive resources or cause system failures. An attacker submits extremely large paste content or malformed metadata that exhausts Lambda execution time, DynamoDB capacity, or S3 storage quotas.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Denial of Service",
+      "stride: Tampering",
+      "cwe: CWE-20",
+      "recommendation: Implement comprehensive input validation",
+      "recommendation: Implement rate limiting and quotas"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.aws-lambda-createpastefunction",
+    "description": "Insufficient Input Validation Leading to DoS Without proper input validation, attackers could submit maliciously crafted paste content or metadata that could consume excessive resources or cause system failures. An attacker submits extremely large paste content or malformed metadata that exhausts Lambda execution time, DynamoDB capacity, or S3 storage quotas.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Denial of Service",
+      "stride: Tampering",
+      "cwe: CWE-20",
+      "recommendation: Implement comprehensive input validation",
+      "recommendation: Implement rate limiting and quotas"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.aws-apigateway-textpasteapi",
+    "description": "Insecure Direct Object References in API Endpoints API endpoints using paste IDs might not properly verify that the requesting user has permission to access or modify the specified paste. An attacker modifies the pasteId parameter in their request to access or delete another user's paste content.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement proper authorization checks"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_api_gateway_rest_api.aws-apigateway-textpasteapi",
+    "description": "Insecure Direct Object References in API Endpoints API endpoints using paste IDs might not properly verify that the requesting user has permission to access or modify the specified paste. An attacker modifies the pasteId parameter in their request to access or delete another user's paste content.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement proper authorization checks"
+    ]
   }
 ]

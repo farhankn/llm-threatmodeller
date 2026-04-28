@@ -1,58 +1,189 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_iam_role.iam_identity_center",
+    "description": "User Impersonation via Public Endpoint The public endpoint for user authentication may not properly validate user identity tokens or implement sufficient authentication controls, allowing attackers to forge or replay authentication requests. An attacker intercepts authentication requests, analyzes the token structure, and creates forged tokens to impersonate legitimate users.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement multi-factor authentication (MFA) for all user authentications",
+      "recommendation: Implement robust token validation"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_identity_center",
+    "description": "User Impersonation via Public Endpoint The public endpoint for user authentication may not properly validate user identity tokens or implement sufficient authentication controls, allowing attackers to forge or replay authentication requests. An attacker intercepts authentication requests, analyzes the token structure, and creates forged tokens to impersonate legitimate users.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement multi-factor authentication (MFA) for all user authentications",
+      "recommendation: Implement robust token validation"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_iam_role.iam_identity_center",
+    "description": "Privilege Elevation via Token Spoofing If token validation and identity propagation mechanisms are weak, attackers could modify token claims or attributes to gain access to higher-privileged roles. An attacker modifies the group membership claims in their identity token to gain admin privileges in connected AWS accounts.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "mitreATT&CK: T1134 - Access Token Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement proper token signing and validation",
+      "recommendation: Implement least privilege access control"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_identity_center",
+    "description": "Privilege Elevation via Token Spoofing If token validation and identity propagation mechanisms are weak, attackers could modify token claims or attributes to gain access to higher-privileged roles. An attacker modifies the group membership claims in their identity token to gain admin privileges in connected AWS accounts.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "mitreATT&CK: T1134 - Access Token Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement proper token signing and validation",
+      "recommendation: Implement least privilege access control"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.aws_organizations",
+    "description": "Unauthorized Access to AWS Organizations Without proper VPC controls and network segmentation, internal AWS Organizations endpoints might be accessible from the public internet. An attacker discovers and attempts to access AWS Organizations management APIs directly from the internet, bypassing intended access controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Access Control",
+      "cwe: CWE-284",
+      "recommendation: Implement VPC endpoints for AWS Organizations",
+      "recommendation: Implement network segmentation"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Access Control",
+    "component": "aws_resource.aws_organizations",
+    "description": "Unauthorized Access to AWS Organizations Without proper VPC controls and network segmentation, internal AWS Organizations endpoints might be accessible from the public internet. An attacker discovers and attempts to access AWS Organizations management APIs directly from the internet, bypassing intended access controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Access Control",
+      "cwe: CWE-284",
+      "recommendation: Implement VPC endpoints for AWS Organizations",
+      "recommendation: Implement network segmentation"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_iam_role.iam_identity_center",
+    "description": "Identity Synchronization Failure Identity synchronization issues could result in stale or incorrect access permissions when users' roles or group memberships change. A terminated employee retains access to AWS resources due to failed identity synchronization between corporate directory and IAM Identity Center.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A04:2021-Insecure Design",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-287",
+      "recommendation: Implement robust identity synchronization monitoring",
+      "recommendation: Implement periodic access reviews"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_iam_role.iam_identity_center",
+    "description": "Identity Synchronization Failure Identity synchronization issues could result in stale or incorrect access permissions when users' roles or group memberships change. A terminated employee retains access to AWS resources due to failed identity synchronization between corporate directory and IAM Identity Center.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A04:2021-Insecure Design",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-287",
+      "recommendation: Implement robust identity synchronization monitoring",
+      "recommendation: Implement periodic access reviews"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.public_authentication_endpoint",
+    "description": "DDoS Attack on Authentication Endpoint Attackers could generate a large volume of authentication requests to overwhelm the service and prevent legitimate authentication attempts. A distributed botnet sends thousands of authentication requests per second to the endpoint, causing service degradation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement AWS Shield and WAF",
+      "recommendation: Implement rate limiting and throttling"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudtrail",
+    "description": "Insufficient Audit Logging Incomplete logging configuration could create blind spots in audit trails, particularly for IAM Identity Center events. An attacker performs unauthorized actions through IAM Identity Center, but the activities are not logged for later investigation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562.002 - Impair Defenses: Disable Windows Event Logging",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-223",
+      "recommendation: Enable comprehensive CloudTrail logging",
+      "recommendation: Implement log monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.aws_organizations",
+    "description": "Insufficient Permission Boundaries Without proper permission boundaries through RCPs and SCPs, users or roles could gain more access than intended through IAM policy modifications. A compromised admin account in a member account creates overly permissive IAM roles due to missing SCP restrictions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1484 - Domain Policy Modification",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement restrictive SCPs",
+      "recommendation: Implement permission boundaries"
+    ]
   }
 ]

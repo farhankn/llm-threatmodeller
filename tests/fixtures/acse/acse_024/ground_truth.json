@@ -1,42 +1,156 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_lambda_function.lambda_processors",
+    "description": "Insufficient Network Access Controls The current architecture allows direct access to Lambda functions without proper API Gateway controls. Components that should be in private subnets might be accessible from the internet. An attacker could attempt to directly invoke Lambda functions or access internal services by bypassing missing network controls. Without proper rate limiting and API Gateway protection, DoS attacks are also possible.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement API Gateway with proper authentication and authorization",
+      "recommendation: Improve VPC isolation and network controls"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.lambda_processors",
+    "description": "Insufficient Network Access Controls The current architecture allows direct access to Lambda functions without proper API Gateway controls. Components that should be in private subnets might be accessible from the internet. An attacker could attempt to directly invoke Lambda functions or access internal services by bypassing missing network controls. Without proper rate limiting and API Gateway protection, DoS attacks are also possible.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement API Gateway with proper authentication and authorization",
+      "recommendation: Improve VPC isolation and network controls"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.neptune_graph_database",
+    "description": "Insufficient Secrets Management and Key Rotation Credentials and secrets are not properly managed through AWS Secrets Manager and lack automatic rotation policies. This increases the risk of credential exposure and makes it harder to maintain security hygiene. If credentials are compromised, they could remain valid indefinitely without rotation. Static credentials in configuration files or environment variables could be exposed through various attack vectors.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1555 - Credentials from Password Stores",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Implement AWS Secrets Manager for all sensitive credentials",
+      "recommendation: Enable key rotation for KMS keys"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_db_instance.neptune_graph_database",
+    "description": "Insufficient Secrets Management and Key Rotation Credentials and secrets are not properly managed through AWS Secrets Manager and lack automatic rotation policies. This increases the risk of credential exposure and makes it harder to maintain security hygiene. If credentials are compromised, they could remain valid indefinitely without rotation. Static credentials in configuration files or environment variables could be exposed through various attack vectors.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1555 - Credentials from Password Stores",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Implement AWS Secrets Manager for all sensitive credentials",
+      "recommendation: Enable key rotation for KMS keys"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.kinesis_data_stream",
+    "description": "Inadequate Data Encryption in Transit Data transmitted between services may not be properly encrypted, making it vulnerable to interception and manipulation. The lack of proper certificate management increases the risk of man-in-the-middle attacks. An attacker with network access could potentially intercept sensitive data being transmitted between components, especially in cross-AZ or cross-region communication.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement ACM and TLS for all service communications",
+      "recommendation: Enable encryption in transit for all AWS services"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.kinesis_data_stream",
+    "description": "Inadequate Data Encryption in Transit Data transmitted between services may not be properly encrypted, making it vulnerable to interception and manipulation. The lack of proper certificate management increases the risk of man-in-the-middle attacks. An attacker with network access could potentially intercept sensitive data being transmitted between components, especially in cross-AZ or cross-region communication.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement ACM and TLS for all service communications",
+      "recommendation: Enable encryption in transit for all AWS services"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_roles",
+    "description": "Insufficient IAM Access Controls and Governance The current IAM configuration may grant overly permissive access to resources. Lack of proper role separation and group-based access control increases the risk of unauthorized access. A compromised component with overly permissive IAM roles could be used to access or modify resources beyond its intended scope.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Spoofing",
+      "cwe: CWE-269",
+      "recommendation: Implement fine-grained IAM roles and policies",
+      "recommendation: Implement IAM groups and permission boundaries"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Spoofing",
+    "component": "aws_iam_role.iam_roles",
+    "description": "Insufficient IAM Access Controls and Governance The current IAM configuration may grant overly permissive access to resources. Lack of proper role separation and group-based access control increases the risk of unauthorized access. A compromised component with overly permissive IAM roles could be used to access or modify resources beyond its intended scope.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Spoofing",
+      "cwe: CWE-269",
+      "recommendation: Implement fine-grained IAM roles and policies",
+      "recommendation: Implement IAM groups and permission boundaries"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "Insufficient Rate Limiting and DoS Protection Without proper rate limiting and DoS protection, attackers could overwhelm services with excessive requests, leading to service degradation or failure. An attacker could send a high volume of requests to Lambda functions or the Kinesis stream, consuming resources and potentially causing service disruption.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-770",
+      "recommendation: Implement comprehensive rate limiting",
+      "recommendation: Implement DoS protection"
+    ]
   }
 ]

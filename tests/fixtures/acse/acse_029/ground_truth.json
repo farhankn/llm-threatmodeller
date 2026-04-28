@@ -1,50 +1,276 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.local_gateway_lgw",
+    "description": "Insecure Route Table Configuration in Outposts Local Gateway Misconfigured route tables in the Local Gateway could allow unauthorized traffic flows between different network segments or to/from external networks. This could bypass intended network isolation and security controls. An attacker who gains access to one subnet could leverage overly permissive routes to move laterally to other subnets or access the EKS control plane, potentially compromising the entire cluster.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement least-privilege route table configurations"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.local_gateway_lgw",
+    "description": "Insecure Route Table Configuration in Outposts Local Gateway Misconfigured route tables in the Local Gateway could allow unauthorized traffic flows between different network segments or to/from external networks. This could bypass intended network isolation and security controls. An attacker who gains access to one subnet could leverage overly permissive routes to move laterally to other subnets or access the EKS control plane, potentially compromising the entire cluster.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement least-privilege route table configurations"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.local_gateway_lgw",
+    "description": "Insecure Route Table Configuration in Outposts Local Gateway Misconfigured route tables in the Local Gateway could allow unauthorized traffic flows between different network segments or to/from external networks. This could bypass intended network isolation and security controls. An attacker who gains access to one subnet could leverage overly permissive routes to move laterally to other subnets or access the EKS control plane, potentially compromising the entire cluster.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement least-privilege route table configurations"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Lateral Movement",
+    "component": "aws_eks_cluster.eks_worker_nodes",
+    "description": "Insufficient Worker Node Isolation Without proper network policies and security group configurations, worker nodes can freely communicate with each other, potentially allowing compromised nodes to affect others. If an attacker compromises a pod or node, they could use the lack of isolation to spread laterally across the cluster, potentially accessing sensitive workloads on other nodes.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Lateral Movement",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-653",
+      "recommendation: Implement strict node isolation using security groups and network policies"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_eks_cluster.eks_worker_nodes",
+    "description": "Insufficient Worker Node Isolation Without proper network policies and security group configurations, worker nodes can freely communicate with each other, potentially allowing compromised nodes to affect others. If an attacker compromises a pod or node, they could use the lack of isolation to spread laterally across the cluster, potentially accessing sensitive workloads on other nodes.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Lateral Movement",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-653",
+      "recommendation: Implement strict node isolation using security groups and network policies"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
+    "threat_id": "THREAT-002-3",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_eks_cluster.eks_worker_nodes",
+    "description": "Insufficient Worker Node Isolation Without proper network policies and security group configurations, worker nodes can freely communicate with each other, potentially allowing compromised nodes to affect others. If an attacker compromises a pod or node, they could use the lack of isolation to spread laterally across the cluster, potentially accessing sensitive workloads on other nodes.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Lateral Movement",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-653",
+      "recommendation: Implement strict node isolation using security groups and network policies"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_eks_cluster.eks_pods",
+    "description": "Inadequate Pod Identity Management Without proper Pod Identity configuration, pods might run with excessive permissions or be able to assume roles they shouldn't have access to. An attacker who compromises a pod could leverage overly permissive IAM roles to access AWS services or resources beyond what the pod should be able to access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Spoofing",
+      "cwe: CWE-269",
+      "recommendation: Implement proper Pod Identity configuration with least privilege"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Spoofing",
+    "component": "aws_eks_cluster.eks_pods",
+    "description": "Inadequate Pod Identity Management Without proper Pod Identity configuration, pods might run with excessive permissions or be able to assume roles they shouldn't have access to. An attacker who compromises a pod could leverage overly permissive IAM roles to access AWS services or resources beyond what the pod should be able to access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Spoofing",
+      "cwe: CWE-269",
+      "recommendation: Implement proper Pod Identity configuration with least privilege"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc",
+    "description": "Improper VPC Integration with Outposts Rack Improper VPC configuration could expose the Outposts rack to unauthorized networks or allow bypass of network security controls. An attacker could exploit misconfigured VPC settings to gain unauthorized access to resources in the Outposts rack or bypass network security controls.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-668",
+      "recommendation: Implement secure VPC configuration for Outposts"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_vpc.vpc",
+    "description": "Improper VPC Integration with Outposts Rack Improper VPC configuration could expose the Outposts rack to unauthorized networks or allow bypass of network security controls. An attacker could exploit misconfigured VPC settings to gain unauthorized access to resources in the Outposts rack or bypass network security controls.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-668",
+      "recommendation: Implement secure VPC configuration for Outposts"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.direct_connect",
+    "description": "Insecure Direct Connect Configuration Improperly configured Direct Connect links could allow unauthorized traffic flows or expose sensitive data during transit. An attacker could exploit misconfigured Direct Connect settings to intercept traffic or gain unauthorized access to resources across the connection.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1199 - Trusted Relationship",
+      "mitreATT&CK: T1048 - Exfiltration Over Alternative Protocol",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Implement secure Direct Connect configuration"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.direct_connect",
+    "description": "Insecure Direct Connect Configuration Improperly configured Direct Connect links could allow unauthorized traffic flows or expose sensitive data during transit. An attacker could exploit misconfigured Direct Connect settings to intercept traffic or gain unauthorized access to resources across the connection.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1199 - Trusted Relationship",
+      "mitreATT&CK: T1048 - Exfiltration Over Alternative Protocol",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Implement secure Direct Connect configuration"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-3",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.direct_connect",
+    "description": "Insecure Direct Connect Configuration Improperly configured Direct Connect links could allow unauthorized traffic flows or expose sensitive data during transit. An attacker could exploit misconfigured Direct Connect settings to intercept traffic or gain unauthorized access to resources across the connection.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1199 - Trusted Relationship",
+      "mitreATT&CK: T1048 - Exfiltration Over Alternative Protocol",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Implement secure Direct Connect configuration"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Spoofing",
+    "component": "aws_eks_cluster.eks_control_plane",
+    "description": "Insufficient Control Plane Security Improper security group rules or network access controls could allow unauthorized access to the EKS control plane API endpoint. An attacker could exploit loose security group rules to gain unauthorized access to the EKS API server and perform unauthorized operations on the cluster.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-306",
+      "recommendation: Implement strict control plane access controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_eks_cluster.eks_control_plane",
+    "description": "Insufficient Control Plane Security Improper security group rules or network access controls could allow unauthorized access to the EKS control plane API endpoint. An attacker could exploit loose security group rules to gain unauthorized access to the EKS API server and perform unauthorized operations on the cluster.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-306",
+      "recommendation: Implement strict control plane access controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-3",
+    "stride_category": "Information Disclosure",
+    "component": "aws_eks_cluster.eks_control_plane",
+    "description": "Insufficient Control Plane Security Improper security group rules or network access controls could allow unauthorized access to the EKS control plane API endpoint. An attacker could exploit loose security group rules to gain unauthorized access to the EKS API server and perform unauthorized operations on the cluster.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-306",
+      "recommendation: Implement strict control plane access controls"
+    ]
   }
 ]

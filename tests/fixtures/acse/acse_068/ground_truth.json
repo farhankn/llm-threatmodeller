@@ -1,50 +1,208 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.apigateway_websocket_api",
+    "description": "Unauthenticated WebSocket API Access The WebSocket $connect route handler does not implement authentication checks. Any client can establish a connection and begin sending/receiving updates. An attacker can connect to the WebSocket API endpoint without authentication and potentially access or modify collaborative documents.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement AWS IAM authentication for WebSocket connections",
+      "recommendation: Implement connection validation in the $connect route"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.apigateway_websocket_api",
+    "description": "Unauthenticated WebSocket API Access The WebSocket $connect route handler does not implement authentication checks. Any client can establish a connection and begin sending/receiving updates. An attacker can connect to the WebSocket API endpoint without authentication and potentially access or modify collaborative documents.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement AWS IAM authentication for WebSocket connections",
+      "recommendation: Implement connection validation in the $connect route"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.apigateway_websocket_api",
+    "description": "Unauthenticated WebSocket API Access The WebSocket $connect route handler does not implement authentication checks. Any client can establish a connection and begin sending/receiving updates. An attacker can connect to the WebSocket API endpoint without authentication and potentially access or modify collaborative documents.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement AWS IAM authentication for WebSocket connections",
+      "recommendation: Implement connection validation in the $connect route"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_lambda_function.synchandlerlambda",
+    "description": "Insufficient Access Control for Document Operations The current implementation lacks document-level access control checks in the sync-handler.ts and state-handler.ts Lambda functions. DynamoDB and S3 access is controlled only at the service level, not the document level. An authenticated user could modify their requests to access or modify documents owned by other users by manipulating document IDs or connection parameters.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement document-level access control",
+      "recommendation: Implement S3 bucket policies for attachments"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.synchandlerlambda",
+    "description": "Insufficient Access Control for Document Operations The current implementation lacks document-level access control checks in the sync-handler.ts and state-handler.ts Lambda functions. DynamoDB and S3 access is controlled only at the service level, not the document level. An authenticated user could modify their requests to access or modify documents owned by other users by manipulating document IDs or connection parameters.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement document-level access control",
+      "recommendation: Implement S3 bucket policies for attachments"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.synchandlerlambda",
+    "description": "Insufficient Access Control for Document Operations The current implementation lacks document-level access control checks in the sync-handler.ts and state-handler.ts Lambda functions. DynamoDB and S3 access is controlled only at the service level, not the document level. An authenticated user could modify their requests to access or modify documents owned by other users by manipulating document IDs or connection parameters.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement document-level access control",
+      "recommendation: Implement S3 bucket policies for attachments"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.apigateway_websocket_api",
+    "description": "DDoS Vulnerability in Real-time Communication The APIs lack proper rate limiting and connection throttling. A single client can establish multiple connections or send numerous requests, potentially exhausting system resources. An attacker could create multiple WebSocket connections or GraphQL subscriptions, overwhelming the system's capacity to handle legitimate requests.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement AWS WAF with rate limiting",
+      "recommendation: Implement connection limits and throttling"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.documentstable",
+    "description": "Insufficient Data Encryption While the CDK code shows encryption enabled for some services, it uses AWS managed keys instead of customer managed keys (CMK) from KMS, potentially limiting control over key rotation and access. An attacker with access to the storage layer could potentially access sensitive document data if encryption is compromised or improperly configured.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-311",
+      "recommendation: Implement KMS encryption for all storage services",
+      "recommendation: Implement encryption in transit"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_api_gateway_rest_api.apigateway_websocket_api",
+    "description": "Injection Vulnerabilities in Real-time Updates The Lambda functions process JSON data from WebSocket messages and GraphQL operations without proper validation or sanitization, potentially allowing injection of malicious content. An attacker could send specially crafted JSON payloads that exploit parsing vulnerabilities or inject malicious content into stored documents.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-74",
+      "recommendation: Implement comprehensive input validation",
+      "recommendation: Implement AWS WAF rules"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.apigateway_websocket_api",
+    "description": "Injection Vulnerabilities in Real-time Updates The Lambda functions process JSON data from WebSocket messages and GraphQL operations without proper validation or sanitization, potentially allowing injection of malicious content. An attacker could send specially crafted JSON payloads that exploit parsing vulnerabilities or inject malicious content into stored documents.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-74",
+      "recommendation: Implement comprehensive input validation",
+      "recommendation: Implement AWS WAF rules"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.conflictqueue",
+    "description": "Conflict Resolution System Failure The conflict resolution system may fail to properly handle race conditions or concurrent updates, potentially leading to lost updates or inconsistent document state. Multiple users making simultaneous updates could trigger race conditions that the conflict resolution system fails to handle, resulting in data loss or corruption.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement robust conflict resolution logic",
+      "recommendation: Improve queue handling and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.conflictqueue",
+    "description": "Conflict Resolution System Failure The conflict resolution system may fail to properly handle race conditions or concurrent updates, potentially leading to lost updates or inconsistent document state. Multiple users making simultaneous updates could trigger race conditions that the conflict resolution system fails to handle, resulting in data loss or corruption.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement robust conflict resolution logic",
+      "recommendation: Improve queue handling and monitoring"
+    ]
   }
 ]

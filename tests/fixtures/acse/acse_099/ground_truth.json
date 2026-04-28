@@ -1,66 +1,197 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.rawdatastorage",
+    "description": "Unauthorized Access to Raw Weather Data Storage Misconfigured S3 bucket policies, IAM roles, or encryption settings could allow unauthorized access to weather data. While the CDK shows bucket encryption and blocking public access, misconfiguration during deployment or later changes could expose data. An attacker could exploit overly permissive IAM roles or misconfigured bucket policies to access or modify weather data, potentially affecting forecast accuracy or data integrity.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies and ensure proper encryption"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.rawdatastorage",
+    "description": "Unauthorized Access to Raw Weather Data Storage Misconfigured S3 bucket policies, IAM roles, or encryption settings could allow unauthorized access to weather data. While the CDK shows bucket encryption and blocking public access, misconfiguration during deployment or later changes could expose data. An attacker could exploit overly permissive IAM roles or misconfigured bucket policies to access or modify weather data, potentially affecting forecast accuracy or data integrity.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies and ensure proper encryption"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.dataprocessor",
+    "description": "Lambda Function Privilege Escalation Lambda functions are assigned IAM roles that determine their permissions. Overly permissive roles could allow functions to access unintended AWS resources or perform unauthorized actions. If a Lambda function is compromised through code injection or other means, an attacker could leverage overly permissive IAM roles to access other AWS services or data stores.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement least privilege access for Lambda functions"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.elasticache",
+    "description": "Cache Poisoning in Forecast Cache Cache poisoning occurs when an attacker manages to inject malicious data into the cache, which is then served to other users. This could happen through direct cache manipulation or by exploiting the cache key generation process. An attacker could potentially inject malicious forecast data into the cache, causing incorrect weather forecasts to be served to users or causing the cache to become invalidated, leading to performance issues.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-346",
+      "recommendation: Implement cache poisoning protections"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.elasticache",
+    "description": "Cache Poisoning in Forecast Cache Cache poisoning occurs when an attacker manages to inject malicious data into the cache, which is then served to other users. This could happen through direct cache manipulation or by exploiting the cache key generation process. An attacker could potentially inject malicious forecast data into the cache, causing incorrect weather forecasts to be served to users or causing the cache to become invalidated, leading to performance issues.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-346",
+      "recommendation: Implement cache poisoning protections"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
+    "threat_id": "THREAT-004-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.dataprocessor",
+    "description": "Insufficient Data Validation in Processing Pipeline The system processes weather data through multiple stages: ingestion via API/Firehose, storage in S3, and processing via Lambda. Lack of proper validation at each stage could allow malicious data to enter the system. An attacker could submit malformed or malicious weather data that, if not properly validated, could cause processing errors, Lambda crashes, or corrupt the forecast database.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565.001 - Stored Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-20",
+      "recommendation: Implement comprehensive data validation"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.dataprocessor",
+    "description": "Insufficient Data Validation in Processing Pipeline The system processes weather data through multiple stages: ingestion via API/Firehose, storage in S3, and processing via Lambda. Lack of proper validation at each stage could allow malicious data to enter the system. An attacker could submit malformed or malicious weather data that, if not properly validated, could cause processing errors, Lambda crashes, or corrupt the forecast database.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565.001 - Stored Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-20",
+      "recommendation: Implement comprehensive data validation"
+    ]
   },
   {
-    "threat_id": "ACSE-008",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "DDoS Attack on API and CDN Attackers could overwhelm the API Gateway or CloudFront distribution with a large volume of requests, potentially affecting service availability for legitimate users. A distributed botnet could be used to send a massive number of requests to the API endpoints, potentially exhausting resources or causing throttling.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Enhance DDoS protection measures"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "Insecure Data Transmission Without proper encryption in transit, data moving between components could be intercepted by attackers who have gained access to the network. An attacker with access to the VPC network traffic could potentially intercept unencrypted data being transmitted between Lambda functions and ElastiCache or between other components.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Ensure end-to-end encryption for all data in transit"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.eventbridge",
+    "description": "Event Injection Through EventBridge If event patterns and validation are not properly configured, attackers could potentially inject malicious events that trigger Lambda functions or other targets. An attacker with access to EventBridge could inject malicious events that trigger the forecast generator Lambda function with unexpected parameters.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-74",
+      "recommendation: Implement proper event validation and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.eventbridge",
+    "description": "Event Injection Through EventBridge If event patterns and validation are not properly configured, attackers could potentially inject malicious events that trigger Lambda functions or other targets. An attacker with access to EventBridge could inject malicious events that trigger the forecast generator Lambda function with unexpected parameters.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-74",
+      "recommendation: Implement proper event validation and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-008-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.kinesisdataanalytics",
+    "description": "Kinesis Data Analytics Application Manipulation The Kinesis Data Analytics application processes real-time weather data. If input validation or application security controls are insufficient, the analysis could be manipulated. An attacker could potentially inject malicious data into the Kinesis stream or manipulate the analytics application code to produce incorrect analysis results.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-915",
+      "recommendation: Secure Kinesis Data Analytics application"
+    ]
+  },
+  {
+    "threat_id": "THREAT-008-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.kinesisdataanalytics",
+    "description": "Kinesis Data Analytics Application Manipulation The Kinesis Data Analytics application processes real-time weather data. If input validation or application security controls are insufficient, the analysis could be manipulated. An attacker could potentially inject malicious data into the Kinesis stream or manipulate the analytics application code to produce incorrect analysis results.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-915",
+      "recommendation: Secure Kinesis Data Analytics application"
+    ]
   }
 ]

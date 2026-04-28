@@ -1,42 +1,156 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-001",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
     "description": "An attacker could send abnormally large or malformed voice input streams through the API Gateway, potentially overwhelming the system's processing capacity or causing the Lambda functions to crash.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement request size limits and rate limiting at API Gateway",
+      "recommendation: Add input validation in Lambda functions",
+      "recommendation: Configure Kinesis Data Streams scaling and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.lambda_functions",
     "description": "An attacker could exploit vulnerabilities in the Lambda functions to gain unauthorized access to sensitive data and AWS services.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1578 - Modify Cloud Compute Infrastructure",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement least privilege IAM permissions",
+      "recommendation: Enhance Lambda security configurations",
+      "recommendation: Implement security scanning in CI/CD pipeline"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "An attacker could exploit vulnerabilities in the Lambda functions to gain unauthorized access to sensitive data and AWS services.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1578 - Modify Cloud Compute Infrastructure",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement least privilege IAM permissions",
+      "recommendation: Enhance Lambda security configurations",
+      "recommendation: Implement security scanning in CI/CD pipeline"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.cognito_user_pool",
     "description": "An attacker could compromise user accounts through credential brute-forcing, weak password policies, or authentication bypass attempts.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1110 - Brute Force",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-307",
+      "recommendation: Enhance Cognito password policies and MFA",
+      "recommendation: Implement brute force protection",
+      "recommendation: Enable advanced security features"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cognito_user_pool",
+    "description": "An attacker could compromise user accounts through credential brute-forcing, weak password policies, or authentication bypass attempts.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1110 - Brute Force",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-307",
+      "recommendation: Enhance Cognito password policies and MFA",
+      "recommendation: Implement brute force protection",
+      "recommendation: Enable advanced security features"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.transcribe",
     "description": "Improper configuration of cross-account access for AI/ML services could lead to unauthorized data access or resource manipulation.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Review and restrict cross-account access",
+      "recommendation: Implement strict resource policies",
+      "recommendation: Monitor cross-account activity"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.transcribe",
+    "description": "Improper configuration of cross-account access for AI/ML services could lead to unauthorized data access or resource manipulation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Review and restrict cross-account access",
+      "recommendation: Implement strict resource policies",
+      "recommendation: Monitor cross-account activity"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_resource.kinesis_data_streams",
     "description": "An attacker could attempt to manipulate or replace Kinesis streams to intercept or modify voice processing data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-345",
+      "recommendation: Implement strict stream access controls",
+      "recommendation: Enable enhanced monitoring",
+      "recommendation: Implement stream validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.kinesis_data_streams",
+    "description": "An attacker could attempt to manipulate or replace Kinesis streams to intercept or modify voice processing data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-345",
+      "recommendation: Implement strict stream access controls",
+      "recommendation: Enable enhanced monitoring",
+      "recommendation: Implement stream validation"
+    ]
   }
 ]

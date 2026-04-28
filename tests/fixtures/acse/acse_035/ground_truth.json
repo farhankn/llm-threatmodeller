@@ -1,50 +1,252 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Unauthorized Access to Game Analytics Data via API Gateway Attackers might attempt to forge Cognito tokens, exploit token validation bugs, or use stolen credentials to gain unauthorized access to the API endpoints. An attacker obtains valid credentials through phishing or token theft, then uses these to submit falsified game analytics data that could skew business metrics or game balance decisions.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement mutual TLS (mTLS) authentication for API Gateway endpoints",
+      "recommendation: Enhance Cognito user pool security settings"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Unauthorized Access to Game Analytics Data via API Gateway Attackers might attempt to forge Cognito tokens, exploit token validation bugs, or use stolen credentials to gain unauthorized access to the API endpoints. An attacker obtains valid credentials through phishing or token theft, then uses these to submit falsified game analytics data that could skew business metrics or game balance decisions.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement mutual TLS (mTLS) authentication for API Gateway endpoints",
+      "recommendation: Enhance Cognito user pool security settings"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.raw_data_s3_bucket",
+    "description": "Data Exposure in S3 Buckets Misconfigured bucket policies, overly permissive IAM roles, or accidentally disabled block public access settings could expose sensitive game analytics data. An attacker discovers a misconfigured S3 bucket policy that allows listing of objects, downloads sensitive game analytics data, and uses it for competitive analysis or to expose player behavior patterns.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Implement data anonymization layer",
+      "recommendation: Enhance S3 bucket security configurations"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_s3_bucket.raw_data_s3_bucket",
+    "description": "Data Exposure in S3 Buckets Misconfigured bucket policies, overly permissive IAM roles, or accidentally disabled block public access settings could expose sensitive game analytics data. An attacker discovers a misconfigured S3 bucket policy that allows listing of objects, downloads sensitive game analytics data, and uses it for competitive analysis or to expose player behavior patterns.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Implement data anonymization layer",
+      "recommendation: Enhance S3 bucket security configurations"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.kinesis_data_streams",
+    "description": "Kinesis Stream Data Interception Insufficient encryption of data in transit or overly permissive IAM policies could allow unauthorized access to real-time game analytics data streams. An attacker with access to the AWS network infrastructure could potentially intercept or modify game analytics data as it flows between services.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-319",
+      "recommendation: Enable encryption for all Kinesis streams",
+      "recommendation: Implement strict IAM policies for Kinesis access"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
+    "threat_id": "THREAT-003-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.kinesis_data_streams",
+    "description": "Kinesis Stream Data Interception Insufficient encryption of data in transit or overly permissive IAM policies could allow unauthorized access to real-time game analytics data streams. An attacker with access to the AWS network infrastructure could potentially intercept or modify game analytics data as it flows between services.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-319",
+      "recommendation: Enable encryption for all Kinesis streams",
+      "recommendation: Implement strict IAM policies for Kinesis access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.kinesis_data_streams",
+    "description": "Kinesis Stream Data Interception Insufficient encryption of data in transit or overly permissive IAM policies could allow unauthorized access to real-time game analytics data streams. An attacker with access to the AWS network infrastructure could potentially intercept or modify game analytics data as it flows between services.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-319",
+      "recommendation: Enable encryption for all Kinesis streams",
+      "recommendation: Implement strict IAM policies for Kinesis access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.emr_cluster",
+    "description": "EMR Cluster Security Compromise Attackers could exploit vulnerabilities in EMR applications, misconfigured security groups, or weak SSH access controls to gain unauthorized access to the cluster. An attacker gains access to the EMR cluster through a misconfigured security group, then uses this access to manipulate data processing jobs or access sensitive data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-732",
+      "recommendation: Implement comprehensive EMR security controls",
+      "recommendation: Enhance EMR monitoring and logging"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.emr_cluster",
+    "description": "EMR Cluster Security Compromise Attackers could exploit vulnerabilities in EMR applications, misconfigured security groups, or weak SSH access controls to gain unauthorized access to the cluster. An attacker gains access to the EMR cluster through a misconfigured security group, then uses this access to manipulate data processing jobs or access sensitive data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-732",
+      "recommendation: Implement comprehensive EMR security controls",
+      "recommendation: Enhance EMR monitoring and logging"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_db_instance.dynamodb_table",
+    "description": "DynamoDB Game State Manipulation Attackers could exploit overly permissive IAM policies or vulnerabilities in the processing Lambda to manipulate game state data in DynamoDB. An attacker compromises the processing Lambda function and uses its permissions to modify game state data, potentially affecting game balance or player progress.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict access controls for DynamoDB",
+      "recommendation: Enable advanced DynamoDB security features"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb_table",
+    "description": "DynamoDB Game State Manipulation Attackers could exploit overly permissive IAM policies or vulnerabilities in the processing Lambda to manipulate game state data in DynamoDB. An attacker compromises the processing Lambda function and uses its permissions to modify game state data, potentially affecting game balance or player progress.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict access controls for DynamoDB",
+      "recommendation: Enable advanced DynamoDB security features"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_db_instance.dynamodb_table",
+    "description": "DynamoDB Game State Manipulation Attackers could exploit overly permissive IAM policies or vulnerabilities in the processing Lambda to manipulate game state data in DynamoDB. An attacker compromises the processing Lambda function and uses its permissions to modify game state data, potentially affecting game balance or player progress.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict access controls for DynamoDB",
+      "recommendation: Enable advanced DynamoDB security features"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.athena",
+    "description": "Analytics Data Privacy Breach Insufficient data anonymization or access controls in analytics systems could expose sensitive player behavior patterns and personal information. An analyst with QuickSight access exports detailed player behavior data containing personally identifiable information, leading to privacy violations.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Information Disclosure",
+      "stride: Repudiation",
+      "cwe: CWE-359",
+      "recommendation: Implement comprehensive data anonymization",
+      "recommendation: Enhance analytics access controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.athena",
+    "description": "Analytics Data Privacy Breach Insufficient data anonymization or access controls in analytics systems could expose sensitive player behavior patterns and personal information. An analyst with QuickSight access exports detailed player behavior data containing personally identifiable information, leading to privacy violations.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Information Disclosure",
+      "stride: Repudiation",
+      "cwe: CWE-359",
+      "recommendation: Implement comprehensive data anonymization",
+      "recommendation: Enhance analytics access controls"
+    ]
   }
 ]

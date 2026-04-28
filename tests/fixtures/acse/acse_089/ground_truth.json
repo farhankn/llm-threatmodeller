@@ -1,42 +1,151 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway_websocket",
+    "description": "Insufficient Authentication and Authorization Controls The current implementation shows gaps in authentication mechanisms, particularly in the WebSocket API and service-to-service communication. While some AWS services have basic authentication (like MSK with SASL/SCRAM), there's no comprehensive authentication strategy across all components. An attacker could exploit unauthenticated WebSocket endpoints to connect to the betting system, potentially manipulating odds or placing unauthorized bets. Additionally, if they gain access to one service, the lack of proper service-to-service authentication could allow lateral movement.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement comprehensive authentication for WebSocket connections",
+      "recommendation: Enhance service-to-service authentication",
+      "recommendation: Implement fine-grained authorization"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway_websocket",
+    "description": "Insufficient Authentication and Authorization Controls The current implementation shows gaps in authentication mechanisms, particularly in the WebSocket API and service-to-service communication. While some AWS services have basic authentication (like MSK with SASL/SCRAM), there's no comprehensive authentication strategy across all components. An attacker could exploit unauthenticated WebSocket endpoints to connect to the betting system, potentially manipulating odds or placing unauthorized bets. Additionally, if they gain access to one service, the lack of proper service-to-service authentication could allow lateral movement.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement comprehensive authentication for WebSocket connections",
+      "recommendation: Enhance service-to-service authentication",
+      "recommendation: Implement fine-grained authorization"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002",
+    "stride_category": "Denial of Service",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Distributed Denial of Service (DDoS) Vulnerability The current WAF configuration includes a basic rate-limiting rule of 1000 requests per 5 minutes per IP. This may not be sufficient for a sports betting platform where legitimate traffic spikes can occur during major events. Attackers could coordinate a DDoS attack using multiple source IPs, each staying under the rate limit but collectively overwhelming the system. WebSocket connections are particularly vulnerable as they maintain long-lived connections.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Enhance DDoS protection",
+      "recommendation: Implement WebSocket connection management",
+      "recommendation: Improve infrastructure resilience"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_eks_cluster.eks_cluster",
+    "description": "Kubernetes API Server Exposure The EKS cluster is configured with endpointAccess: eks.EndpointAccess.PUBLIC_AND_PRIVATE, allowing the Kubernetes API server to be accessed from the internet. An attacker could attempt to exploit the public endpoint through brute force attacks, stolen credentials, or by exploiting vulnerabilities in the Kubernetes API server.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Restrict EKS API server access",
+      "recommendation: Enhance EKS security controls",
+      "recommendation: Implement additional monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-003-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_eks_cluster.eks_cluster",
+    "description": "Kubernetes API Server Exposure The EKS cluster is configured with endpointAccess: eks.EndpointAccess.PUBLIC_AND_PRIVATE, allowing the Kubernetes API server to be accessed from the internet. An attacker could attempt to exploit the public endpoint through brute force attacks, stolen credentials, or by exploiting vulnerabilities in the Kubernetes API server.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Restrict EKS API server access",
+      "recommendation: Enhance EKS security controls",
+      "recommendation: Implement additional monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_eks_cluster.eks_cluster",
+    "description": "Kubernetes API Server Exposure The EKS cluster is configured with endpointAccess: eks.EndpointAccess.PUBLIC_AND_PRIVATE, allowing the Kubernetes API server to be accessed from the internet. An attacker could attempt to exploit the public endpoint through brute force attacks, stolen credentials, or by exploiting vulnerabilities in the Kubernetes API server.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Restrict EKS API server access",
+      "recommendation: Enhance EKS security controls",
+      "recommendation: Implement additional monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.nat_gateway",
+    "description": "High Availability and Resilience Risks The architecture uses a single NAT Gateway and lacks cross-zone load balancing, creating availability risks. The CDK code shows natGateways: 1 in the VPC configuration. A failure in the single NAT Gateway would prevent all outbound internet access from private subnets. Without cross-zone load balancing, zone failures could impact service availability.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-910",
+      "recommendation: Implement high availability for NAT Gateways",
+      "recommendation: Enable cross-zone load balancing",
+      "recommendation: Enhance overall system resilience"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc",
+    "description": "Data Exfiltration Risk Due to Network Architecture The architecture lacks a Transit Gateway for proper network segmentation and monitoring. Direct internet access through NAT Gateway without proper monitoring could allow undetected data exfiltration. An attacker who gains access to the EKS cluster could exfiltrate sensitive betting data through the NAT Gateway, or exploit cross-VPC communication weaknesses to access resources in other VPCs.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1048 - Exfiltration Over Alternative Protocol",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Implement AWS Transit Gateway",
+      "recommendation: Enhance network monitoring",
+      "recommendation: Implement data protection controls"
+    ]
   }
 ]

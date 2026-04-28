@@ -1,42 +1,164 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Insecure Data Transmission Due to Missing TLS Without proper TLS configuration, data transmitted between services could be intercepted. While CloudFront enforces HTTPS, internal service communication might not be properly encrypted. An attacker with network access could perform man-in-the-middle attacks between services, particularly in the VPC where Lambda functions communicate with ElastiCache and DynamoDB.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement ACM certificates for all endpoints",
+      "recommendation: Enable TLS for ElastiCache Redis"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Insecure Data Transmission Due to Missing TLS Without proper TLS configuration, data transmitted between services could be intercepted. While CloudFront enforces HTTPS, internal service communication might not be properly encrypted. An attacker with network access could perform man-in-the-middle attacks between services, particularly in the VPC where Lambda functions communicate with ElastiCache and DynamoDB.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement ACM certificates for all endpoints",
+      "recommendation: Enable TLS for ElastiCache Redis"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.boardmanagementlambda",
+    "description": "Cross-Tenant Data Leakage in Board/Card Management Insufficient tenant isolation in data access patterns could lead to data leakage between different organizations or users. A malicious user could attempt to access cards from other organizations by manipulating request parameters or exploiting caching mechanisms.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement tenant isolation in DynamoDB",
+      "recommendation: Enforce tenant context in Lambda functions"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_lambda_function.boardmanagementlambda",
+    "description": "Cross-Tenant Data Leakage in Board/Card Management Insufficient tenant isolation in data access patterns could lead to data leakage between different organizations or users. A malicious user could attempt to access cards from other organizations by manipulating request parameters or exploiting caching mechanisms.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement tenant isolation in DynamoDB",
+      "recommendation: Enforce tenant context in Lambda functions"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.elasticache_redis",
+    "description": "Session Cache Key Collisions Improper session key generation or management in Redis cache could lead to key collisions, allowing one user to access another's session data. An attacker could craft specific session keys that collide with other users' sessions, potentially gaining unauthorized access.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-664",
+      "recommendation: Implement secure session key generation",
+      "recommendation: Set appropriate TTL for cached sessions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.elasticache_redis",
+    "description": "Session Cache Key Collisions Improper session key generation or management in Redis cache could lead to key collisions, allowing one user to access another's session data. An attacker could craft specific session keys that collide with other users' sessions, potentially gaining unauthorized access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-664",
+      "recommendation: Implement secure session key generation",
+      "recommendation: Set appropriate TTL for cached sessions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.cardmanagementlambda",
+    "description": "Inconsistent State Management and Failed Updates Failed updates or partial completions could leave the system in an inconsistent state, affecting data integrity across DynamoDB, Redis cache, and other dependent services. A malicious user could attempt to exploit race conditions or timing windows during state changes to create inconsistent states.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-664",
+      "recommendation: Implement transactional updates",
+      "recommendation: Add state verification system"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Repudiation",
+    "component": "aws_lambda_function.cardmanagementlambda",
+    "description": "Inconsistent State Management and Failed Updates Failed updates or partial completions could leave the system in an inconsistent state, affecting data integrity across DynamoDB, Redis cache, and other dependent services. A malicious user could attempt to exploit race conditions or timing windows during state changes to create inconsistent states.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-664",
+      "recommendation: Implement transactional updates",
+      "recommendation: Add state verification system"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient Access Controls in API Gateway While Cognito authentication is implemented, fine-grained authorization at the API level might be insufficient, potentially allowing authenticated users to access unauthorized resources. An authenticated user could attempt to access or modify boards/cards belonging to other users by manipulating API requests.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-285",
+      "recommendation: Implement fine-grained authorization",
+      "recommendation: Add request validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient Access Controls in API Gateway While Cognito authentication is implemented, fine-grained authorization at the API level might be insufficient, potentially allowing authenticated users to access unauthorized resources. An authenticated user could attempt to access or modify boards/cards belonging to other users by manipulating API requests.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-285",
+      "recommendation: Implement fine-grained authorization",
+      "recommendation: Add request validation"
+    ]
   }
 ]

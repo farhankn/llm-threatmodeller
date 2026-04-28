@@ -1,42 +1,158 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_instance.ec2_head_nodes",
+    "description": "Unauthorized Access to HPC Compute Resources Attackers could exploit overly permissive security group rules (e.g., albSg allows HTTP/HTTPS from anywhere) or leverage compromised credentials to access compute resources. An attacker compromises the ALB or head nodes through exposed management interfaces, then pivots to gain access to compute nodes containing sensitive simulation data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement stricter network access controls and segmentation",
+      "recommendation: Enhance IAM security configuration"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_instance.ec2_head_nodes",
+    "description": "Unauthorized Access to HPC Compute Resources Attackers could exploit overly permissive security group rules (e.g., albSg allows HTTP/HTTPS from anywhere) or leverage compromised credentials to access compute resources. An attacker compromises the ALB or head nodes through exposed management interfaces, then pivots to gain access to compute nodes containing sensitive simulation data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement stricter network access controls and segmentation",
+      "recommendation: Enhance IAM security configuration"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_buckets_rawdatabucket_processeddatabucket",
+    "description": "Data Exfiltration from Storage Systems Data could be exposed through misconfigured bucket policies, overly permissive IAM roles, or unencrypted data transfers. An attacker with access to the compute nodes could exfiltrate sensitive data from S3 buckets or FSx shares, potentially exposing critical power grid information.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Enhance data security controls",
+      "recommendation: Implement comprehensive data access monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_s3_bucket.s3_buckets_rawdatabucket_processeddatabucket",
+    "description": "Data Exfiltration from Storage Systems Data could be exposed through misconfigured bucket policies, overly permissive IAM roles, or unencrypted data transfers. An attacker with access to the compute nodes could exfiltrate sensitive data from S3 buckets or FSx shares, potentially exposing critical power grid information.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Enhance data security controls",
+      "recommendation: Implement comprehensive data access monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003",
+    "stride_category": "Denial of Service",
+    "component": "aws_instance.ec2_head_nodes",
+    "description": "Insufficient Disaster Recovery and Rollback Capabilities Current infrastructure lacks automated rollback mechanisms and comprehensive backup strategies for all components. A ransomware attack or system failure could result in extended downtime due to insufficient recovery mechanisms.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1485 - Data Destruction",
+      "mitreATT&CK: T1486 - Data Encrypted for Impact",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-912",
+      "recommendation: Implement comprehensive backup and recovery strategy",
+      "recommendation: Establish disaster recovery procedures"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.aws_glue",
+    "description": "Analytics Pipeline Data Manipulation Attackers could manipulate ETL jobs, modify data in transit, or compromise ML models to produce incorrect analysis results. An attacker modifies Glue ETL jobs or tampers with data in S3 to produce incorrect power grid simulation analysis, leading to poor operational decisions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "mitreATT&CK: T1565.001 - Stored Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-915",
+      "recommendation: Implement data integrity controls",
+      "recommendation: Enhance analytics security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.aws_glue",
+    "description": "Analytics Pipeline Data Manipulation Attackers could manipulate ETL jobs, modify data in transit, or compromise ML models to produce incorrect analysis results. An attacker modifies Glue ETL jobs or tampers with data in S3 to produce incorrect power grid simulation analysis, leading to poor operational decisions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "mitreATT&CK: T1565.001 - Stored Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-915",
+      "recommendation: Implement data integrity controls",
+      "recommendation: Enhance analytics security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.aws_directory_service",
+    "description": "Directory Service Compromise Attackers could exploit weak directory service configurations, compromise admin credentials, or exploit trust relationships. An attacker compromises directory service admin credentials from Secrets Manager, gaining broad access across the infrastructure.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1556 - Modify Authentication Process",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Enhance directory service security",
+      "recommendation: Implement comprehensive monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.aws_directory_service",
+    "description": "Directory Service Compromise Attackers could exploit weak directory service configurations, compromise admin credentials, or exploit trust relationships. An attacker compromises directory service admin credentials from Secrets Manager, gaining broad access across the infrastructure.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1556 - Modify Authentication Process",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Enhance directory service security",
+      "recommendation: Implement comprehensive monitoring"
+    ]
   }
 ]

@@ -1,42 +1,192 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.identity_center",
+    "description": "Unauthorized Access via Identity Center Misconfiguration Misconfigured Identity Center settings could result in over-permissive role assignments or incorrect permission sets that grant excessive access to users. This could occur through incorrect mappings between IdC groups and AWS IAM roles, or through overly broad permission sets. An attacker with basic user access could exploit misconfigured IdC settings to escalate privileges and access sensitive customer support tickets or administrative functions they shouldn't have access to.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement least-privilege access control in Identity Center configuration",
+      "recommendation: Implement comprehensive IdC activity monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.identity_center",
+    "description": "Unauthorized Access via Identity Center Misconfiguration Misconfigured Identity Center settings could result in over-permissive role assignments or incorrect permission sets that grant excessive access to users. This could occur through incorrect mappings between IdC groups and AWS IAM roles, or through overly broad permission sets. An attacker with basic user access could exploit misconfigured IdC settings to escalate privileges and access sensitive customer support tickets or administrative functions they shouldn't have access to.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement least-privilege access control in Identity Center configuration",
+      "recommendation: Implement comprehensive IdC activity monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.identity_center",
+    "description": "Unauthorized Access via Identity Center Misconfiguration Misconfigured Identity Center settings could result in over-permissive role assignments or incorrect permission sets that grant excessive access to users. This could occur through incorrect mappings between IdC groups and AWS IAM roles, or through overly broad permission sets. An attacker with basic user access could exploit misconfigured IdC settings to escalate privileges and access sensitive customer support tickets or administrative functions they shouldn't have access to.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement least-privilege access control in Identity Center configuration",
+      "recommendation: Implement comprehensive IdC activity monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.kms",
+    "description": "KMS Key Policy Misconfiguration Leading to Unauthorized Data Access Overly permissive KMS key policies or incorrect key usage permissions could allow unauthorized services or principals to decrypt sensitive data. This could occur through misconfigured key policies, incorrect grants, or overly broad IAM roles. An attacker with access to encrypted data could exploit misconfigured KMS policies to decrypt the data, potentially accessing sensitive customer information stored in DynamoDB or S3.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-321",
+      "recommendation: Implement least-privilege KMS key policies",
+      "recommendation: Implement comprehensive KMS activity monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.kms",
+    "description": "KMS Key Policy Misconfiguration Leading to Unauthorized Data Access Overly permissive KMS key policies or incorrect key usage permissions could allow unauthorized services or principals to decrypt sensitive data. This could occur through misconfigured key policies, incorrect grants, or overly broad IAM roles. An attacker with access to encrypted data could exploit misconfigured KMS policies to decrypt the data, potentially accessing sensitive customer information stored in DynamoDB or S3.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-321",
+      "recommendation: Implement least-privilege KMS key policies",
+      "recommendation: Implement comprehensive KMS activity monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003",
+    "stride_category": "Repudiation",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient Audit Logging for Security Incidents Insufficient logging of user actions, API calls, and system changes could prevent proper tracking of security incidents. This includes missing logs for authentication attempts, data access, and system modifications. An attacker could perform malicious actions without detection, or clean up their tracks due to insufficient logging, making incident investigation and response difficult or impossible.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1070 - Indicator Removal on Host",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive logging strategy",
+      "recommendation: Implement log monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure Direct Object References in API Endpoints API endpoints might not properly validate that the requesting user has permission to access the requested resource, allowing attackers to access other users' tickets by manipulating identifiers. An authenticated user could modify ticket IDs in API requests to access support tickets belonging to other customers.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement robust authorization checks",
+      "recommendation: Implement API request validation and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure Direct Object References in API Endpoints API endpoints might not properly validate that the requesting user has permission to access the requested resource, allowing attackers to access other users' tickets by manipulating identifiers. An authenticated user could modify ticket IDs in API requests to access support tickets belonging to other customers.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement robust authorization checks",
+      "recommendation: Implement API request validation and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.s3_attachments",
+    "description": "Insecure File Upload Vulnerabilities Insufficient validation of uploaded files could allow attackers to upload malicious files or bypass intended file type restrictions. This could lead to stored XSS if malicious files are served to other users. An attacker uploads a malicious file with a modified MIME type that bypasses validation, which is then served to support staff or other users.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1189 - Drive-by Compromise",
+      "mitreATT&CK: T1590 - Gather Victim Network Information",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-434",
+      "recommendation: Implement secure file upload controls",
+      "recommendation: Implement secure file serving"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_attachments",
+    "description": "Insecure File Upload Vulnerabilities Insufficient validation of uploaded files could allow attackers to upload malicious files or bypass intended file type restrictions. This could lead to stored XSS if malicious files are served to other users. An attacker uploads a malicious file with a modified MIME type that bypasses validation, which is then served to support staff or other users.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1189 - Drive-by Compromise",
+      "mitreATT&CK: T1590 - Gather Victim Network Information",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-434",
+      "recommendation: Implement secure file upload controls",
+      "recommendation: Implement secure file serving"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_s3_bucket.s3_attachments",
+    "description": "Insecure File Upload Vulnerabilities Insufficient validation of uploaded files could allow attackers to upload malicious files or bypass intended file type restrictions. This could lead to stored XSS if malicious files are served to other users. An attacker uploads a malicious file with a modified MIME type that bypasses validation, which is then served to support staff or other users.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1189 - Drive-by Compromise",
+      "mitreATT&CK: T1590 - Gather Victim Network Information",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-434",
+      "recommendation: Implement secure file upload controls",
+      "recommendation: Implement secure file serving"
+    ]
   }
 ]

@@ -1,50 +1,166 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.iot_core",
+    "description": "Unauthorized Device Registration An attacker could attempt to register unauthorized devices by intercepting the device registration process or compromising the certificate provisioning workflow. An attacker registers a malicious device using stolen or forged certificates, gaining access to send data into the system and potentially exfiltrate information about other devices.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement strong device provisioning process with unique X.509 certificates",
+      "recommendation: Enforce strict device registration policies"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.iot_core",
+    "description": "Unauthorized Device Registration An attacker could attempt to register unauthorized devices by intercepting the device registration process or compromising the certificate provisioning workflow. An attacker registers a malicious device using stolen or forged certificates, gaining access to send data into the system and potentially exfiltrate information about other devices.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement strong device provisioning process with unique X.509 certificates",
+      "recommendation: Enforce strict device registration policies"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_bucket_longtermstoragebucket",
+    "description": "Insecure Data Storage in S3 While the bucket has S3-managed encryption and public access blocking, IAM roles or bucket policies might grant excessive permissions to internal users or services. An unauthorized internal user with overly permissive IAM permissions could access sensitive IoT data stored in the S3 bucket, leading to data breach.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies and IAM roles",
+      "recommendation: Enable advanced security features and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_s3_bucket.s3_bucket_longtermstoragebucket",
+    "description": "Insecure Data Storage in S3 While the bucket has S3-managed encryption and public access blocking, IAM roles or bucket policies might grant excessive permissions to internal users or services. An unauthorized internal user with overly permissive IAM permissions could access sensitive IoT data stored in the S3 bucket, leading to data breach.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies and IAM roles",
+      "recommendation: Enable advanced security features and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Alerting Lack of comprehensive monitoring could allow attackers to perform malicious activities without detection. An attacker compromises a device or gains unauthorized access to AWS resources, and their activities go unnoticed due to insufficient monitoring.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Implement comprehensive monitoring strategy",
+      "recommendation: Deploy advanced security monitoring services"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Alerting Lack of comprehensive monitoring could allow attackers to perform malicious activities without detection. An attacker compromises a device or gains unauthorized access to AWS resources, and their activities go unnoticed due to insufficient monitoring.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Implement comprehensive monitoring strategy",
+      "recommendation: Deploy advanced security monitoring services"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.processing_lambda",
+    "description": "Insecure Lambda Function Configuration Lambda functions with overly permissive IAM roles could be exploited to access or modify data they shouldn't have access to. An attacker exploits a vulnerability in the Processing Lambda to gain access to sensitive data in DynamoDB or modify device state information.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-272",
+      "recommendation: Implement least privilege access for Lambda functions",
+      "recommendation: Enhance Lambda security configuration"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.processing_lambda",
+    "description": "Insecure Lambda Function Configuration Lambda functions with overly permissive IAM roles could be exploited to access or modify data they shouldn't have access to. An attacker exploits a vulnerability in the Processing Lambda to gain access to sensitive data in DynamoDB or modify device state information.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-272",
+      "recommendation: Implement least privilege access for Lambda functions",
+      "recommendation: Enhance Lambda security configuration"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.iot_core",
+    "description": "Denial of Service Through Message Flooding Attackers could flood the system with messages from compromised devices or through replay attacks. Multiple compromised devices send an excessive number of messages, overwhelming Kinesis streams and downstream processing capabilities.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement rate limiting and throttling",
+      "recommendation: Enhance monitoring and automated response"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.quicksight",
+    "description": "Insufficient Access Control for Data Visualization Lack of proper access controls in QuickSight could allow users to view data from devices or organizations they shouldn't have access to. An employee views sensitive IoT data from other departments or organizations through improperly configured QuickSight dashboards.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement row-level security in QuickSight",
+      "recommendation: Enhance data access auditing"
+    ]
   }
 ]

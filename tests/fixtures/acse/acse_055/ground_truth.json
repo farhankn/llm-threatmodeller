@@ -1,42 +1,159 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "API Gateway DDoS Attack The architecture exposes public APIs through API Gateway with WAF protection. However, the current WAF configuration only includes the AWS Common Rule Set without specific rate limiting rules. An attacker could exploit this by generating a high volume of requests that pass WAF validation but overwhelm backend services. An attacker uses a botnet to generate thousands of valid-looking but unnecessary API requests per second across multiple IP addresses, overwhelming the API Gateway's capacity to handle legitimate traffic.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement WAF rate limiting rules",
+      "recommendation: Implement AWS Shield Advanced protection",
+      "recommendation: Implement request throttling at API Gateway level"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_auth",
+    "description": "IAM Role Privilege Escalation The EKS cluster and node groups use AWS managed policies that may provide more permissions than necessary. The API Gateway IAM authorizer uses a role that could potentially be assumed by any account principal, and the node role has broad permissions including 'ElasticLoadBalancingFullAccess'. An attacker who gains access to a compromised IAM credential could leverage the broad permissions to escalate privileges, potentially gaining control over the EKS cluster or accessing sensitive data in DynamoDB.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Spoofing",
+      "cwe: CWE-269",
+      "recommendation: Implement custom IAM policies with minimal permissions",
+      "recommendation: Implement strict IAM conditions",
+      "recommendation: Implement AWS Organizations SCPs"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Spoofing",
+    "component": "aws_iam_role.iam_auth",
+    "description": "IAM Role Privilege Escalation The EKS cluster and node groups use AWS managed policies that may provide more permissions than necessary. The API Gateway IAM authorizer uses a role that could potentially be assumed by any account principal, and the node role has broad permissions including 'ElasticLoadBalancingFullAccess'. An attacker who gains access to a compromised IAM credential could leverage the broad permissions to escalate privileges, potentially gaining control over the EKS cluster or accessing sensitive data in DynamoDB.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Spoofing",
+      "cwe: CWE-269",
+      "recommendation: Implement custom IAM policies with minimal permissions",
+      "recommendation: Implement strict IAM conditions",
+      "recommendation: Implement AWS Organizations SCPs"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_db_instance.dynamodb_tables",
+    "description": "Cross-Region Data Replication Attack DynamoDB global tables use asynchronous replication between regions. While the replication itself uses AWS's internal network, the configuration and management plane operations are exposed through APIs that could be targeted. An attacker with network-level access could attempt to disrupt replication by flooding the network path or exploiting AWS API rate limits. Additionally, if encryption is not properly configured, data in transit between regions could potentially be exposed.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1492 - Stored Data Manipulation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-311",
+      "recommendation: Implement strong encryption for DynamoDB",
+      "recommendation: Implement replication monitoring",
+      "recommendation: Implement application-level verification"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb_tables",
+    "description": "Cross-Region Data Replication Attack DynamoDB global tables use asynchronous replication between regions. While the replication itself uses AWS's internal network, the configuration and management plane operations are exposed through APIs that could be targeted. An attacker with network-level access could attempt to disrupt replication by flooding the network path or exploiting AWS API rate limits. Additionally, if encryption is not properly configured, data in transit between regions could potentially be exposed.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1492 - Stored Data Manipulation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-311",
+      "recommendation: Implement strong encryption for DynamoDB",
+      "recommendation: Implement replication monitoring",
+      "recommendation: Implement application-level verification"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Denial of Service",
+    "component": "aws_db_instance.dynamodb_tables",
+    "description": "Cross-Region Data Replication Attack DynamoDB global tables use asynchronous replication between regions. While the replication itself uses AWS's internal network, the configuration and management plane operations are exposed through APIs that could be targeted. An attacker with network-level access could attempt to disrupt replication by flooding the network path or exploiting AWS API rate limits. Additionally, if encryption is not properly configured, data in transit between regions could potentially be exposed.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1492 - Stored Data Manipulation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-311",
+      "recommendation: Implement strong encryption for DynamoDB",
+      "recommendation: Implement replication monitoring",
+      "recommendation: Implement application-level verification"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004",
+    "stride_category": "Tampering",
+    "component": "aws_resource.efs_filesystem",
+    "description": "EFS Storage Race Condition Multiple EKS worker nodes can simultaneously access the same EFS files. Without proper synchronization mechanisms, concurrent writes could lead to data corruption or inconsistent state. An attacker could exploit the lack of proper file locking or synchronization by triggering multiple simultaneous writes to the same file location, potentially corrupting data or creating inconsistent states.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "cwe: CWE-362",
+      "recommendation: Implement proper file locking mechanisms",
+      "recommendation: Implement EFS access points",
+      "recommendation: Implement event-driven architecture"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_eks_cluster.eks_cluster",
+    "description": "Container Escape in EKS Container escape vulnerabilities could allow an attacker to break out of container isolation and access the underlying host system or other containers. The current configuration uses default security group rules and container runtime settings. An attacker who compromises a container could exploit misconfigured privileges or vulnerabilities to escape to the host system, potentially gaining access to node instance metadata or other containers.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1611 - Container Escape",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-653",
+      "recommendation: Implement pod security policies",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Implement runtime security monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_eks_cluster.eks_cluster",
+    "description": "Container Escape in EKS Container escape vulnerabilities could allow an attacker to break out of container isolation and access the underlying host system or other containers. The current configuration uses default security group rules and container runtime settings. An attacker who compromises a container could exploit misconfigured privileges or vulnerabilities to escape to the host system, potentially gaining access to node instance metadata or other containers.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1611 - Container Escape",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-653",
+      "recommendation: Implement pod security policies",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Implement runtime security monitoring"
+    ]
   }
 ]

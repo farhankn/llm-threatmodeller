@@ -1,66 +1,262 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.private_ca",
+    "description": "Unauthorized Vehicle Certificate Issuance The system uses AWS Private CA for certificate issuance. If the registration process or PCA permissions are not properly secured, an attacker could potentially issue unauthorized certificates or steal private keys. An attacker compromises the Registration Lambda function and uses its PCA permissions to issue unauthorized certificates for rogue vehicles.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1552.004 - Private Keys",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-295",
+      "recommendation: Implement strict access controls and monitoring for certificate operations",
+      "recommendation: Enhance Lambda security for registration process"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.private_ca",
+    "description": "Unauthorized Vehicle Certificate Issuance The system uses AWS Private CA for certificate issuance. If the registration process or PCA permissions are not properly secured, an attacker could potentially issue unauthorized certificates or steal private keys. An attacker compromises the Registration Lambda function and uses its PCA permissions to issue unauthorized certificates for rogue vehicles.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1552.004 - Private Keys",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-295",
+      "recommendation: Implement strict access controls and monitoring for certificate operations",
+      "recommendation: Enhance Lambda security for registration process"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure Vehicle-to-Mobile App Communication The system uses API Gateway for mobile app communication and IoT Core for vehicle communication. Without proper authentication and authorization mechanisms, an attacker could intercept or manipulate communication between these components. An attacker performs a man-in-the-middle attack between the mobile app and API Gateway, intercepting authentication tokens to gain unauthorized access to vehicle controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement robust authentication and authorization",
+      "recommendation: Enhance communication security"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure Vehicle-to-Mobile App Communication The system uses API Gateway for mobile app communication and IoT Core for vehicle communication. Without proper authentication and authorization mechanisms, an attacker could intercept or manipulate communication between these components. An attacker performs a man-in-the-middle attack between the mobile app and API Gateway, intercepting authentication tokens to gain unauthorized access to vehicle controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement robust authentication and authorization",
+      "recommendation: Enhance communication security"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-002-3",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure Vehicle-to-Mobile App Communication The system uses API Gateway for mobile app communication and IoT Core for vehicle communication. Without proper authentication and authorization mechanisms, an attacker could intercept or manipulate communication between these components. An attacker performs a man-in-the-middle attack between the mobile app and API Gateway, intercepting authentication tokens to gain unauthorized access to vehicle controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement robust authentication and authorization",
+      "recommendation: Enhance communication security"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient Role-Based Access Control The system needs to support multiple user roles with different access levels. Improper RBAC implementation could allow users to access resources beyond their authorized scope. A service technician exploits a misconfigured IAM role to gain fleet manager privileges, accessing sensitive fleet-wide data and controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-285",
+      "recommendation: Implement comprehensive RBAC system",
+      "recommendation: Enhance access control monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient Role-Based Access Control The system needs to support multiple user roles with different access levels. Improper RBAC implementation could allow users to access resources beyond their authorized scope. A service technician exploits a misconfigured IAM role to gain fleet manager privileges, accessing sensitive fleet-wide data and controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-285",
+      "recommendation: Implement comprehensive RBAC system",
+      "recommendation: Enhance access control monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-008",
+    "threat_id": "THREAT-004-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_s3_bucket.s3_bucket",
+    "description": "Insecure Over-the-Air (OTA) Updates The system uses S3 for storing vehicle software updates and IoT Core for deployment. If the update process is not properly secured, attackers could potentially inject malicious updates. An attacker compromises the S3 bucket storing updates and replaces legitimate firmware with malicious versions containing backdoors.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1195 - Supply Chain Compromise",
+      "mitreATT&CK: T1195.001 - Compromise Software Dependencies and Development Tools",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-494",
+      "recommendation: Implement secure OTA update process",
+      "recommendation: Enhance update delivery security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Repudiation",
+    "component": "aws_s3_bucket.s3_bucket",
+    "description": "Insecure Over-the-Air (OTA) Updates The system uses S3 for storing vehicle software updates and IoT Core for deployment. If the update process is not properly secured, attackers could potentially inject malicious updates. An attacker compromises the S3 bucket storing updates and replaces legitimate firmware with malicious versions containing backdoors.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1195 - Supply Chain Compromise",
+      "mitreATT&CK: T1195.001 - Compromise Software Dependencies and Development Tools",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-494",
+      "recommendation: Implement secure OTA update process",
+      "recommendation: Enhance update delivery security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Session Token Mismanagement The system uses session tokens for maintaining user authentication state. Improper token handling could allow session hijacking attacks. An attacker steals a valid session token from a user's browser and uses it to gain unauthorized access to vehicle controls.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1539 - Steal Web Session Cookie",
+      "mitreATT&CK: T1550.004 - Web Session Cookie",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-384",
+      "recommendation: Implement secure session management",
+      "recommendation: Enhance session security measures"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Session Token Mismanagement The system uses session tokens for maintaining user authentication state. Improper token handling could allow session hijacking attacks. An attacker steals a valid session token from a user's browser and uses it to gain unauthorized access to vehicle controls.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1539 - Steal Web Session Cookie",
+      "mitreATT&CK: T1550.004 - Web Session Cookie",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-384",
+      "recommendation: Implement secure session management",
+      "recommendation: Enhance session security measures"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb",
+    "description": "Multi-Tenant Isolation Failure The system stores data for multiple vehicles and users. Without proper isolation, vulnerabilities could allow access across tenant boundaries. An attacker exploits a misconfigured DynamoDB query to access vehicle data belonging to other tenants.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1522 - Cloud Instance Metadata API",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement strong tenant isolation",
+      "recommendation: Enhance multi-tenant security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_db_instance.dynamodb",
+    "description": "Multi-Tenant Isolation Failure The system stores data for multiple vehicles and users. Without proper isolation, vulnerabilities could allow access across tenant boundaries. An attacker exploits a misconfigured DynamoDB query to access vehicle data belonging to other tenants.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1522 - Cloud Instance Metadata API",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement strong tenant isolation",
+      "recommendation: Enhance multi-tenant security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.connected_vehicle",
+    "description": "Side-Channel Attack Vulnerability Timing analysis and other side-channel techniques could reveal patterns in system behavior, potentially exposing sensitive information about vehicle operations. An attacker analyzes API response times to infer vehicle states or operations, potentially identifying vulnerabilities or patterns in vehicle behavior.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-208",
+      "recommendation: Implement side-channel attack mitigations",
+      "recommendation: Enhance monitoring for side-channel attempts"
+    ]
+  },
+  {
+    "threat_id": "THREAT-008",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Service Component Failure Impact Service failures or malformed responses could potentially impact vehicle operations if not properly handled. An attacker causes a service to return malformed responses, potentially affecting vehicle behavior if not properly handled by onboard systems.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-1051",
+      "recommendation: Implement robust error handling",
+      "recommendation: Enhance service reliability"
+    ]
   }
 ]

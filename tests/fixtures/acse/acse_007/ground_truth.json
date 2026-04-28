@@ -1,90 +1,339 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_wafv2_web_acl.waf",
     "description": "An attacker could bypass WAF protections by discovering unprotected endpoints or exploiting gaps in rule configurations. The current WAF implementation only includes the AWS Common Rule Set, which may not provide comprehensive protection against all attack vectors.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-937",
+      "recommendation: Implement comprehensive WAF rule sets and custom rules specific to biometric authentication patterns",
+      "recommendation: Implement WAF logging and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_wafv2_web_acl.waf",
+    "description": "An attacker could bypass WAF protections by discovering unprotected endpoints or exploiting gaps in rule configurations. The current WAF implementation only includes the AWS Common Rule Set, which may not provide comprehensive protection against all attack vectors.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-937",
+      "recommendation: Implement comprehensive WAF rule sets and custom rules specific to biometric authentication patterns",
+      "recommendation: Implement WAF logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_cloudfront_distribution.cloudfront",
     "description": "Biometric data could be intercepted during transmission between the client and CloudFront, or between CloudFront and the API Gateway, potentially exposing sensitive biometric information.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement end-to-end encryption for biometric data",
+      "recommendation: Enhance network security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Biometric data could be intercepted during transmission between the client and CloudFront, or between CloudFront and the API Gateway, potentially exposing sensitive biometric information.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement end-to-end encryption for biometric data",
+      "recommendation: Enhance network security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
     "description": "An attacker could capture and replay legitimate biometric authentication requests to gain unauthorized access to the system, bypassing the real-time verification process.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Repudiation",
+      "cwe: CWE-294",
+      "recommendation: Implement robust anti-replay mechanisms",
+      "recommendation: Enhance biometric validation process"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Repudiation",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "An attacker could capture and replay legitimate biometric authentication requests to gain unauthorized access to the system, bypassing the real-time verification process.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Repudiation",
+      "cwe: CWE-294",
+      "recommendation: Implement robust anti-replay mechanisms",
+      "recommendation: Enhance biometric validation process"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
     "description": "An attacker could overwhelm the API Gateway with a high volume of requests, causing service degradation or denial of service for legitimate users.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement comprehensive DDoS protection",
+      "recommendation: Implement monitoring and automated response"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.cognito_user_pool",
     "description": "An attacker could attempt to manipulate or bypass the Cognito authentication flow to circumvent biometric verification requirements.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "mitreATT&CK: T1556 - Modify Authentication Process",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Strengthen Cognito authentication flow",
+      "recommendation: Implement additional security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.cognito_user_pool",
+    "description": "An attacker could attempt to manipulate or bypass the Cognito authentication flow to circumvent biometric verification requirements.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "mitreATT&CK: T1556 - Modify Authentication Process",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Strengthen Cognito authentication flow",
+      "recommendation: Implement additional security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_lambda_function.authentication_lambda",
     "description": "An attacker could exploit vulnerabilities in Lambda functions to gain unauthorized access to backend services or execute malicious code.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1574 - Hijack Execution Flow",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-434",
+      "recommendation: Implement Lambda security controls",
+      "recommendation: Enhance Lambda execution environment security"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.authentication_lambda",
+    "description": "An attacker could exploit vulnerabilities in Lambda functions to gain unauthorized access to backend services or execute malicious code.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1574 - Hijack Execution Flow",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-434",
+      "recommendation: Implement Lambda security controls",
+      "recommendation: Enhance Lambda execution environment security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_resource.sns_topic",
     "description": "An attacker could intercept and modify messages in the notification system, potentially leading to misinformation or unauthorized actions.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-345",
+      "recommendation: Secure message transmission",
+      "recommendation: Implement monitoring and alerting"
+    ]
   },
   {
-    "threat_id": "ACSE-008",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.sns_topic",
+    "description": "An attacker could intercept and modify messages in the notification system, potentially leading to misinformation or unauthorized actions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-345",
+      "recommendation: Secure message transmission",
+      "recommendation: Implement monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-008-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb",
     "description": "An attacker could gain unauthorized access to sensitive user metadata through misconfigured DynamoDB IAM policies or exploited application vulnerabilities.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict access controls",
+      "recommendation: Enhance monitoring and auditing"
+    ]
   },
   {
-    "threat_id": "ACSE-009",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-008-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_db_instance.dynamodb",
+    "description": "An attacker could gain unauthorized access to sensitive user metadata through misconfigured DynamoDB IAM policies or exploited application vulnerabilities.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict access controls",
+      "recommendation: Enhance monitoring and auditing"
+    ]
+  },
+  {
+    "threat_id": "THREAT-009-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.cognito_user_pool",
     "description": "An attacker could attempt to compromise user accounts through automated credential stuffing attacks against the Cognito user pool.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1110 - Brute Force",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-307",
+      "recommendation: Implement anti-automation controls",
+      "recommendation: Enhance authentication security"
+    ]
   },
   {
-    "threat_id": "ACSE-010",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-009-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cognito_user_pool",
+    "description": "An attacker could attempt to compromise user accounts through automated credential stuffing attacks against the Cognito user pool.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1110 - Brute Force",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-307",
+      "recommendation: Implement anti-automation controls",
+      "recommendation: Enhance authentication security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-010",
+    "stride_category": "Denial of Service",
+    "component": "aws_lambda_function.authentication_lambda",
     "description": "An attacker could exploit Lambda function timeout configurations or resource limits to cause denial of service conditions.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Optimize Lambda configuration",
+      "recommendation: Implement resilience patterns"
+    ]
   },
   {
-    "threat_id": "ACSE-011",
+    "threat_id": "THREAT-011-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_api_gateway_rest_api.api_gateway",
     "description": "An attacker could exploit insufficient input validation in the API Gateway to perform various injection attacks.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-89",
+      "recommendation: Implement comprehensive input validation",
+      "recommendation: Enhance API security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-011-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "An attacker could exploit insufficient input validation in the API Gateway to perform various injection attacks.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-89",
+      "recommendation: Implement comprehensive input validation",
+      "recommendation: Enhance API security controls"
+    ]
   }
 ]

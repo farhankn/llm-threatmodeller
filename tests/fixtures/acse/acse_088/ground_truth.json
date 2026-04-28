@@ -1,42 +1,137 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.aws_outposts",
+    "description": "Single Point of Failure in Outposts Infrastructure The current architecture relies on a single Outposts deployment without redundancy. If the Outposts hardware fails or becomes compromised, all local compute, storage, and networking capabilities would be impacted. An attacker could target the physical Outposts infrastructure or its management plane to cause system-wide outages. Natural disasters or hardware failures could also trigger this vulnerability.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-3: PEAR - Technology-specific Environment Assumption",
+      "recommendation: Implement redundant Outposts deployment across multiple physical locations",
+      "recommendation: Implement comprehensive disaster recovery planning"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.local_vpc",
+    "description": "Insufficient Network Segmentation in Local VPC While the CDK code shows basic subnet configurations, there's insufficient micro-segmentation and security group rules to properly isolate different components within the VPC. An attacker who compromises a single EC2 instance could potentially scan and access other resources within the VPC due to overly permissive security group rules and lack of network ACLs.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1317: Missing Security Boundary Definition",
+      "recommendation: Implement strict network segmentation using security groups and NACLs",
+      "recommendation: Deploy VPC traffic monitoring and logging"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_vpc.local_vpc",
+    "description": "Insufficient Network Segmentation in Local VPC While the CDK code shows basic subnet configurations, there's insufficient micro-segmentation and security group rules to properly isolate different components within the VPC. An attacker who compromises a single EC2 instance could potentially scan and access other resources within the VPC due to overly permissive security group rules and lack of network ACLs.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1317: Missing Security Boundary Definition",
+      "recommendation: Implement strict network segmentation using security groups and NACLs",
+      "recommendation: Deploy VPC traffic monitoring and logging"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.aws_outposts",
+    "description": "Inadequate Physical and Logical Security Boundaries The current implementation may not adequately protect against unauthorized physical access to Outposts hardware and lacks comprehensive security controls for the local data center environment. An attacker with physical access could tamper with Outposts hardware, potentially compromising the CloudHSM modules or gaining access to sensitive data through direct hardware manipulation.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1200 - Hardware Addition",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-276: Incorrect Default Permissions",
+      "recommendation: Implement comprehensive physical security controls",
+      "recommendation: Enhance logical security boundaries"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-003-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.aws_outposts",
+    "description": "Inadequate Physical and Logical Security Boundaries The current implementation may not adequately protect against unauthorized physical access to Outposts hardware and lacks comprehensive security controls for the local data center environment. An attacker with physical access could tamper with Outposts hardware, potentially compromising the CloudHSM modules or gaining access to sensitive data through direct hardware manipulation.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1200 - Hardware Addition",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-276: Incorrect Default Permissions",
+      "recommendation: Implement comprehensive physical security controls",
+      "recommendation: Enhance logical security boundaries"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_data_storage",
+    "description": "Potential Data Sovereignty Violations While the architecture includes encryption and access controls, there might be gaps in ensuring data remains within sovereign boundaries throughout its lifecycle. An attacker could potentially exploit misconfigured S3 bucket policies or IAM roles to transfer data outside of the sovereign boundary, or leverage cross-region replication if not properly restricted.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311: Missing Encryption of Sensitive Data",
+      "recommendation: Implement strict data residency controls",
+      "recommendation: Enhance encryption and key management"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.s3_data_storage",
+    "description": "Potential Data Sovereignty Violations While the architecture includes encryption and access controls, there might be gaps in ensuring data remains within sovereign boundaries throughout its lifecycle. An attacker could potentially exploit misconfigured S3 bucket policies or IAM roles to transfer data outside of the sovereign boundary, or leverage cross-region replication if not properly restricted.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311: Missing Encryption of Sensitive Data",
+      "recommendation: Implement strict data residency controls",
+      "recommendation: Enhance encryption and key management"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.aws_outposts",
+    "description": "Insufficient Availability Controls The current architecture may not adequately protect against sophisticated denial of service attacks or handle sudden spikes in legitimate traffic. An attacker could overwhelm network resources, target Direct Connect links, or exploit bottlenecks in the Outposts infrastructure to cause service disruptions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-730: OWASP Top Ten 2004 Category A9 - Denial of Service",
+      "recommendation: Implement comprehensive DDoS protection",
+      "recommendation: Enhance network resilience"
+    ]
   }
 ]

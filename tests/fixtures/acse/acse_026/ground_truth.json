@@ -1,50 +1,159 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_primary_storage_bucket",
+    "description": "Unauthorized S3 Bucket Access via Misconfigured IAM Policies The current implementation uses a common Lambda execution role with broad S3 access permissions. While the buckets block public access, the Lambda functions have read/write access to all objects, potentially allowing access to any user's files if the authentication logic is bypassed. An attacker who compromises the Lambda function or exploits an authentication bypass could access or modify any file in the bucket, regardless of ownership.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement S3 bucket path partitioning based on user identities",
+      "recommendation: Implement fine-grained IAM permissions using session policies"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_s3_bucket.s3_primary_storage_bucket",
+    "description": "Unauthorized S3 Bucket Access via Misconfigured IAM Policies The current implementation uses a common Lambda execution role with broad S3 access permissions. While the buckets block public access, the Lambda functions have read/write access to all objects, potentially allowing access to any user's files if the authentication logic is bypassed. An attacker who compromises the Lambda function or exploits an authentication bypass could access or modify any file in the bucket, regardless of ownership.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement S3 bucket path partitioning based on user identities",
+      "recommendation: Implement fine-grained IAM permissions using session policies"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure API Communications Due to Missing TLS The current API Gateway configuration does not specify TLS certificate configuration through ACM, potentially allowing unencrypted communications or weak cipher usage. An attacker performing a man-in-the-middle attack could intercept API communications, potentially exposing sensitive data or file contents during transit.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Configure ACM certificate for API Gateway"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure API Communications Due to Missing TLS The current API Gateway configuration does not specify TLS certificate configuration through ACM, potentially allowing unencrypted communications or weak cipher usage. An attacker performing a man-in-the-middle attack could intercept API communications, potentially exposing sensitive data or file contents during transit.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Configure ACM certificate for API Gateway"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_lambda_function.file_upload_download_handler_lambda",
+    "description": "Race Conditions in File Operations The system lacks proper concurrency controls for file operations. Multiple simultaneous operations on the same file could lead to race conditions. An attacker could exploit race conditions by initiating multiple concurrent operations on the same file, potentially causing data corruption or unauthorized access to in-transit data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-362",
+      "recommendation: Implement optimistic locking using DynamoDB",
+      "recommendation: Add operation journaling"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.file_upload_download_handler_lambda",
+    "description": "Race Conditions in File Operations The system lacks proper concurrency controls for file operations. Multiple simultaneous operations on the same file could lead to race conditions. An attacker could exploit race conditions by initiating multiple concurrent operations on the same file, potentially causing data corruption or unauthorized access to in-transit data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-362",
+      "recommendation: Implement optimistic locking using DynamoDB",
+      "recommendation: Add operation journaling"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004",
+    "stride_category": "Repudiation",
+    "component": "aws_s3_bucket.s3_buckets",
+    "description": "Insufficient Logging and Monitoring While API Gateway has basic logging enabled, S3 bucket access logging is not explicitly configured, making it difficult to track and audit file access patterns. An attacker could perform unauthorized file access or modifications without detection due to insufficient logging and monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Enable comprehensive S3 access logging",
+      "recommendation: Implement enhanced monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.all_system_components",
+    "description": "Single Region Availability Risk The system is deployed in a single AWS region, making it vulnerable to region-wide outages and potentially violating data residency requirements. A region-wide AWS outage or targeted DDoS attack could make the entire system unavailable.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-475",
+      "recommendation: Implement multi-region deployment",
+      "recommendation: Configure intelligent routing"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.file_metadata_manager_lambda",
+    "description": "Extraneous Component Security Risk The redundant File Metadata Manager has unnecessary access to the metadata store, increasing the attack surface without providing additional functionality. An attacker who compromises the File Metadata Manager could access or modify file metadata despite the component being unnecessary for system operation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1578 - Modify Cloud Compute Infrastructure",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-272",
+      "recommendation: Remove redundant File Metadata Manager",
+      "recommendation: Audit and remove unnecessary IAM permissions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.file_metadata_manager_lambda",
+    "description": "Extraneous Component Security Risk The redundant File Metadata Manager has unnecessary access to the metadata store, increasing the attack surface without providing additional functionality. An attacker who compromises the File Metadata Manager could access or modify file metadata despite the component being unnecessary for system operation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1578 - Modify Cloud Compute Infrastructure",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-272",
+      "recommendation: Remove redundant File Metadata Manager",
+      "recommendation: Audit and remove unnecessary IAM permissions"
+    ]
   }
 ]

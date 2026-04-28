@@ -1,42 +1,147 @@
 [
   {
-    "threat_id": "ACSE-001",
+    "threat_id": "THREAT-001-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.traffic_capture_proxy",
+    "description": "Man-in-the-Middle Attack via Traffic Capture Proxy An attacker who gains access to the proxy could intercept traffic between the source and target clusters, potentially modifying requests/responses or extracting sensitive data. An attacker exploits a vulnerability in the proxy's configuration or implementation to gain control, then intercepts and modifies OpenSearch queries or responses.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-300",
+      "recommendation: Implement mutual TLS (mTLS) authentication between all components",
+      "recommendation: Enhance proxy access controls and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.traffic_capture_proxy",
+    "description": "Man-in-the-Middle Attack via Traffic Capture Proxy An attacker who gains access to the proxy could intercept traffic between the source and target clusters, potentially modifying requests/responses or extracting sensitive data. An attacker exploits a vulnerability in the proxy's configuration or implementation to gain control, then intercepts and modifies OpenSearch queries or responses.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-300",
+      "recommendation: Implement mutual TLS (mTLS) authentication between all components",
+      "recommendation: Enhance proxy access controls and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.migration_management_console",
+    "description": "Management Console Compromise via Web Vulnerabilities An attacker exploits web vulnerabilities in the management console to gain unauthorized access, potentially leveraging cross-account IAM roles to access sensitive data. Attacker finds an SQL injection vulnerability in the console's authentication mechanism, gains admin access, and uses the console's legitimate cross-account access to exfiltrate data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement strict IAM policies with least privilege",
+      "recommendation: Enhance web application security"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.migration_management_console",
+    "description": "Management Console Compromise via Web Vulnerabilities An attacker exploits web vulnerabilities in the management console to gain unauthorized access, potentially leveraging cross-account IAM roles to access sensitive data. Attacker finds an SQL injection vulnerability in the console's authentication mechanism, gains admin access, and uses the console's legitimate cross-account access to exfiltrate data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement strict IAM policies with least privilege",
+      "recommendation: Enhance web application security"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.msk_cluster",
+    "description": "Kafka Message Tampering An attacker with access to the MSK cluster could modify messages in Kafka topics, potentially altering the captured traffic before replay. Attacker gains access to MSK, modifies captured traffic to include malicious queries, which are then replayed to the target cluster.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement message authentication and encryption",
+      "recommendation: Enhance MSK security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.msk_cluster",
+    "description": "Kafka Message Tampering An attacker with access to the MSK cluster could modify messages in Kafka topics, potentially altering the captured traffic before replay. Attacker gains access to MSK, modifies captured traffic to include malicious queries, which are then replayed to the target cluster.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement message authentication and encryption",
+      "recommendation: Enhance MSK security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.source_opensearch_cluster",
+    "description": "Cross-Account Resource Exposure Overly permissive IAM roles or resource policies could allow unauthorized access across account boundaries. An attacker compromises the migration account and exploits broad cross-account permissions to access data in source/target accounts.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict cross-account access controls",
+      "recommendation: Enhance monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.source_opensearch_cluster",
+    "description": "Cross-Account Resource Exposure Overly permissive IAM roles or resource policies could allow unauthorized access across account boundaries. An attacker compromises the migration account and exploits broad cross-account permissions to access data in source/target accounts.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict cross-account access controls",
+      "recommendation: Enhance monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_snapshot_storage",
+    "description": "Snapshot Data Exposure Misconfigured S3 bucket policies or overly permissive IAM roles could allow unauthorized access to snapshot data. Attacker finds a misconfigured bucket policy that allows public access or exploits overly permissive IAM roles to access snapshots.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "cwe: CWE-200",
+      "recommendation: Implement comprehensive S3 security controls",
+      "recommendation: Regular security assessments"
+    ]
   }
 ]

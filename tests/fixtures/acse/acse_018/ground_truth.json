@@ -1,66 +1,228 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.cognito_user_pools",
+    "description": "Unauthorized Access to Admin Interface Without proper role-based access control (RBAC) and IAM policies, administrative interfaces could be accessed by regular users or attackers who obtain valid credentials. An attacker with valid user credentials attempts to access admin endpoints by manipulating API requests, potentially gaining elevated privileges.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict RBAC using Cognito Groups and IAM roles",
+      "recommendation: Implement administrative API endpoint protection"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.cognito_user_pools",
+    "description": "Unauthorized Access to Admin Interface Without proper role-based access control (RBAC) and IAM policies, administrative interfaces could be accessed by regular users or attackers who obtain valid credentials. An attacker with valid user credentials attempts to access admin endpoints by manipulating API requests, potentially gaining elevated privileges.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict RBAC using Cognito Groups and IAM roles",
+      "recommendation: Implement administrative API endpoint protection"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "API Rate Limiting Bypass Without rate limiting, attackers can flood the API with requests, potentially exhausting resources or causing service degradation. An attacker scripts multiple concurrent requests to API endpoints, causing increased latency or failures for legitimate users.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-770",
+      "recommendation: Implement API Gateway usage plans and throttling",
+      "recommendation: Add application-level rate limiting"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.ecs_containers",
+    "description": "Container Scaling Security Issues Improper scaling configurations can lead to container termination without proper connection draining, causing service disruptions. During high load, rapid scaling events could cause connection drops or expose container metadata to attackers.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499.004 - Application or System Exploitation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Denial of Service",
+      "stride: Information Disclosure",
+      "cwe: CWE-670",
+      "recommendation: Implement proper container scaling configuration",
+      "recommendation: Consider migration to EKS or AWS App Runner"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.ecs_containers",
+    "description": "Container Scaling Security Issues Improper scaling configurations can lead to container termination without proper connection draining, causing service disruptions. During high load, rapid scaling events could cause connection drops or expose container metadata to attackers.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499.004 - Application or System Exploitation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Denial of Service",
+      "stride: Information Disclosure",
+      "cwe: CWE-670",
+      "recommendation: Implement proper container scaling configuration",
+      "recommendation: Consider migration to EKS or AWS App Runner"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.kinesis_data_streams",
+    "description": "Analytics Pipeline Data Access Control Issues Lack of fine-grained access controls and data filtering in the analytics pipeline could expose sensitive data to unauthorized users. An analyst with QuickSight access could view sensitive customer data that should be restricted or anonymized.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement data access controls throughout analytics pipeline",
+      "recommendation: Implement data transformation and filtering"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
+    "threat_id": "THREAT-004-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.kinesis_data_streams",
+    "description": "Analytics Pipeline Data Access Control Issues Lack of fine-grained access controls and data filtering in the analytics pipeline could expose sensitive data to unauthorized users. An analyst with QuickSight access could view sensitive customer data that should be restricted or anonymized.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement data access controls throughout analytics pipeline",
+      "recommendation: Implement data transformation and filtering"
+    ]
   },
   {
-    "threat_id": "ACSE-008",
+    "threat_id": "THREAT-005-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "TLS Configuration Vulnerabilities Without proper TLS configuration, communication between clients and services could be intercepted or modified. An attacker performs a man-in-the-middle attack on unencrypted or improperly encrypted communications.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-295",
+      "recommendation: Implement ACM certificates and proper TLS configuration",
+      "recommendation: Configure security headers and HSTS"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "TLS Configuration Vulnerabilities Without proper TLS configuration, communication between clients and services could be intercepted or modified. An attacker performs a man-in-the-middle attack on unencrypted or improperly encrypted communications.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-295",
+      "recommendation: Implement ACM certificates and proper TLS configuration",
+      "recommendation: Configure security headers and HSTS"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Spoofing",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "DNS-Level Attacks Without proper DNS protection, attackers could hijack DNS requests or perform DNS poisoning attacks. An attacker attempts to redirect traffic by manipulating DNS responses or performing DNS cache poisoning.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1071.004 - Application Layer Protocol: DNS",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-350",
+      "recommendation: Implement Route 53 DNS firewall",
+      "recommendation: Enable DNSSEC and implement DNS monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Tampering",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "DNS-Level Attacks Without proper DNS protection, attackers could hijack DNS requests or perform DNS poisoning attacks. An attacker attempts to redirect traffic by manipulating DNS responses or performing DNS cache poisoning.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1071.004 - Application Layer Protocol: DNS",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-350",
+      "recommendation: Implement Route 53 DNS firewall",
+      "recommendation: Enable DNSSEC and implement DNS monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure Direct Object References in API APIs might use predictable resource IDs or fail to verify access permissions before returning data. An attacker modifies resource IDs in API requests to access unauthorized data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement proper authorization checks",
+      "recommendation: Implement resource-level access control"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Tampering",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure Direct Object References in API APIs might use predictable resource IDs or fail to verify access permissions before returning data. An attacker modifies resource IDs in API requests to access unauthorized data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement proper authorization checks",
+      "recommendation: Implement resource-level access control"
+    ]
+  },
+  {
+    "threat_id": "THREAT-008",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.all_components",
+    "description": "Insufficient Logging and Monitoring Without proper logging and monitoring, security incidents might not be detected or investigated effectively. An attacker performs reconnaissance or data exfiltration without detection due to insufficient logging.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive logging",
+      "recommendation: Implement security monitoring and alerting"
+    ]
   }
 ]

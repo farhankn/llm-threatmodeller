@@ -1,42 +1,147 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Unauthenticated API Access The API Gateway is configured with no authentication mechanism and an overly permissive resource policy that allows any principal to invoke the API. This means anyone who discovers the API endpoint can trigger load tests without authentication. An attacker could discover the API endpoint and trigger multiple load tests simultaneously, causing resource exhaustion or accessing sensitive test configurations.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement proper authentication and authorization for the API Gateway",
+      "recommendation: Implement rate limiting and throttling"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Unauthenticated API Access The API Gateway is configured with no authentication mechanism and an overly permissive resource policy that allows any principal to invoke the API. This means anyone who discovers the API endpoint can trigger load tests without authentication. An attacker could discover the API endpoint and trigger multiple load tests simultaneously, causing resource exhaustion or accessing sensitive test configurations.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement proper authentication and authorization for the API Gateway",
+      "recommendation: Implement rate limiting and throttling"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb_test_config_table",
+    "description": "Insecure Direct Access to DynamoDB The Lambda function has direct read access to the DynamoDB table through IAM permissions, bypassing any potential application-level access controls or audit logging. If the Lambda function is compromised through code injection or other means, an attacker could directly access and exfiltrate sensitive test configurations from DynamoDB.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-923",
+      "recommendation: Implement an API layer for DynamoDB access",
+      "recommendation: Implement fine-grained access controls"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_db_instance.dynamodb_test_config_table",
+    "description": "Insecure Direct Access to DynamoDB The Lambda function has direct read access to the DynamoDB table through IAM permissions, bypassing any potential application-level access controls or audit logging. If the Lambda function is compromised through code injection or other means, an attacker could directly access and exfiltrate sensitive test configurations from DynamoDB.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-923",
+      "recommendation: Implement an API layer for DynamoDB access",
+      "recommendation: Implement fine-grained access controls"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.codebuild_project",
+    "description": "Container Image Security Risks Container images are tagged as 'latest' which can lead to deployment of untested or compromised images. While image scanning is enabled, there's no enforcement of scan results or vulnerability thresholds. An attacker could compromise the build process to inject malicious code into the container image, which would then be automatically deployed to all Fargate tasks.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1525 - Implant Container Image",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1104",
+      "recommendation: Implement secure container image practices",
+      "recommendation: Enhance CodeBuild security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.codebuild_project",
+    "description": "Container Image Security Risks Container images are tagged as 'latest' which can lead to deployment of untested or compromised images. While image scanning is enabled, there's no enforcement of scan results or vulnerability thresholds. An attacker could compromise the build process to inject malicious code into the container image, which would then be automatically deployed to all Fargate tasks.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1525 - Implant Container Image",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1104",
+      "recommendation: Implement secure container image practices",
+      "recommendation: Enhance CodeBuild security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Logging While basic logging is implemented, there's no comprehensive monitoring strategy. Logs are stored but not actively monitored or analyzed for security events. An attacker could perform reconnaissance or execute attacks without detection due to insufficient monitoring and alerting.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive logging and monitoring",
+      "recommendation: Implement security monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_bucket",
+    "description": "S3 Bucket Data Exposure Multiple components have read/write access to the S3 bucket. While public access is blocked, there's potential for data leakage through misconfigured IAM roles or compromised components. A compromised Fargate task could exfiltrate sensitive test data or upload malicious content to the S3 bucket.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Enhance S3 bucket security controls",
+      "recommendation: Implement least privilege access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.s3_bucket",
+    "description": "S3 Bucket Data Exposure Multiple components have read/write access to the S3 bucket. While public access is blocked, there's potential for data leakage through misconfigured IAM roles or compromised components. A compromised Fargate task could exfiltrate sensitive test data or upload malicious content to the S3 bucket.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Enhance S3 bucket security controls",
+      "recommendation: Implement least privilege access"
+    ]
   }
 ]

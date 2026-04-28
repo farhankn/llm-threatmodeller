@@ -1,42 +1,198 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.staticwebsitebucket",
+    "description": "Unauthorized S3 Bucket Access via Misconfigured Public Access The S3 bucket hosting the static website has publicReadAccess enabled and BlockPublicAccess settings disabled to allow website hosting. Without proper bucket policies and origin access controls, this could allow unauthorized access to website content. An attacker could bypass CloudFront and directly access the S3 bucket URL to retrieve website content or potentially upload malicious content if write permissions are not properly restricted.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement CloudFront Origin Access Identity (OAI) for S3 bucket access",
+      "recommendation: Enhance S3 bucket security configuration"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_s3_bucket.staticwebsitebucket",
+    "description": "Unauthorized S3 Bucket Access via Misconfigured Public Access The S3 bucket hosting the static website has publicReadAccess enabled and BlockPublicAccess settings disabled to allow website hosting. Without proper bucket policies and origin access controls, this could allow unauthorized access to website content. An attacker could bypass CloudFront and directly access the S3 bucket URL to retrieve website content or potentially upload malicious content if write permissions are not properly restricted.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement CloudFront Origin Access Identity (OAI) for S3 bucket access",
+      "recommendation: Enhance S3 bucket security configuration"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_lambda_function.uploadhandler_lambda",
+    "description": "Insecure Data Processing Pipeline The data processing pipeline accepts raw data uploads, processes them through Lambda functions, and stores results in S3. Without proper validation and sanitization, malicious data could lead to injection attacks or data leakage. An attacker could upload specially crafted data that contains malicious code or sensitive information, which could be executed during processing or exposed in visualizations.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-915",
+      "recommendation: Implement comprehensive data validation and sanitization",
+      "recommendation: Enhance data processing security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Repudiation",
+    "component": "aws_lambda_function.uploadhandler_lambda",
+    "description": "Insecure Data Processing Pipeline The data processing pipeline accepts raw data uploads, processes them through Lambda functions, and stores results in S3. Without proper validation and sanitization, malicious data could lead to injection attacks or data leakage. An attacker could upload specially crafted data that contains malicious code or sensitive information, which could be executed during processing or exposed in visualizations.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-915",
+      "recommendation: Implement comprehensive data validation and sanitization",
+      "recommendation: Enhance data processing security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-3",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.uploadhandler_lambda",
+    "description": "Insecure Data Processing Pipeline The data processing pipeline accepts raw data uploads, processes them through Lambda functions, and stores results in S3. Without proper validation and sanitization, malicious data could lead to injection attacks or data leakage. An attacker could upload specially crafted data that contains malicious code or sensitive information, which could be executed during processing or exposed in visualizations.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-915",
+      "recommendation: Implement comprehensive data validation and sanitization",
+      "recommendation: Enhance data processing security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient API Security Controls The API Gateway is configured with CORS allowing all origins and methods, and lacks proper authentication mechanisms. While it uses IAM for service-to-service communication, user authentication is not properly implemented. An attacker could forge requests to the API endpoints, bypassing intended access controls and potentially accessing or modifying sensitive data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement proper API authentication and authorization",
+      "recommendation: Enhance API security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient API Security Controls The API Gateway is configured with CORS allowing all origins and methods, and lacks proper authentication mechanisms. While it uses IAM for service-to-service communication, user authentication is not properly implemented. An attacker could forge requests to the API endpoints, bypassing intended access controls and potentially accessing or modifying sensitive data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement proper API authentication and authorization",
+      "recommendation: Enhance API security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient API Security Controls The API Gateway is configured with CORS allowing all origins and methods, and lacks proper authentication mechanisms. While it uses IAM for service-to-service communication, user authentication is not properly implemented. An attacker could forge requests to the API endpoints, bypassing intended access controls and potentially accessing or modifying sensitive data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement proper API authentication and authorization",
+      "recommendation: Enhance API security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb_metadata_store",
+    "description": "Insecure Data Storage Configuration While the infrastructure uses AWS managed encryption, it lacks customer-managed keys and proper access controls for fine-grained data protection. An attacker with access to the AWS environment could potentially access sensitive data if proper encryption and access controls are not in place.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Implement enhanced encryption controls",
+      "recommendation: Enhance data access controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_db_instance.dynamodb_metadata_store",
+    "description": "Insecure Data Storage Configuration While the infrastructure uses AWS managed encryption, it lacks customer-managed keys and proper access controls for fine-grained data protection. An attacker with access to the AWS environment could potentially access sensitive data if proper encryption and access controls are not in place.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Implement enhanced encryption controls",
+      "recommendation: Enhance data access controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Incident Response While basic CloudWatch logging is enabled, the platform lacks comprehensive monitoring, alerting, and automated response capabilities for security events. An attacker could perform malicious activities without detection due to insufficient monitoring and alerting.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive monitoring and logging",
+      "recommendation: Enhance security monitoring and response"
+    ]
   }
 ]

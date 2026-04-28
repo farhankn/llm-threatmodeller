@@ -1,42 +1,215 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_vpc.vpc_us-west-2",
+    "description": "Unauthorized Access via Missing VPC Endpoints Without VPC endpoints, AWS service traffic may traverse the public internet instead of staying within AWS's private network. This creates unnecessary exposure and potential interception points. An attacker could intercept or manipulate AWS API calls by exploiting the lack of private connectivity, potentially gaining access to sensitive operations or data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1133 - External Remote Services",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement VPC endpoints for all required AWS services",
+      "recommendation: Implement strict security group rules for VPC endpoints"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc_us-west-2",
+    "description": "Unauthorized Access via Missing VPC Endpoints Without VPC endpoints, AWS service traffic may traverse the public internet instead of staying within AWS's private network. This creates unnecessary exposure and potential interception points. An attacker could intercept or manipulate AWS API calls by exploiting the lack of private connectivity, potentially gaining access to sensitive operations or data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1133 - External Remote Services",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement VPC endpoints for all required AWS services",
+      "recommendation: Implement strict security group rules for VPC endpoints"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_vpc.vpc_us-west-2",
+    "description": "Insufficient Network Segmentation Between Regions Without proper network segmentation and security group configurations, resources in one region might have unnecessary access to resources in another region. If an attacker compromises a workload in one region, they could potentially move laterally to access resources in the other region due to insufficient network boundaries.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-923",
+      "recommendation: Implement strict network segmentation between regions",
+      "recommendation: Implement network traffic monitoring and logging"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc_us-west-2",
+    "description": "Insufficient Network Segmentation Between Regions Without proper network segmentation and security group configurations, resources in one region might have unnecessary access to resources in another region. If an attacker compromises a workload in one region, they could potentially move laterally to access resources in the other region due to insufficient network boundaries.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-923",
+      "recommendation: Implement strict network segmentation between regions",
+      "recommendation: Implement network traffic monitoring and logging"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_vpc.vpc_us-west-2",
+    "description": "Insufficient Network Segmentation Between Regions Without proper network segmentation and security group configurations, resources in one region might have unnecessary access to resources in another region. If an attacker compromises a workload in one region, they could potentially move laterally to access resources in the other region due to insufficient network boundaries.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-923",
+      "recommendation: Implement strict network segmentation between regions",
+      "recommendation: Implement network traffic monitoring and logging"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "API Gateway Exposure to Web Attacks Without WAF protection, the API Gateway is exposed to common web attacks such as SQL injection, XSS, and DDoS. Attackers could perform DDoS attacks or attempt to exploit common web vulnerabilities to gain unauthorized access or disrupt services.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-284",
+      "recommendation: Implement AWS WAF with API Gateway",
+      "recommendation: Implement comprehensive API Gateway logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Tampering",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "API Gateway Exposure to Web Attacks Without WAF protection, the API Gateway is exposed to common web attacks such as SQL injection, XSS, and DDoS. Attackers could perform DDoS attacks or attempt to exploit common web vulnerabilities to gain unauthorized access or disrupt services.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-284",
+      "recommendation: Implement AWS WAF with API Gateway",
+      "recommendation: Implement comprehensive API Gateway logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "API Gateway Exposure to Web Attacks Without WAF protection, the API Gateway is exposed to common web attacks such as SQL injection, XSS, and DDoS. Attackers could perform DDoS attacks or attempt to exploit common web vulnerabilities to gain unauthorized access or disrupt services.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-284",
+      "recommendation: Implement AWS WAF with API Gateway",
+      "recommendation: Implement comprehensive API Gateway logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.efs_storage_both_regions",
+    "description": "Insecure Cross-Region Data Synchronization Data synchronization between EFS systems in different regions could be intercepted if not properly encrypted in transit. An attacker could potentially intercept or manipulate data during cross-region synchronization if encryption is not properly implemented.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1048 - Exfiltration Over Alternative Protocol",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement secure cross-region data synchronization",
+      "recommendation: Implement monitoring for data sync operations"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.efs_storage_both_regions",
+    "description": "Insecure Cross-Region Data Synchronization Data synchronization between EFS systems in different regions could be intercepted if not properly encrypted in transit. An attacker could potentially intercept or manipulate data during cross-region synchronization if encryption is not properly implemented.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1048 - Exfiltration Over Alternative Protocol",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement secure cross-region data synchronization",
+      "recommendation: Implement monitoring for data sync operations"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_eks_cluster.eks_clusters",
+    "description": "Container Escape and Data Exfiltration Vulnerabilities in container runtime or misconfigured pod security policies could allow containers to escape their isolation and access host resources. An attacker could exploit a vulnerable container to escape to the host, potentially accessing sensitive data or moving laterally within the cluster.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1611 - Container Escape",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-269",
+      "recommendation: Implement comprehensive container security controls",
+      "recommendation: Implement container monitoring and logging"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_eks_cluster.eks_clusters",
+    "description": "Container Escape and Data Exfiltration Vulnerabilities in container runtime or misconfigured pod security policies could allow containers to escape their isolation and access host resources. An attacker could exploit a vulnerable container to escape to the host, potentially accessing sensitive data or moving laterally within the cluster.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1611 - Container Escape",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-269",
+      "recommendation: Implement comprehensive container security controls",
+      "recommendation: Implement container monitoring and logging"
+    ]
   }
 ]

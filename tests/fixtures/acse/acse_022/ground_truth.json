@@ -1,42 +1,147 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.aws_iot_twinmaker",
     "description": "Attackers could gain unauthorized access to sensitive digital twin data through misconfigured IAM permissions or compromised credentials, potentially exposing industrial asset information and operational data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement strict IAM policies following the principle of least privilege",
+      "recommendation: Enhance authentication and authorization controls"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.aws_iot_twinmaker",
+    "description": "Attackers could gain unauthorized access to sensitive digital twin data through misconfigured IAM permissions or compromised credentials, potentially exposing industrial asset information and operational data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement strict IAM policies following the principle of least privilege",
+      "recommendation: Enhance authentication and authorization controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_resource.aws_iot_twinmaker",
     "description": "Manipulation or corruption of digital twin data could lead to incorrect simulations, false analytics, and potentially dangerous physical system optimizations.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement comprehensive data validation and integrity checks",
+      "recommendation: Implement versioning and rollback capabilities"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.aws_iot_twinmaker",
+    "description": "Manipulation or corruption of digital twin data could lead to incorrect simulations, false analytics, and potentially dangerous physical system optimizations.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement comprehensive data validation and integrity checks",
+      "recommendation: Implement versioning and rollback capabilities"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.aws_iot_twinmaker",
     "description": "Single points of failure and lack of redundancy could lead to system-wide outages and loss of digital twin functionality.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-311",
+      "recommendation: Implement service redundancy and disaster recovery",
+      "recommendation: Implement circuit breakers and fallback mechanisms"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.all_services",
     "description": "Lack of comprehensive monitoring and anomaly detection could allow attacks or system issues to go unnoticed.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Implement comprehensive security monitoring",
+      "recommendation: Implement automated security testing"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.all_services",
+    "description": "Lack of comprehensive monitoring and anomaly detection could allow attacks or system issues to go unnoticed.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Implement comprehensive security monitoring",
+      "recommendation: Implement automated security testing"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_resource.aws_robomaker",
     "description": "Attackers could exploit gaps between simulated and real-world behavior to cause operational disruptions or safety incidents.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565.003 - Runtime Data Manipulation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-436",
+      "recommendation: Implement simulation validation framework",
+      "recommendation: Enhance monitoring and safety controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.aws_robomaker",
+    "description": "Attackers could exploit gaps between simulated and real-world behavior to cause operational disruptions or safety incidents.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565.003 - Runtime Data Manipulation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-436",
+      "recommendation: Implement simulation validation framework",
+      "recommendation: Enhance monitoring and safety controls"
+    ]
   }
 ]

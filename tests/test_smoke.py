@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 from typer.testing import CliRunner
 
@@ -142,3 +143,79 @@ def test_analyze_rejects_invalid_doc_token_options() -> None:
     )
     assert result.exit_code != 0
     assert "Invalid document token options" in result.output
+
+
+def test_analyze_pdf_requires_output(monkeypatch) -> None:
+    class _FakeLLMClient:
+        def validate(self) -> None:
+            return None
+
+        def generate(self, prompt: dict[str, str], temperature: float = 0.5) -> str:
+            return json.dumps(
+                [
+                    {
+                        "threat_id": "T-1",
+                        "stride_category": "Tampering",
+                        "component": "aws_db_instance.app",
+                        "description": "db exposure",
+                        "discrepancy_flag": False,
+                        "references": [],
+                    }
+                ]
+            )
+
+    monkeypatch.setattr("threatcli.cli.get_llm_client", lambda _provider, **_kwargs: _FakeLLMClient())
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "analyze",
+            "--iac",
+            "tests/fixtures/tri_01/main.tf",
+            "--format",
+            "pdf",
+        ],
+    )
+    assert result.exit_code != 0
+    assert "PDF output requires --output" in result.output
+
+
+def test_analyze_pdf_writes_pdf_file(monkeypatch, tmp_path: Path) -> None:
+    class _FakeLLMClient:
+        def validate(self) -> None:
+            return None
+
+        def generate(self, prompt: dict[str, str], temperature: float = 0.5) -> str:
+            return json.dumps(
+                [
+                    {
+                        "threat_id": "T-1",
+                        "stride_category": "Information Disclosure",
+                        "component": "aws_s3_bucket.logs",
+                        "description": "public logs",
+                        "discrepancy_flag": True,
+                        "references": ["r1"],
+                    }
+                ]
+            )
+
+    monkeypatch.setattr("threatcli.cli.get_llm_client", lambda _provider, **_kwargs: _FakeLLMClient())
+    output_path = tmp_path / "report.pdf"
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "analyze",
+            "--iac",
+            "tests/fixtures/tri_01/main.tf",
+            "--format",
+            "pdf",
+            "--output",
+            str(output_path),
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert output_path.exists()
+    assert output_path.read_bytes().startswith(b"%PDF-")

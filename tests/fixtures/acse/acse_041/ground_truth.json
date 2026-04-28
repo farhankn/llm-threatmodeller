@@ -1,42 +1,143 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Missing TLS Certificate Management Without proper TLS implementation, data transmitted between on-premises systems and AWS cloud services could be intercepted or modified in transit. This is particularly critical for API calls and database connections. An attacker with access to network traffic could intercept sensitive data flowing between on-premises systems and AWS services, potentially capturing credentials, business data, or manipulating API requests.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement ACM for TLS certificate management",
+      "recommendation: Enable TLS for all service connections"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Missing TLS Certificate Management Without proper TLS implementation, data transmitted between on-premises systems and AWS cloud services could be intercepted or modified in transit. This is particularly critical for API calls and database connections. An attacker with access to network traffic could intercept sensitive data flowing between on-premises systems and AWS services, potentially capturing credentials, business data, or manipulating API requests.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement ACM for TLS certificate management",
+      "recommendation: Enable TLS for all service connections"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Overly Permissive API Gateway Resource Policy The current API Gateway policy uses 'AnyPrincipal' with only VPC ID as a condition, allowing any entity within the VPC to access the API regardless of their specific permissions. An attacker who gains access to any resource within the VPC could potentially access the API Gateway endpoints without proper authentication or authorization.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement fine-grained API Gateway resource policy"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Overly Permissive API Gateway Resource Policy The current API Gateway policy uses 'AnyPrincipal' with only VPC ID as a condition, allowing any entity within the VPC to access the API regardless of their specific permissions. An attacker who gains access to any resource within the VPC could potentially access the API Gateway endpoints without proper authentication or authorization.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement fine-grained API Gateway resource policy"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.rds",
+    "description": "Insufficient Database Encryption Controls While data-at-rest encryption is configured, the lack of explicit SSL/TLS enforcement for database connections and absence of client-side encryption for sensitive data could expose information. An attacker with network access could potentially intercept database traffic or access unencrypted sensitive data in the application layer.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-311",
+      "recommendation: Enforce SSL/TLS for database connections",
+      "recommendation: Implement client-side encryption for sensitive data"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.vpn_connection",
+    "description": "Insufficient VPN Backup Security The VPN backup configuration uses static routing and basic IPsec without additional security controls or detailed monitoring. An attacker could potentially exploit weaknesses in the VPN configuration during failover scenarios, gaining unauthorized access to the AWS environment.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Enhance VPN security controls",
+      "recommendation: Implement VPN tunnel monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.vpn_connection",
+    "description": "Insufficient VPN Backup Security The VPN backup configuration uses static routing and basic IPsec without additional security controls or detailed monitoring. An attacker could potentially exploit weaknesses in the VPN configuration during failover scenarios, gaining unauthorized access to the AWS environment.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Enhance VPN security controls",
+      "recommendation: Implement VPN tunnel monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.lambda_integration_service",
+    "description": "Inadequate Secrets Management Some credentials and sensitive configuration values are managed through environment variables or configuration files rather than using AWS Secrets Manager consistently. An attacker gaining access to environment variables or configuration files could extract sensitive credentials and connection strings.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-798",
+      "recommendation: Implement comprehensive secrets management",
+      "recommendation: Implement secret rotation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.lambda_integration_service",
+    "description": "Inadequate Secrets Management Some credentials and sensitive configuration values are managed through environment variables or configuration files rather than using AWS Secrets Manager consistently. An attacker gaining access to environment variables or configuration files could extract sensitive credentials and connection strings.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-798",
+      "recommendation: Implement comprehensive secrets management",
+      "recommendation: Implement secret rotation"
+    ]
   }
 ]

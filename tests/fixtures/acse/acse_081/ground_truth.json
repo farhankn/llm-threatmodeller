@@ -1,58 +1,216 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.sourcedatabucket",
+    "description": "Unauthorized S3 Bucket Access Misconfigured bucket policies, overly permissive IAM roles, or disabled bucket public access blocks could allow unauthorized access to sensitive data. An attacker could exploit misconfigured bucket permissions to list, download, or modify sensitive data in the S3 buckets.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies and enable block public access settings"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_s3_bucket.sourcedatabucket",
+    "description": "Unauthorized S3 Bucket Access Misconfigured bucket policies, overly permissive IAM roles, or disabled bucket public access blocks could allow unauthorized access to sensitive data. An attacker could exploit misconfigured bucket permissions to list, download, or modify sensitive data in the S3 buckets.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies and enable block public access settings"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.mobile_device",
+    "description": "Insecure Data Transmission Without proper encryption in transit and endpoint validation, data could be intercepted during transmission or sent from unauthorized endpoints. An attacker could perform a man-in-the-middle attack to intercept data being uploaded to S3 or use compromised credentials to upload malicious data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1048 - Exfiltration Over Alternative Protocol",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Implement strong encryption in transit and endpoint validation"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.mobile_device",
+    "description": "Insecure Data Transmission Without proper encryption in transit and endpoint validation, data could be intercepted during transmission or sent from unauthorized endpoints. An attacker could perform a man-in-the-middle attack to intercept data being uploaded to S3 or use compromised credentials to upload malicious data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1048 - Exfiltration Over Alternative Protocol",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Implement strong encryption in transit and endpoint validation"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-3",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.mobile_device",
+    "description": "Insecure Data Transmission Without proper encryption in transit and endpoint validation, data could be intercepted during transmission or sent from unauthorized endpoints. An attacker could perform a man-in-the-middle attack to intercept data being uploaded to S3 or use compromised credentials to upload malicious data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1048 - Exfiltration Over Alternative Protocol",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Implement strong encryption in transit and endpoint validation"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.lambda",
+    "description": "Insufficient Key Management Lack of proper key rotation, storage, or access controls for encryption keys and secrets could lead to compromise. An attacker gaining access to unrotated keys or improperly stored secrets could decrypt sensitive data or gain unauthorized access to services.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-320",
+      "recommendation: Implement comprehensive key management using AWS KMS"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.lambda",
+    "description": "Insufficient Key Management Lack of proper key rotation, storage, or access controls for encryption keys and secrets could lead to compromise. An attacker gaining access to unrotated keys or improperly stored secrets could decrypt sensitive data or gain unauthorized access to services.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-320",
+      "recommendation: Implement comprehensive key management using AWS KMS"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.glue_etl_jobs",
+    "description": "ETL Job Manipulation Malicious input data or compromised ETL scripts could lead to data manipulation or resource exhaustion. An attacker could inject malicious data or modify ETL scripts to exfiltrate or corrupt data, or consume excessive resources.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-915",
+      "recommendation: Implement comprehensive ETL job security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.glue_etl_jobs",
+    "description": "ETL Job Manipulation Malicious input data or compromised ETL scripts could lead to data manipulation or resource exhaustion. An attacker could inject malicious data or modify ETL scripts to exfiltrate or corrupt data, or consume excessive resources.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-915",
+      "recommendation: Implement comprehensive ETL job security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.glue_etl_jobs",
+    "description": "ETL Job Manipulation Malicious input data or compromised ETL scripts could lead to data manipulation or resource exhaustion. An attacker could inject malicious data or modify ETL scripts to exfiltrate or corrupt data, or consume excessive resources.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-915",
+      "recommendation: Implement comprehensive ETL job security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_s3_bucket.s3",
+    "description": "Insufficient Disaster Recovery Without proper backup and recovery procedures, system failures or attacks could result in permanent data loss or extended downtime. A ransomware attack or accidental deletion could result in data loss if proper backup and recovery mechanisms are not in place.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1485 - Data Destruction",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-1051",
+      "recommendation: Implement comprehensive disaster recovery mechanisms"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3",
+    "description": "Data Sovereignty Violation Data processed or stored in non-compliant regions could violate regulatory requirements and data sovereignty laws. Processing EU citizen data in non-EU regions could result in regulatory violations and fines.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "cwe: CWE-311",
+      "recommendation: Implement data sovereignty controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Alerting Without proper monitoring and alerting, security incidents or system issues could go undetected or be detected too late for effective response. An attacker could perform data exfiltration or resource abuse without detection due to insufficient monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Implement comprehensive monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Alerting Without proper monitoring and alerting, security incidents or system issues could go undetected or be detected too late for effective response. An attacker could perform data exfiltration or resource abuse without detection due to insufficient monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Implement comprehensive monitoring and alerting"
+    ]
   }
 ]

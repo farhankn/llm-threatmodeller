@@ -1,42 +1,170 @@
 [
   {
-    "threat_id": "ACSE-001",
+    "threat_id": "THREAT-001-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.cloudwatch_events",
+    "description": "Event Injection via CloudWatch Events/EventBridge An attacker could craft malicious event patterns or payloads that exploit insufficient input validation in the CloudWatch Poller Lambda function. This could potentially lead to SQL injection-like attacks against DynamoDB or manipulation of service quota monitoring data. An attacker with access to EventBridge could inject a malformed event that contains specially crafted data to manipulate the quota monitoring system, potentially hiding service quota violations or triggering false alerts.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-74",
+      "recommendation: Implement strict event pattern validation in EventBridge rules",
+      "recommendation: Implement least privilege permissions for EventBridge rules"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.cloudwatch_events",
+    "description": "Event Injection via CloudWatch Events/EventBridge An attacker could craft malicious event patterns or payloads that exploit insufficient input validation in the CloudWatch Poller Lambda function. This could potentially lead to SQL injection-like attacks against DynamoDB or manipulation of service quota monitoring data. An attacker with access to EventBridge could inject a malformed event that contains specially crafted data to manipulate the quota monitoring system, potentially hiding service quota violations or triggering false alerts.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-74",
+      "recommendation: Implement strict event pattern validation in EventBridge rules",
+      "recommendation: Implement least privilege permissions for EventBridge rules"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.quota_table",
+    "description": "Unauthorized Access to DynamoDB Tables While the CDK code implements separate IAM roles for each Lambda function, some roles have broad permissions (e.g., Scan, Query) on the DynamoDB tables. This could be exploited if a Lambda function is compromised. If an attacker compromises the CloudWatch Poller Lambda, they could potentially read or modify all data in both DynamoDB tables due to the broad permissions granted.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement fine-grained access controls for DynamoDB",
+      "recommendation: Enable DynamoDB encryption with customer managed keys"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.quota_table",
+    "description": "Unauthorized Access to DynamoDB Tables While the CDK code implements separate IAM roles for each Lambda function, some roles have broad permissions (e.g., Scan, Query) on the DynamoDB tables. This could be exploited if a Lambda function is compromised. If an attacker compromises the CloudWatch Poller Lambda, they could potentially read or modify all data in both DynamoDB tables due to the broad permissions granted.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement fine-grained access controls for DynamoDB",
+      "recommendation: Enable DynamoDB encryption with customer managed keys"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_lambda_function.slack_notifier_lambda",
+    "description": "Slack Notification Channel Exploitation The Slack notification system relies on proper authentication and message validation. If these controls fail, an attacker could potentially inject messages into the notification pipeline or intercept sensitive data being sent to Slack. An attacker who compromises the SNS topic or SQS queue could potentially send malicious messages that appear legitimate to Slack users, leading to potential phishing attacks or data exposure.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-287",
+      "recommendation: Implement secure storage of Slack credentials",
+      "recommendation: Enhance message validation and authentication"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.slack_notifier_lambda",
+    "description": "Slack Notification Channel Exploitation The Slack notification system relies on proper authentication and message validation. If these controls fail, an attacker could potentially inject messages into the notification pipeline or intercept sensitive data being sent to Slack. An attacker who compromises the SNS topic or SQS queue could potentially send malicious messages that appear legitimate to Slack users, leading to potential phishing attacks or data exposure.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-287",
+      "recommendation: Implement secure storage of Slack credentials",
+      "recommendation: Enhance message validation and authentication"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.sqs_queue",
+    "description": "Message Replay Attacks in Queue System While the SQS queue is configured as FIFO with content-based deduplication, the system could still be vulnerable to replay attacks if the deduplication ID generation is predictable or if messages are intercepted and replayed outside the deduplication interval. An attacker could capture legitimate notification messages and replay them later, causing confusion or alert fatigue among recipients.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-294",
+      "recommendation: Implement custom message deduplication",
+      "recommendation: Enable message encryption and signing"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.sqs_queue",
+    "description": "Message Replay Attacks in Queue System While the SQS queue is configured as FIFO with content-based deduplication, the system could still be vulnerable to replay attacks if the deduplication ID generation is predictable or if messages are intercepted and replayed outside the deduplication interval. An attacker could capture legitimate notification messages and replay them later, causing confusion or alert fatigue among recipients.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-294",
+      "recommendation: Implement custom message deduplication",
+      "recommendation: Enable message encryption and signing"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.all_lambda_functions",
+    "description": "Lambda Function Chain Exploitation The system uses multiple Lambda functions with complex dependencies and interactions. Vulnerabilities in shared dependencies or the function invocation chain could be exploited to compromise the system. An attacker could exploit a vulnerability in a shared NPM package used by multiple Lambda functions to execute malicious code across the function chain.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1195.001 - Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-1104",
+      "recommendation: Implement Lambda function dependency scanning",
+      "recommendation: Enhance Lambda function isolation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.all_lambda_functions",
+    "description": "Lambda Function Chain Exploitation The system uses multiple Lambda functions with complex dependencies and interactions. Vulnerabilities in shared dependencies or the function invocation chain could be exploited to compromise the system. An attacker could exploit a vulnerability in a shared NPM package used by multiple Lambda functions to execute malicious code across the function chain.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1195.001 - Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-1104",
+      "recommendation: Implement Lambda function dependency scanning",
+      "recommendation: Enhance Lambda function isolation"
+    ]
   }
 ]

@@ -1,50 +1,208 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.directoryservice",
+    "description": "Identity Provider Directory Services Pollution An attacker could potentially exploit weaknesses in the Directory Services configuration or synchronization process to inject malicious mappings or modify existing ones. This could cause the Lambda authorizer to trust fraudulent identity claims. An attacker compromises the directory synchronization process to add their own identity mapping, then uses this to obtain valid access tokens from the Lambda authorizer.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1556 - Modify Authentication Process",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement strict validation and monitoring of Directory Services changes",
+      "recommendation: Enhance Lambda authorizer token validation"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.directoryservice",
+    "description": "Identity Provider Directory Services Pollution An attacker could potentially exploit weaknesses in the Directory Services configuration or synchronization process to inject malicious mappings or modify existing ones. This could cause the Lambda authorizer to trust fraudulent identity claims. An attacker compromises the directory synchronization process to add their own identity mapping, then uses this to obtain valid access tokens from the Lambda authorizer.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1556 - Modify Authentication Process",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement strict validation and monitoring of Directory Services changes",
+      "recommendation: Enhance Lambda authorizer token validation"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.brokerrole",
+    "description": "Cross-Account Role Assumption Attack The broker role has permission to assume roles in the target account. If compromised, an attacker could leverage this trust relationship to gain unauthorized access to resources in the target account. An attacker who compromises the broker role credentials could use sts:AssumeRole to gain access to the target account's elevated access role, potentially accessing sensitive resources.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "mitreATT&CK: T1078.004 - Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-269",
+      "recommendation: Implement IAM permission boundaries",
+      "recommendation: Enhance role assumption conditions"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_iam_role.brokerrole",
+    "description": "Cross-Account Role Assumption Attack The broker role has permission to assume roles in the target account. If compromised, an attacker could leverage this trust relationship to gain unauthorized access to resources in the target account. An attacker who compromises the broker role credentials could use sts:AssumeRole to gain access to the target account's elevated access role, potentially accessing sensitive resources.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "mitreATT&CK: T1078.004 - Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-269",
+      "recommendation: Implement IAM permission boundaries",
+      "recommendation: Enhance role assumption conditions"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Token Exfiltration and Session Fixation Tokens could be exfiltrated through MITM attacks, XSS vulnerabilities, or client-side malware. Once obtained, these tokens could be used to impersonate legitimate users. An attacker performs a MITM attack to capture access tokens in transit, then uses these tokens to make authenticated API calls to the system.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1528 - Steal Application Access Token",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-384",
+      "recommendation: Implement token security controls",
+      "recommendation: Enhance transport security"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Token Exfiltration and Session Fixation Tokens could be exfiltrated through MITM attacks, XSS vulnerabilities, or client-side malware. Once obtained, these tokens could be used to impersonate legitimate users. An attacker performs a MITM attack to capture access tokens in transit, then uses these tokens to make authenticated API calls to the system.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1528 - Steal Application Access Token",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-384",
+      "recommendation: Implement token security controls",
+      "recommendation: Enhance transport security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudtrail",
+    "description": "Insufficient Monitoring and Detection Without proper logging and monitoring, attackers could perform reconnaissance, gain unauthorized access, or abuse elevated privileges without detection. An attacker gains access to the system and performs multiple failed role assumption attempts before succeeding, but the activity goes unnoticed due to insufficient monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive logging and monitoring",
+      "recommendation: Configure automated alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cloudtrail",
+    "description": "Insufficient Monitoring and Detection Without proper logging and monitoring, attackers could perform reconnaissance, gain unauthorized access, or abuse elevated privileges without detection. An attacker gains access to the system and performs multiple failed role assumption attempts before succeeding, but the activity goes unnoticed due to insufficient monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive logging and monitoring",
+      "recommendation: Configure automated alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Spoofing",
+    "component": "aws_lambda_function.lambda_authorizer",
+    "description": "Lambda Authorizer Single Point of Compromise A vulnerability in the Lambda authorizer could be exploited to bypass authentication checks or generate valid tokens for unauthorized users. An attacker finds a bug in the token validation logic of the Lambda authorizer that allows them to bypass signature verification.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-285",
+      "recommendation: Implement defense in depth for authorization",
+      "recommendation: Enhance authorizer security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.lambda_authorizer",
+    "description": "Lambda Authorizer Single Point of Compromise A vulnerability in the Lambda authorizer could be exploited to bypass authentication checks or generate valid tokens for unauthorized users. An attacker finds a bug in the token validation logic of the Lambda authorizer that allows them to bypass signature verification.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-285",
+      "recommendation: Implement defense in depth for authorization",
+      "recommendation: Enhance authorizer security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Tampering",
+    "component": "aws_db_instance.dynamodb",
+    "description": "DynamoDB Race Conditions and Data Integrity Concurrent operations on the same DynamoDB items could lead to race conditions where access requests are processed incorrectly or access is not properly revoked. An attacker exploits a race condition to maintain access after revocation by quickly creating a new request while the revocation is being processed.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-362",
+      "recommendation: Implement proper concurrency controls",
+      "recommendation: Enhance access request validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb",
+    "description": "DynamoDB Race Conditions and Data Integrity Concurrent operations on the same DynamoDB items could lead to race conditions where access requests are processed incorrectly or access is not properly revoked. An attacker exploits a race condition to maintain access after revocation by quickly creating a new request while the revocation is being processed.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-362",
+      "recommendation: Implement proper concurrency controls",
+      "recommendation: Enhance access request validation"
+    ]
   }
 ]

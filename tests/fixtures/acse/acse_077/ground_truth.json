@@ -1,42 +1,197 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "Overly Permissive IAM Roles The Lambda execution role combines multiple broad permissions including AWSLakeFormationDataAdmin and AmazonAthenaFullAccess, along with extensive QuickSight permissions. If compromised, an attacker could access and modify sensitive security data across multiple services. An attacker who compromises a Lambda function could leverage the broad permissions to access sensitive data in Lake Formation, modify QuickSight dashboards, or manipulate Athena queries to extract or tamper with security insights data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement fine-grained IAM roles following the principle of least privilege",
+      "recommendation: Implement IAM permission boundaries"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.opensearch_domain",
+    "description": "Insecure OpenSearch Domain Configuration The OpenSearch domain uses a master user role with root principal as the assumed role, and the security group configuration is not explicitly defined in terms of inbound rules. If the security group is misconfigured, unauthorized users within the VPC could access the OpenSearch domain. Additionally, the master user credentials, if compromised, would provide full administrative access to the domain.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Implement IAM-based fine-grained access control"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.opensearch_domain",
+    "description": "Insecure OpenSearch Domain Configuration The OpenSearch domain uses a master user role with root principal as the assumed role, and the security group configuration is not explicitly defined in terms of inbound rules. If the security group is misconfigured, unauthorized users within the VPC could access the OpenSearch domain. Additionally, the master user credentials, if compromised, would provide full administrative access to the domain.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Implement IAM-based fine-grained access control"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_buckets",
+    "description": "Insufficient Data Protection Controls The S3 buckets are configured with RemovalPolicy.DESTROY and autoDeleteObjects: true, which could lead to accidental or malicious deletion of security-critical data. An attacker with access to the AWS account could destroy critical security data by deleting the CloudFormation stack, or an administrator could accidentally delete important audit trails during environment cleanup.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1485 - Data Destruction",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-404",
+      "recommendation: Implement proper S3 bucket retention controls",
+      "recommendation: Implement S3 object lock and versioning"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-003-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_s3_bucket.s3_buckets",
+    "description": "Insufficient Data Protection Controls The S3 buckets are configured with RemovalPolicy.DESTROY and autoDeleteObjects: true, which could lead to accidental or malicious deletion of security-critical data. An attacker with access to the AWS account could destroy critical security data by deleting the CloudFormation stack, or an administrator could accidentally delete important audit trails during environment cleanup.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1485 - Data Destruction",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-404",
+      "recommendation: Implement proper S3 bucket retention controls",
+      "recommendation: Implement S3 object lock and versioning"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Repudiation",
+    "component": "aws_s3_bucket.s3_buckets",
+    "description": "Insufficient Data Protection Controls The S3 buckets are configured with RemovalPolicy.DESTROY and autoDeleteObjects: true, which could lead to accidental or malicious deletion of security-critical data. An attacker with access to the AWS account could destroy critical security data by deleting the CloudFormation stack, or an administrator could accidentally delete important audit trails during environment cleanup.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1485 - Data Destruction",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-404",
+      "recommendation: Implement proper S3 bucket retention controls",
+      "recommendation: Implement S3 object lock and versioning"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Spoofing",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "Insecure Lambda Function Configuration Lambda functions use dummy code, have minimal logging configuration, and potentially expose sensitive information through environment variables. An attacker who gains access to a Lambda function could exploit insufficient logging to hide their activities, or extract sensitive information from environment variables.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.005 - Cloud Instance Metadata API",
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement secure Lambda function configuration",
+      "recommendation: Implement comprehensive logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "Insecure Lambda Function Configuration Lambda functions use dummy code, have minimal logging configuration, and potentially expose sensitive information through environment variables. An attacker who gains access to a Lambda function could exploit insufficient logging to hide their activities, or extract sensitive information from environment variables.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.005 - Cloud Instance Metadata API",
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement secure Lambda function configuration",
+      "recommendation: Implement comprehensive logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-3",
+    "stride_category": "Repudiation",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "Insecure Lambda Function Configuration Lambda functions use dummy code, have minimal logging configuration, and potentially expose sensitive information through environment variables. An attacker who gains access to a Lambda function could exploit insufficient logging to hide their activities, or extract sensitive information from environment variables.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.005 - Cloud Instance Metadata API",
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement secure Lambda function configuration",
+      "recommendation: Implement comprehensive logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Alerting While the system collects logs and metrics, it lacks comprehensive alerting and monitoring for security events, unauthorized access attempts, and suspicious activities. An attacker could perform reconnaissance or data exfiltration activities without detection due to insufficient monitoring and alerting.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Implement comprehensive CloudWatch alarms",
+      "recommendation: Implement Security Hub integration and automated response"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Alerting While the system collects logs and metrics, it lacks comprehensive alerting and monitoring for security events, unauthorized access attempts, and suspicious activities. An attacker could perform reconnaissance or data exfiltration activities without detection due to insufficient monitoring and alerting.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Implement comprehensive CloudWatch alarms",
+      "recommendation: Implement Security Hub integration and automated response"
+    ]
   }
 ]

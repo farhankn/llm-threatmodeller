@@ -1,42 +1,224 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.iot_devices",
+    "description": "Insecure MQTT Communication Without enforced TLS encryption, MQTT traffic between IoT devices and AWS IoT Core travels in plaintext or with weak encryption. Attackers within network range or with access to network infrastructure could intercept this traffic. An attacker could set up a network sniffer near IoT devices or compromise network equipment to capture MQTT messages, potentially exposing sensitive device data and credentials. They could also inject false data to trigger unnecessary maintenance alerts.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Enforce TLS 1.2 or higher for all MQTT connections using AWS IoT Core's built-in security features",
+      "recommendation: Implement device authentication and authorization"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.iot_devices",
+    "description": "Insecure MQTT Communication Without enforced TLS encryption, MQTT traffic between IoT devices and AWS IoT Core travels in plaintext or with weak encryption. Attackers within network range or with access to network infrastructure could intercept this traffic. An attacker could set up a network sniffer near IoT devices or compromise network equipment to capture MQTT messages, potentially exposing sensitive device data and credentials. They could also inject false data to trigger unnecessary maintenance alerts.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Enforce TLS 1.2 or higher for all MQTT connections using AWS IoT Core's built-in security features",
+      "recommendation: Implement device authentication and authorization"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-3",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.iot_devices",
+    "description": "Insecure MQTT Communication Without enforced TLS encryption, MQTT traffic between IoT devices and AWS IoT Core travels in plaintext or with weak encryption. Attackers within network range or with access to network infrastructure could intercept this traffic. An attacker could set up a network sniffer near IoT devices or compromise network equipment to capture MQTT messages, potentially exposing sensitive device data and credentials. They could also inject false data to trigger unnecessary maintenance alerts.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Enforce TLS 1.2 or higher for all MQTT connections using AWS IoT Core's built-in security features",
+      "recommendation: Implement device authentication and authorization"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.sagemaker_endpoint",
+    "description": "Excessive Costs from False Positives The system processes IoT sensor data through multiple stages (Kinesis, Lambda, SageMaker) to predict maintenance needs. False positives could trigger unnecessary processing, storage, and alerts, consuming resources and increasing costs. An attacker could manipulate sensor data or exploit model vulnerabilities to trigger false predictions, causing system overload and excessive AWS resource consumption.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Denial of Service",
+      "stride: Tampering",
+      "cwe: CWE-400",
+      "recommendation: Implement rate limiting and anomaly detection",
+      "recommendation: Enhance data validation and model monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.sagemaker_endpoint",
+    "description": "Excessive Costs from False Positives The system processes IoT sensor data through multiple stages (Kinesis, Lambda, SageMaker) to predict maintenance needs. False positives could trigger unnecessary processing, storage, and alerts, consuming resources and increasing costs. An attacker could manipulate sensor data or exploit model vulnerabilities to trigger false predictions, causing system overload and excessive AWS resource consumption.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Denial of Service",
+      "stride: Tampering",
+      "cwe: CWE-400",
+      "recommendation: Implement rate limiting and anomaly detection",
+      "recommendation: Enhance data validation and model monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_roles",
+    "description": "Insufficient IAM Role Segmentation Several IAM roles in the CDK code use broad permissions (e.g., AmazonSageMakerFullAccess) or have resource wildcards (*) in their policies. This violates the principle of least privilege. If an attacker compromises a service using these roles, they could potentially access unrelated resources or escalate privileges due to overly permissive policies.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-272",
+      "recommendation: Implement fine-grained IAM policies",
+      "recommendation: Implement AWS Organizations SCPs"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_iam_role.iam_roles",
+    "description": "Insufficient IAM Role Segmentation Several IAM roles in the CDK code use broad permissions (e.g., AmazonSageMakerFullAccess) or have resource wildcards (*) in their policies. This violates the principle of least privilege. If an attacker compromises a service using these roles, they could potentially access unrelated resources or escalate privileges due to overly permissive policies.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-272",
+      "recommendation: Implement fine-grained IAM policies",
+      "recommendation: Implement AWS Organizations SCPs"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.greengrass_core",
+    "description": "Insufficient Edge Device Security Greengrass core devices run ML models at the edge and have significant permissions to interact with AWS services. Physical access or remote exploitation could allow attackers to manipulate the device or extract sensitive data. An attacker with physical access could tamper with the Greengrass core device to extract ML models, modify inference results, or use the device's credentials to access AWS services.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1200 - Hardware Addition",
+      "mitreATT&CK: T1495 - Firmware Corruption",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-693",
+      "recommendation: Implement edge device security controls",
+      "recommendation: Enhance edge monitoring and compliance"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.greengrass_core",
+    "description": "Insufficient Edge Device Security Greengrass core devices run ML models at the edge and have significant permissions to interact with AWS services. Physical access or remote exploitation could allow attackers to manipulate the device or extract sensitive data. An attacker with physical access could tamper with the Greengrass core device to extract ML models, modify inference results, or use the device's credentials to access AWS services.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1200 - Hardware Addition",
+      "mitreATT&CK: T1495 - Firmware Corruption",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-693",
+      "recommendation: Implement edge device security controls",
+      "recommendation: Enhance edge monitoring and compliance"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-3",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.greengrass_core",
+    "description": "Insufficient Edge Device Security Greengrass core devices run ML models at the edge and have significant permissions to interact with AWS services. Physical access or remote exploitation could allow attackers to manipulate the device or extract sensitive data. An attacker with physical access could tamper with the Greengrass core device to extract ML models, modify inference results, or use the device's credentials to access AWS services.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1200 - Hardware Addition",
+      "mitreATT&CK: T1495 - Firmware Corruption",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-693",
+      "recommendation: Implement edge device security controls",
+      "recommendation: Enhance edge monitoring and compliance"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.timestream_database",
+    "description": "Time Series Data Exposure Time series data in Timestream contains detailed operational metrics that could reveal sensitive information about device operations and maintenance patterns. Unauthorized access could expose business intelligence or enable targeted attacks. An attacker gaining access to QuickSight dashboards or exploiting overly permissive Timestream policies could extract historical data to analyze patterns and plan targeted attacks on maintenance windows.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Implement data protection controls",
+      "recommendation: Enhance visualization security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_db_instance.timestream_database",
+    "description": "Time Series Data Exposure Time series data in Timestream contains detailed operational metrics that could reveal sensitive information about device operations and maintenance patterns. Unauthorized access could expose business intelligence or enable targeted attacks. An attacker gaining access to QuickSight dashboards or exploiting overly permissive Timestream policies could extract historical data to analyze patterns and plan targeted attacks on maintenance windows.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Implement data protection controls",
+      "recommendation: Enhance visualization security"
+    ]
   }
 ]

@@ -1,58 +1,177 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Unauthorized Workflow Access via API Gateway The current implementation shows API Gateway endpoints without proper authorization mechanisms. While the code includes comments about IAM authorization, it's not actively implemented, potentially allowing unauthorized access to workflow triggers. An attacker could directly call the API endpoint to trigger workflows without proper authentication, potentially leading to unauthorized data access or resource consumption.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement IAM authorization for API Gateway endpoints",
+      "recommendation: Implement request validation and rate limiting"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Unauthorized Workflow Access via API Gateway The current implementation shows API Gateway endpoints without proper authorization mechanisms. While the code includes comments about IAM authorization, it's not actively implemented, potentially allowing unauthorized access to workflow triggers. An attacker could directly call the API endpoint to trigger workflows without proper authentication, potentially leading to unauthorized data access or resource consumption.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Implement IAM authorization for API Gateway endpoints",
+      "recommendation: Implement request validation and rate limiting"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb",
+    "description": "Sensitive Data Exposure in State Store While DynamoDB table is configured with AWS managed encryption, there's no explicit filtering or sanitization of sensitive data before storage in the state management system. An attacker with read access to the DynamoDB table could potentially extract sensitive information if it was inadvertently stored in the workflow state.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-312",
+      "recommendation: Implement data filtering in Lambda processor",
+      "recommendation: Enhance DynamoDB encryption configuration"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_db_instance.dynamodb",
+    "description": "Sensitive Data Exposure in State Store While DynamoDB table is configured with AWS managed encryption, there's no explicit filtering or sanitization of sensitive data before storage in the state management system. An attacker with read access to the DynamoDB table could potentially extract sensitive information if it was inadvertently stored in the workflow state.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-312",
+      "recommendation: Implement data filtering in Lambda processor",
+      "recommendation: Enhance DynamoDB encryption configuration"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_lambda_function.lambda_task_processor",
+    "description": "Insufficient Input Validation in Task Processor The current implementation doesn't show explicit input validation in the task processor Lambda function, potentially allowing malformed or malicious data to be processed. An attacker could submit maliciously crafted input that could cause the task processor to malfunction or consume excessive resources.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-20",
+      "recommendation: Implement comprehensive input validation",
+      "recommendation: Add error handling and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_lambda_function.lambda_task_processor",
+    "description": "Insufficient Input Validation in Task Processor The current implementation doesn't show explicit input validation in the task processor Lambda function, potentially allowing malformed or malicious data to be processed. An attacker could submit maliciously crafted input that could cause the task processor to malfunction or consume excessive resources.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-20",
+      "recommendation: Implement comprehensive input validation",
+      "recommendation: Add error handling and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-004",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.lambda_task_processor",
+    "description": "Excessive Lambda Permissions While the Lambda function has some scoped permissions, the current IAM policies might grant more access than necessary for specific operations. If compromised, a Lambda function with excessive permissions could be used to access or modify resources beyond its intended scope.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-272",
+      "recommendation: Implement fine-grained IAM policies",
+      "recommendation: Implement resource tagging and permission boundaries"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Denial of Service via API Gateway While API Gateway has built-in DDoS protection, without proper throttling and rate limiting configuration, the service could still be overwhelmed by legitimate-looking requests. An attacker could flood the API with requests, potentially exhausting resources or causing increased costs.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement comprehensive API Gateway throttling",
+      "recommendation: Implement DDoS protection"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_bucket",
+    "description": "Insecure Data Storage in S3 While the S3 bucket uses server-side encryption and blocks public access, additional encryption controls and access patterns should be considered for sensitive data. An attacker with access to the AWS environment could potentially access sensitive data if bucket policies and encryption are not properly configured.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Enhance S3 bucket encryption",
+      "recommendation: Implement additional S3 security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.s3_bucket",
+    "description": "Insecure Data Storage in S3 While the S3 bucket uses server-side encryption and blocks public access, additional encryption controls and access patterns should be considered for sensitive data. An attacker with access to the AWS environment could potentially access sensitive data if bucket policies and encryption are not properly configured.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Enhance S3 bucket encryption",
+      "recommendation: Implement additional S3 security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Incident Detection While the system implements basic monitoring, it might miss important security events or fail to correlate events across services for effective threat detection. An attacker could perform malicious activities without detection if security-relevant events are not properly monitored and alerted on.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-223",
+      "recommendation: Enhance security monitoring",
+      "recommendation: Implement security information and event management"
+    ]
   }
 ]

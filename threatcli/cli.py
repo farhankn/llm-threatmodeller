@@ -19,7 +19,7 @@ from threatcli.evaluation.acse_importer import (
 )
 from threatcli.parsers.doc_parser import parse_documents
 from threatcli.parsers.iac_parser import ParseError, parse_iac
-from threatcli.renderer import filter_discrepancies, render_json, render_text
+from threatcli.renderer import filter_discrepancies, render_json, render_pdf, render_text
 
 app = typer.Typer(help="Threat modeling CLI for IaC analysis.")
 evaluation_app = typer.Typer(help="Evaluation harness commands.")
@@ -315,7 +315,14 @@ def _infer_component(
     return "unknown.component"
 
 
-def _emit_output(content: str, output: Path | None) -> None:
+def _emit_output(content: str | bytes, output: Path | None) -> None:
+    if isinstance(content, bytes):
+        if output is None:
+            raise ValueError("PDF output requires --output to be set to a file path.")
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_bytes(content)
+        return
+
     if output is None:
         typer.echo(content)
         return
@@ -375,9 +382,6 @@ def analyze(
         typer.echo(f"Error: Unsupported format '{format}'.", err=True)
         raise typer.Exit(code=1)
 
-    if normalized_format == "pdf":
-        typer.echo("Error: PDF output is not implemented in Phase 1.", err=True)
-        raise typer.Exit(code=1)
     if max_doc_tokens <= 0 or max_chunk_tokens <= 0 or overlap_tokens < 0:
         typer.echo("Error: Invalid document token options.", err=True)
         raise typer.Exit(code=1)
@@ -412,7 +416,12 @@ def analyze(
         if discrepancies_only:
             threats = filter_discrepancies(threats)
 
-        rendered = render_text(threats) if normalized_format == "text" else render_json(threats)
+        if normalized_format == "text":
+            rendered: str | bytes = render_text(threats)
+        elif normalized_format == "json":
+            rendered = render_json(threats)
+        else:
+            rendered = render_pdf(threats)
         _emit_output(rendered, output)
     except (ParseError, LLMError, ThreatSchemaError, OSError, ValueError) as exc:
         typer.echo(f"Error: {exc}", err=True)

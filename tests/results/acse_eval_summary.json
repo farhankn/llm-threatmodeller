@@ -1,0 +1,18 @@
+{
+  "scenarios": 100,
+  "total_ground_truth_threats": 618,
+  "total_generated_threats": 0,
+  "tp": 0,
+  "fp": 0,
+  "fn": 618,
+  "micro_precision": 0.0,
+  "micro_recall": 0.0,
+  "micro_f1": 0.0,
+  "mean_precision": 0.0,
+  "mean_recall": 0.0,
+  "mean_hallucination_rate": 0.0,
+  "no_output_scenarios": 100,
+  "no_output_rate": 1.0,
+  "latency_mean_s": 0.54131,
+  "latency_median_s": 0.5285
+}

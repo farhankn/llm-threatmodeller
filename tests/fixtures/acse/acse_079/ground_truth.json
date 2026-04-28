@@ -1,50 +1,177 @@
 [
   {
-    "threat_id": "ACSE-001",
+    "threat_id": "THREAT-001-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.codebuild",
+    "description": "Supply Chain Attack via Dependency Confusion Attackers publish malicious packages to public repositories with names matching internal package names. When the build process attempts to resolve dependencies, it may fetch the malicious package instead of the intended internal package. An attacker observes internal package names from public build logs or repository information, then publishes malicious packages with matching names to npm. During the next build, CodeBuild pulls the malicious package, which could exfiltrate secrets or compromise the build process.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1195.001 - Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-1104",
+      "recommendation: Implement private artifact repository and strict package source controls",
+      "recommendation: Lock dependency versions and implement integrity verification"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.codebuild",
+    "description": "Supply Chain Attack via Dependency Confusion Attackers publish malicious packages to public repositories with names matching internal package names. When the build process attempts to resolve dependencies, it may fetch the malicious package instead of the intended internal package. An attacker observes internal package names from public build logs or repository information, then publishes malicious packages with matching names to npm. During the next build, CodeBuild pulls the malicious package, which could exfiltrate secrets or compromise the build process.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1195.001 - Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-1104",
+      "recommendation: Implement private artifact repository and strict package source controls",
+      "recommendation: Lock dependency versions and implement integrity verification"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.codepipeline",
+    "description": "Overly Permissive IAM Roles in Pipeline The pipeline uses roles with broad permissions, including AdministratorAccess for CloudFormation deployments. This violates the principle of least privilege and could allow an attacker who compromises the pipeline to gain extensive access to the AWS account. An attacker who compromises the build process could leverage the overly permissive IAM roles to create unauthorized AWS resources, access sensitive data, or establish persistence in the environment.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Implement least privilege IAM roles",
+      "recommendation: Implement role separation and environment isolation"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secretsmanager",
+    "description": "Insecure Secrets Management in Build Process The build environment has broad access to secrets and lacks proper isolation between build stages. Environment variables and secrets could be exposed through build logs or artifacts. A compromised build script could exfiltrate secrets from SecretsManager or environment variables, potentially exposing sensitive credentials or configuration data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.007 - Unsecured Credentials: Container API",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Implement secret scope limitation and isolation",
+      "recommendation: Enhance build environment security"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_ecr_repository.secretsmanager",
+    "description": "Insecure Secrets Management in Build Process The build environment has broad access to secrets and lacks proper isolation between build stages. Environment variables and secrets could be exposed through build logs or artifacts. A compromised build script could exfiltrate secrets from SecretsManager or environment variables, potentially exposing sensitive credentials or configuration data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.007 - Unsecured Credentials: Container API",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Implement secret scope limitation and isolation",
+      "recommendation: Enhance build environment security"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
+    "threat_id": "THREAT-004-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.codepipeline",
+    "description": "Insufficient Pipeline Integrity Validation The pipeline lacks comprehensive integrity checks for artifacts between stages. While S3 versioning is enabled, there's no cryptographic verification of artifacts or dependencies. An attacker with access to the artifact bucket could modify deployment artifacts between the build and deployment stages, potentially injecting malicious code into the production deployment.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565.001 - Data Manipulation: Stored Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement artifact signing and verification",
+      "recommendation: Enhance artifact security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.codepipeline",
+    "description": "Insufficient Pipeline Integrity Validation The pipeline lacks comprehensive integrity checks for artifacts between stages. While S3 versioning is enabled, there's no cryptographic verification of artifacts or dependencies. An attacker with access to the artifact bucket could modify deployment artifacts between the build and deployment stages, potentially injecting malicious code into the production deployment.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565.001 - Data Manipulation: Stored Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement artifact signing and verification",
+      "recommendation: Enhance artifact security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure API Gateway Configuration The API Gateway is configured with broad CORS settings (allowOrigins: Cors.ALL_ORIGINS) and has detailed logging enabled, which could expose sensitive information. An attacker could exploit permissive CORS settings to make cross-origin requests from malicious domains. Detailed logging could expose sensitive data in CloudWatch Logs.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.006 - Unsecured Credentials: Group Policy Preferences",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-942",
+      "recommendation: Implement strict CORS policies",
+      "recommendation: Enhance API security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure API Gateway Configuration The API Gateway is configured with broad CORS settings (allowOrigins: Cors.ALL_ORIGINS) and has detailed logging enabled, which could expose sensitive information. An attacker could exploit permissive CORS settings to make cross-origin requests from malicious domains. Detailed logging could expose sensitive data in CloudWatch Logs.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.006 - Unsecured Credentials: Group Policy Preferences",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-942",
+      "recommendation: Implement strict CORS policies",
+      "recommendation: Enhance API security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Incident Detection While basic monitoring is in place, there may be gaps in security-specific monitoring and alerting, particularly for detecting unusual patterns or potential security incidents. An attacker could perform reconnaissance or initial compromise activities without triggering alerts due to insufficient security monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Enhance security monitoring",
+      "recommendation: Implement comprehensive logging"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Incident Detection While basic monitoring is in place, there may be gaps in security-specific monitoring and alerting, particularly for detecting unusual patterns or potential security incidents. An attacker could perform reconnaissance or initial compromise activities without triggering alerts due to insufficient security monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-223",
+      "recommendation: Enhance security monitoring",
+      "recommendation: Implement comprehensive logging"
+    ]
   }
 ]

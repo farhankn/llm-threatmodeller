@@ -1,50 +1,220 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_raw",
     "description": "Despite configured bucket policies, attackers might attempt to access sensitive log data stored in the raw logs S3 bucket through misconfigured IAM permissions, leaked credentials, or SSRF vulnerabilities in the processing Lambda functions.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement least privilege access for all IAM roles interacting with the S3 bucket",
+      "recommendation: Enable additional S3 security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_s3_bucket.s3_raw",
+    "description": "Despite configured bucket policies, attackers might attempt to access sensitive log data stored in the raw logs S3 bucket through misconfigured IAM permissions, leaked credentials, or SSRF vulnerabilities in the processing Lambda functions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement least privilege access for all IAM roles interacting with the S3 bucket",
+      "recommendation: Enable additional S3 security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_resource.kinesis_streams",
     "description": "Attackers could attempt to modify or inject malicious data into the Kinesis streams, potentially affecting log integrity and downstream analysis.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "mitreATT&CK: T1565.001 - Stored Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement strong data validation and integrity checks",
+      "recommendation: Enhance monitoring and alerting for data integrity"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.kinesis_streams",
+    "description": "Attackers could attempt to modify or inject malicious data into the Kinesis streams, potentially affecting log integrity and downstream analysis.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "mitreATT&CK: T1565.001 - Stored Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement strong data validation and integrity checks",
+      "recommendation: Enhance monitoring and alerting for data integrity"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.opensearch",
     "description": "The OpenSearch domain could be exposed to unauthorized access through misconfigured security groups, VPC settings, or compromised IAM credentials.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Strengthen OpenSearch access controls",
+      "recommendation: Enhance monitoring and implement additional security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-003-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_resource.opensearch",
+    "description": "The OpenSearch domain could be exposed to unauthorized access through misconfigured security groups, VPC settings, or compromised IAM credentials.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Strengthen OpenSearch access controls",
+      "recommendation: Enhance monitoring and implement additional security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.opensearch",
+    "description": "The OpenSearch domain could be exposed to unauthorized access through misconfigured security groups, VPC settings, or compromised IAM credentials.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Strengthen OpenSearch access controls",
+      "recommendation: Enhance monitoring and implement additional security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.lambda_processor",
     "description": "The Lambda function processing logs could be vulnerable to code injection through malformed log entries or environment variable manipulation.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562.001 - Impair Defenses: Disable or Modify Tools",
+      "mitreATT&CK: T1574 - Hijack Execution Flow",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A10:2021-Server-Side Request Forgery",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-94",
+      "recommendation: Implement robust input validation and sanitization",
+      "recommendation: Enhance Lambda security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.lambda_processor",
+    "description": "The Lambda function processing logs could be vulnerable to code injection through malformed log entries or environment variable manipulation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562.001 - Impair Defenses: Disable or Modify Tools",
+      "mitreATT&CK: T1574 - Hijack Execution Flow",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A10:2021-Server-Side Request Forgery",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-94",
+      "recommendation: Implement robust input validation and sanitization",
+      "recommendation: Enhance Lambda security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.kinesis_streams",
     "description": "Attackers could overwhelm the system by generating excessive logs or triggering resource-intensive processing.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement rate limiting and throttling",
+      "recommendation: Enhance scalability and implement circuit breakers"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Repudiation",
+    "component": "aws_iam_role.iam",
     "description": "Lack of comprehensive audit logging for system configuration changes could allow unauthorized modifications to go undetected.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1070 - Indicator Removal on Host",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-778",
+      "recommendation: Enhance audit logging across all components",
+      "recommendation: Implement automated compliance monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_iam_role.iam",
+    "description": "Lack of comprehensive audit logging for system configuration changes could allow unauthorized modifications to go undetected.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1070 - Indicator Removal on Host",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-778",
+      "recommendation: Enhance audit logging across all components",
+      "recommendation: Implement automated compliance monitoring"
+    ]
   }
 ]

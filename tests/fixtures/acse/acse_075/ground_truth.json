@@ -1,42 +1,143 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_instance.ec2_emulator_instances",
+    "description": "Sandbox Escape in Game Emulator Attackers could exploit vulnerabilities in the emulator software or its configuration to break out of the sandboxed environment, potentially gaining access to the EC2 instance's resources or AWS credentials. An attacker uploads a specially crafted game ROM that exploits a buffer overflow in the emulator, allowing code execution outside the sandbox environment.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1611 - Escape to Host",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-265",
+      "recommendation: Implement runtime detection mechanisms for sandbox escape attempts",
+      "recommendation: Enhance EC2 instance hardening"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_instance.ec2_emulator_instances",
+    "description": "Sandbox Escape in Game Emulator Attackers could exploit vulnerabilities in the emulator software or its configuration to break out of the sandboxed environment, potentially gaining access to the EC2 instance's resources or AWS credentials. An attacker uploads a specially crafted game ROM that exploits a buffer overflow in the emulator, allowing code execution outside the sandbox environment.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1611 - Escape to Host",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Elevation of Privilege",
+      "stride: Tampering",
+      "cwe: CWE-265",
+      "recommendation: Implement runtime detection mechanisms for sandbox escape attempts",
+      "recommendation: Enhance EC2 instance hardening"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc",
+    "description": "Redundant Public Network Entry Points Having multiple public entry points increases the network attack surface and complicates network flow management, potentially leading to misconfigurations or security gaps. An attacker could leverage the multiple entry points to bypass intended network controls or launch simultaneous DDoS attacks against both gateways.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-1008",
+      "recommendation: Consolidate public access through a single entry point"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_vpc.vpc",
+    "description": "Redundant Public Network Entry Points Having multiple public entry points increases the network attack surface and complicates network flow management, potentially leading to misconfigurations or security gaps. An attacker could leverage the multiple entry points to bypass intended network controls or launch simultaneous DDoS attacks against both gateways.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-1008",
+      "recommendation: Consolidate public access through a single entry point"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.efs_file_system",
+    "description": "Unauthorized Access to Game ROM Storage Insufficient access controls or misconfigured IAM permissions could allow unauthorized access to EFS mount points containing game ROMs. An attacker compromises an EC2 instance and exploits overly permissive IAM roles to access and exfiltrate game ROMs from EFS.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement encryption and access controls for game ROM storage",
+      "recommendation: Implement file integrity monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.efs_file_system",
+    "description": "Unauthorized Access to Game ROM Storage Insufficient access controls or misconfigured IAM permissions could allow unauthorized access to EFS mount points containing game ROMs. An attacker compromises an EC2 instance and exploits overly permissive IAM roles to access and exfiltrate game ROMs from EFS.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement encryption and access controls for game ROM storage",
+      "recommendation: Implement file integrity monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.elasticache_redis_cluster",
+    "description": "Session Hijacking via Cache Exploitation Insufficient session management or insecure storage of session data in Redis could allow attackers to steal or forge session tokens. An attacker exploits a vulnerability in the session management code to extract valid session tokens from Redis and hijack active user sessions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1539 - Steal Web Session Cookie",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-384",
+      "recommendation: Implement secure session management",
+      "recommendation: Enhance network security for cache access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.elasticache_redis_cluster",
+    "description": "Session Hijacking via Cache Exploitation Insufficient session management or insecure storage of session data in Redis could allow attackers to steal or forge session tokens. An attacker exploits a vulnerability in the session management code to extract valid session tokens from Redis and hijack active user sessions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1539 - Steal Web Session Cookie",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-384",
+      "recommendation: Implement secure session management",
+      "recommendation: Enhance network security for cache access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.application_load_balancer",
+    "description": "DDoS Attack Against Game Service Attackers could overwhelm the service with a large volume of requests or exploit application-layer vulnerabilities to consume excessive resources. A botnet launches a coordinated DDoS attack against the ALB, overwhelming its capacity to handle legitimate requests.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement comprehensive DDoS protection",
+      "recommendation: Enhance auto-scaling configuration"
+    ]
   }
 ]

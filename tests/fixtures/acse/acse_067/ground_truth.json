@@ -1,50 +1,162 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-001",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.amazon_braket",
     "description": "Quantum computation results may be transmitted or stored without proper encryption, potentially exposing sensitive cryptographic data to unauthorized access or interception.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-311",
+      "recommendation: Implement end-to-end encryption for quantum computation results",
+      "recommendation: Implement strict access controls for quantum computation results"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-002",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.all_system_components",
     "description": "The quantum computing cluster is deployed in a single region, creating a single point of failure and potential availability risks.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-475",
+      "recommendation: Implement cross-region redundancy",
+      "recommendation: Implement robust disaster recovery procedures"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc",
     "description": "While the VPC includes public and private subnets, there might be insufficient network segmentation between quantum computing resources and other components.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1327",
+      "recommendation: Implement strict network segmentation",
+      "recommendation: Implement VPC flow logs and traffic monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-003-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_vpc.vpc",
+    "description": "While the VPC includes public and private subnets, there might be insufficient network segmentation between quantum computing resources and other components.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1327",
+      "recommendation: Implement strict network segmentation",
+      "recommendation: Implement VPC flow logs and traffic monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_vpc.vpc",
+    "description": "While the VPC includes public and private subnets, there might be insufficient network segmentation between quantum computing resources and other components.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1327",
+      "recommendation: Implement strict network segmentation",
+      "recommendation: Implement VPC flow logs and traffic monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secrets_manager",
     "description": "While Secrets Manager is used, there might be insufficient rotation and management of secrets used in quantum computations and cryptographic operations.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Implement automated secret rotation",
+      "recommendation: Implement strict access controls for secrets"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "While Secrets Manager is used, there might be insufficient rotation and management of secrets used in quantum computations and cryptographic operations.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Implement automated secret rotation",
+      "recommendation: Implement strict access controls for secrets"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
     "description": "While CloudWatch and Timestream are used, there might be gaps in monitoring and logging of quantum computing operations and security events.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive logging and monitoring",
+      "recommendation: Implement automated alerting and response"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.amazon_braket",
     "description": "Potential leakage of quantum state information during computation or transmission between Braket and processing components.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Implement quantum state encryption",
+      "recommendation: Implement secure quantum error correction"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.amazon_braket",
+    "description": "Potential leakage of quantum state information during computation or transmission between Braket and processing components.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Implement quantum state encryption",
+      "recommendation: Implement secure quantum error correction"
+    ]
   }
 ]

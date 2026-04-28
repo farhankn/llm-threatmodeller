@@ -1,50 +1,212 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.cognito_userpool",
+    "description": "Insufficient Role Segregation in Cognito User Pool While IAM roles for authenticated and admin users are defined, the current implementation lacks Cognito Identity Pools and proper group-to-role mapping, potentially allowing users to assume incorrect roles. A regular user might manipulate their token claims or exploit misconfigured role assumption policies to gain admin privileges.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Spoofing",
+      "cwe: CWE-269",
+      "recommendation: Implement Cognito Identity Pools with proper group-to-role mapping",
+      "recommendation: Enhance API Gateway authorization checks"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.cognito_userpool",
+    "description": "Insufficient Role Segregation in Cognito User Pool While IAM roles for authenticated and admin users are defined, the current implementation lacks Cognito Identity Pools and proper group-to-role mapping, potentially allowing users to assume incorrect roles. A regular user might manipulate their token claims or exploit misconfigured role assumption policies to gain admin privileges.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Spoofing",
+      "cwe: CWE-269",
+      "recommendation: Implement Cognito Identity Pools with proper group-to-role mapping",
+      "recommendation: Enhance API Gateway authorization checks"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure CORS Configuration in API Gateway and S3 Overly permissive CORS policies allow any origin to make requests to the API and S3 bucket, potentially exposing sensitive data or enabling unauthorized modifications. An attacker hosts a malicious website that makes authenticated requests to the API or S3 bucket using stolen credentials, exploiting the permissive CORS policy.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-942",
+      "recommendation: Restrict CORS policies to specific origins"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure CORS Configuration in API Gateway and S3 Overly permissive CORS policies allow any origin to make requests to the API and S3 bucket, potentially exposing sensitive data or enabling unauthorized modifications. An attacker hosts a malicious website that makes authenticated requests to the API or S3 bucket using stolen credentials, exploiting the permissive CORS policy.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-942",
+      "recommendation: Restrict CORS policies to specific origins"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003",
+    "stride_category": "Denial of Service",
+    "component": "aws_lambda_function.workflow_processor_lambda",
+    "description": "Workflow Processing System Availability Risk Lambda functions have execution time limits and memory constraints that may be insufficient for processing large media files, leading to timeouts and failed operations. An attacker could upload extremely large or malformed media files to overwhelm the workflow processor and cause service disruption.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-404",
+      "recommendation: Migrate workflow processor to container-based solution",
+      "recommendation: Implement file validation and chunking"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.operator_lambda",
+    "description": "Insufficient Monitoring and Logging of AI/ML Service Usage The operator Lambda has broad permissions to AI/ML services ('*' actions) and lacks detailed audit logging of service usage and data processing activities. An attacker gaining access to the operator Lambda could abuse AI/ML services to process unauthorized data or extract sensitive information without detection.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Information Disclosure",
+      "stride: Repudiation",
+      "cwe: CWE-223",
+      "recommendation: Implement least privilege access for AI/ML services",
+      "recommendation: Enhance logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Repudiation",
+    "component": "aws_lambda_function.operator_lambda",
+    "description": "Insufficient Monitoring and Logging of AI/ML Service Usage The operator Lambda has broad permissions to AI/ML services ('*' actions) and lacks detailed audit logging of service usage and data processing activities. An attacker gaining access to the operator Lambda could abuse AI/ML services to process unauthorized data or extract sensitive information without detection.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Information Disclosure",
+      "stride: Repudiation",
+      "cwe: CWE-223",
+      "recommendation: Implement least privilege access for AI/ML services",
+      "recommendation: Enhance logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.opensearch_domain",
+    "description": "Insecure OpenSearch Domain Configuration The OpenSearch domain is configured with basic master user authentication and is not deployed within a VPC, potentially exposing it to unauthorized access. An attacker could attempt to brute force the master user credentials or exploit network exposure to gain unauthorized access to analytics data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Deploy OpenSearch within a VPC",
+      "recommendation: Enhance OpenSearch security configuration"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.opensearch_domain",
+    "description": "Insecure OpenSearch Domain Configuration The OpenSearch domain is configured with basic master user authentication and is not deployed within a VPC, potentially exposing it to unauthorized access. An attacker could attempt to brute force the master user credentials or exploit network exposure to gain unauthorized access to analytics data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Deploy OpenSearch within a VPC",
+      "recommendation: Enhance OpenSearch security configuration"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.opensearch_domain",
+    "description": "Insecure OpenSearch Domain Configuration The OpenSearch domain is configured with basic master user authentication and is not deployed within a VPC, potentially exposing it to unauthorized access. An attacker could attempt to brute force the master user credentials or exploit network exposure to gain unauthorized access to analytics data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Deploy OpenSearch within a VPC",
+      "recommendation: Enhance OpenSearch security configuration"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.source_media_bucket",
+    "description": "Insufficient Protection Against Media File-Based Attacks The system accepts media files without thorough validation of file types, contents, and metadata, potentially allowing malicious files to be processed. An attacker uploads a maliciously crafted media file that exploits vulnerabilities in media processing libraries or contains embedded malicious code.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A10:2021-Server-Side Request Forgery (SSRF)",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-434",
+      "recommendation: Implement comprehensive file validation",
+      "recommendation: Enhance media processing security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_s3_bucket.source_media_bucket",
+    "description": "Insufficient Protection Against Media File-Based Attacks The system accepts media files without thorough validation of file types, contents, and metadata, potentially allowing malicious files to be processed. An attacker uploads a maliciously crafted media file that exploits vulnerabilities in media processing libraries or contains embedded malicious code.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A10:2021-Server-Side Request Forgery (SSRF)",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-434",
+      "recommendation: Implement comprehensive file validation",
+      "recommendation: Enhance media processing security"
+    ]
   }
 ]

@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from threatcli.evaluation.acse_importer import (
+    extract_ground_truth,
     hydrate_records_from_hf_paths,
     import_acse_records,
     load_dataset_records,
@@ -63,3 +64,34 @@ def test_hydrate_records_from_hf_paths_enriches_iac_placeholder() -> None:
     hydrated = hydrate_records_from_hf_paths(records)
     assert len(hydrated) == 1
     assert "row-1/cdk/" in hydrated[0]["terraform"]
+
+
+def test_extract_ground_truth_preserves_acse_framework_details() -> None:
+    record = {
+        "ground_truth": [
+            {
+                "threatID": "THREAT-123",
+                "threatName": "Public Storage Exposure",
+                "affectedComponents": ["S3 Public Data Bucket"],
+                "frameworks": {
+                    "stride": ["Information Disclosure", "Tampering"],
+                    "mitreATT&CK": ["T1530 - Data from Cloud Storage Object"],
+                },
+                "cwe": "CWE-200",
+                "vulnerabilityDetails": {
+                    "howItWorks": "Bucket ACL allows public read access.",
+                    "exploitationScenario": "Attacker downloads sensitive objects without auth.",
+                },
+                "recommendations": [
+                    {"description": "Block public access and restrict bucket policy."},
+                ],
+            }
+        ]
+    }
+
+    threats = extract_ground_truth(record)
+    assert len(threats) == 2
+    categories = {threat["stride_category"] for threat in threats}
+    assert categories == {"Information Disclosure", "Tampering"}
+    assert all(threat["component"].startswith("aws_s3_bucket.") for threat in threats)
+    assert all(any("mitreATT&CK" in reference for reference in threat["references"]) for threat in threats)

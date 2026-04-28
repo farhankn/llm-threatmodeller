@@ -1,42 +1,182 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.aws-s3-media-storage",
+    "description": "Unauthorized Access to Media Content via S3 Bucket Misconfiguration Misconfigured bucket policies, overly permissive IAM roles, or improperly scoped CloudFront OAC settings could create paths for unauthorized access to media content. The complexity of IAM roles in the architecture (multiple service roles interacting with S3) increases the risk of misconfiguration. An attacker with access to an overly permissive IAM role (e.g., through a compromised Lambda function) could directly access S3 buckets, bypassing CloudFront and authentication controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies using least privilege principle",
+      "recommendation: Implement comprehensive S3 access logging and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_s3_bucket.aws-s3-media-storage",
+    "description": "Unauthorized Access to Media Content via S3 Bucket Misconfiguration Misconfigured bucket policies, overly permissive IAM roles, or improperly scoped CloudFront OAC settings could create paths for unauthorized access to media content. The complexity of IAM roles in the architecture (multiple service roles interacting with S3) increases the risk of misconfiguration. An attacker with access to an overly permissive IAM role (e.g., through a compromised Lambda function) could directly access S3 buckets, bypassing CloudFront and authentication controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies using least privilege principle",
+      "recommendation: Implement comprehensive S3 access logging and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.aws-appsync",
+    "description": "Insufficient Audit Logging for User Actions and API Access While CloudWatch logging is configured, potential gaps exist in logging coverage, log retention policies, and log protection mechanisms. This could allow attackers to perform actions without detection or tamper with logs to hide their activities. An attacker gains access through a compromised user account and performs unauthorized content access or modifications. Without comprehensive logging, their actions may go undetected or be difficult to trace during incident response.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562.001 - Impair Defenses: Disable or Modify Tools",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive logging strategy across all components",
+      "recommendation: Implement log protection and centralized log analysis"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.aws-s3-media-storage",
+    "description": "Insufficient Data Encryption at Rest The architecture uses S3-managed encryption (SSE-S3) by default instead of KMS keys (SSE-KMS) for some components. This limits the ability to audit key usage and control key rotation policies. An attacker with physical access to storage media or with elevated AWS permissions could potentially access data without going through application-level controls if KMS encryption is not used.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-311",
+      "recommendation: Implement KMS encryption across all data stores",
+      "recommendation: Implement strict key usage policies and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-004-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.aws-appsync",
+    "description": "GraphQL API Security Vulnerabilities GraphQL APIs can be vulnerable to complex queries that cause excessive resource consumption, field-level authorization bypass, and injection attacks through resolver mapping templates. An attacker crafts a deeply nested GraphQL query that causes high CPU usage in the Lambda resolver, or attempts to access unauthorized fields through carefully crafted queries.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-918",
+      "recommendation: Implement comprehensive AppSync API security controls",
+      "recommendation: Secure Lambda resolvers and implement monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.aws-appsync",
+    "description": "GraphQL API Security Vulnerabilities GraphQL APIs can be vulnerable to complex queries that cause excessive resource consumption, field-level authorization bypass, and injection attacks through resolver mapping templates. An attacker crafts a deeply nested GraphQL query that causes high CPU usage in the Lambda resolver, or attempts to access unauthorized fields through carefully crafted queries.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-918",
+      "recommendation: Implement comprehensive AppSync API security controls",
+      "recommendation: Secure Lambda resolvers and implement monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-3",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.aws-appsync",
+    "description": "GraphQL API Security Vulnerabilities GraphQL APIs can be vulnerable to complex queries that cause excessive resource consumption, field-level authorization bypass, and injection attacks through resolver mapping templates. An attacker crafts a deeply nested GraphQL query that causes high CPU usage in the Lambda resolver, or attempts to access unauthorized fields through carefully crafted queries.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-918",
+      "recommendation: Implement comprehensive AppSync API security controls",
+      "recommendation: Secure Lambda resolvers and implement monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.aws-elementallive",
+    "description": "Media Processing Pipeline Vulnerabilities The media processing pipeline involves multiple services handling live and VOD content. Misconfiguration of input security groups, encryption settings, or access controls could allow unauthorized access or manipulation of media streams. An attacker could attempt to hijack live streams by exploiting misconfigured MediaLive input security groups, or inject unauthorized content through unprotected MediaConnect flows.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Secure media input and processing pipeline",
+      "recommendation: Implement comprehensive monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.aws-elementallive",
+    "description": "Media Processing Pipeline Vulnerabilities The media processing pipeline involves multiple services handling live and VOD content. Misconfiguration of input security groups, encryption settings, or access controls could allow unauthorized access or manipulation of media streams. An attacker could attempt to hijack live streams by exploiting misconfigured MediaLive input security groups, or inject unauthorized content through unprotected MediaConnect flows.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Secure media input and processing pipeline",
+      "recommendation: Implement comprehensive monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.aws-elementallive",
+    "description": "Media Processing Pipeline Vulnerabilities The media processing pipeline involves multiple services handling live and VOD content. Misconfiguration of input security groups, encryption settings, or access controls could allow unauthorized access or manipulation of media streams. An attacker could attempt to hijack live streams by exploiting misconfigured MediaLive input security groups, or inject unauthorized content through unprotected MediaConnect flows.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Secure media input and processing pipeline",
+      "recommendation: Implement comprehensive monitoring and alerting"
+    ]
   }
 ]

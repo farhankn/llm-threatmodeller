@@ -1,0 +1,49 @@
+{
+  "paper": "ACSE-Eval (Munshi et al., 2025, 2505.11565v2)",
+  "metrics": {
+    "stride_tfc_recall_pct": {
+      "gemini_2_5_pro": {
+        "iac_0_shot": 96.2,
+        "iac_3_shot": 92.6,
+        "iac_crc_0_shot": 98.4,
+        "iac_crc_3_shot": 92.9
+      },
+      "gpt_4_1": {
+        "iac_0_shot": 95.1,
+        "iac_3_shot": 96.8,
+        "iac_crc_0_shot": 97.4,
+        "iac_crc_3_shot": 98.7
+      },
+      "claude_3_7_sonnet": {
+        "iac_0_shot": 80.2,
+        "iac_3_shot": 87.8,
+        "iac_crc_0_shot": 84.7,
+        "iac_crc_3_shot": 88.8
+      }
+    },
+    "mitre_tfc_recall_pct": {
+      "gemini_2_5_pro": {
+        "iac_0_shot": 45.9,
+        "iac_3_shot": 46.1,
+        "iac_crc_0_shot": 46.9,
+        "iac_crc_3_shot": 47.4
+      },
+      "gpt_4_1": {
+        "iac_0_shot": 44.3,
+        "iac_3_shot": 49.5,
+        "iac_crc_0_shot": 42.8,
+        "iac_crc_3_shot": 49.9
+      },
+      "claude_3_7_sonnet": {
+        "iac_0_shot": 36.2,
+        "iac_3_shot": 40.6,
+        "iac_crc_0_shot": 38.9,
+        "iac_crc_3_shot": 42.3
+      }
+    }
+  },
+  "source_excerpt_ranges": {
+    "stride_table": "/tmp/acse_eval_paper.txt lines 300-308",
+    "mitre_table": "/tmp/acse_eval_paper.txt lines 330-338"
+  }
+}

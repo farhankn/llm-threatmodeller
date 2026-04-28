@@ -1,58 +1,180 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.apigateway",
     "description": "The architecture lacks explicit TLS configuration and ACM certificate setup for API Gateway and other endpoints, potentially exposing sensitive ML data and model artifacts to interception.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement TLS for all service endpoints using ACM certificates"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "The architecture lacks explicit TLS configuration and ACM certificate setup for API Gateway and other endpoints, potentially exposing sensitive ML data and model artifacts to interception.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement TLS for all service endpoints using ACM certificates"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.sagemaker_training_jobs",
     "description": "The architecture lacks proper network boundary controls through VPC configuration, potentially exposing internal services to unauthorized access.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement VPC with proper network segmentation"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.sagemaker_training_jobs",
+    "description": "The architecture lacks proper network boundary controls through VPC configuration, potentially exposing internal services to unauthorized access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement VPC with proper network segmentation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_resource.model_registry",
     "description": "Use of unsafe serialization formats (like pickle) in model artifacts could lead to code execution when models are loaded.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-502",
+      "recommendation: Implement safe serialization practices for model artifacts"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.model_registry",
+    "description": "Use of unsafe serialization formats (like pickle) in model artifacts could lead to code execution when models are loaded.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-502",
+      "recommendation: Implement safe serialization practices for model artifacts"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.model_artifacts_s3_bucket",
     "description": "Lack of proper access controls for model artifacts could lead to intellectual property theft or model tampering.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement strict access controls for model artifacts"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-004-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_s3_bucket.model_artifacts_s3_bucket",
+    "description": "Lack of proper access controls for model artifacts could lead to intellectual property theft or model tampering.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement strict access controls for model artifacts"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.training_data_s3_bucket",
     "description": "Insufficient anonymization of training data could lead to PII exposure through model outputs or data breaches.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A03:2021-Sensitive Data Exposure",
+      "stride: Information Disclosure",
+      "cwe: CWE-359",
+      "recommendation: Implement comprehensive data privacy controls"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-006",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
     "description": "Lack of load balancing and DNS configuration could lead to service disruptions and reduced reliability.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-1104",
+      "recommendation: Implement high availability architecture"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
+    "threat_id": "THREAT-007-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_resource.model_registry",
     "description": "Lack of security scanning in the model registry could allow deployment of vulnerable or malicious models.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1195 - Supply Chain Compromise",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1104",
+      "recommendation: Implement model registry security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.model_registry",
+    "description": "Lack of security scanning in the model registry could allow deployment of vulnerable or malicious models.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1195 - Supply Chain Compromise",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1104",
+      "recommendation: Implement model registry security controls"
+    ]
   }
 ]

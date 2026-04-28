@@ -1,50 +1,178 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_data_lake",
+    "description": "Insufficient Data Encryption at Rest Data stored in AWS services is encrypted using service-managed keys rather than customer-managed KMS keys. While this provides basic encryption, it reduces control over key rotation and access. An attacker with access to AWS service-managed keys (through compromise or insider threat) could decrypt and access sensitive data across multiple storage services.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-311",
+      "recommendation: Implement AWS KMS customer-managed keys for all data storage services"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.quicksight_dashboard",
+    "description": "Insecure QuickSight Dashboard Access Control QuickSight uses IAM roles and its own permission system for dashboard access. Misconfiguration can grant excessive permissions to users or groups. A user with basic QuickSight access could potentially view dashboards containing sensitive data from other business units due to overly permissive sharing settings.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict QuickSight access controls",
+      "recommendation: Regular access review process"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.quicksight_dashboard",
+    "description": "Insecure QuickSight Dashboard Access Control QuickSight uses IAM roles and its own permission system for dashboard access. Misconfiguration can grant excessive permissions to users or groups. A user with basic QuickSight access could potentially view dashboards containing sensitive data from other business units due to overly permissive sharing settings.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict QuickSight access controls",
+      "recommendation: Regular access review process"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003",
+    "stride_category": "Repudiation",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient Audit Logging While basic CloudWatch logging is enabled, detailed audit trails of user actions, data access, and system changes are not comprehensively captured across all services. An attacker could perform unauthorized actions without detection, or clean up traces of their activities due to insufficient logging.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Enable comprehensive audit logging",
+      "recommendation: Implement centralized log aggregation"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure API Gateway Configuration The API Gateway configuration lacks comprehensive authentication mechanisms and rate limiting, potentially allowing API abuse. An attacker could perform credential stuffing attacks or abuse API endpoints due to insufficient rate limiting and authentication controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-306",
+      "recommendation: Implement API Gateway authorization",
+      "recommendation: Enable request throttling and validation"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
+    "threat_id": "THREAT-004-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure API Gateway Configuration The API Gateway configuration lacks comprehensive authentication mechanisms and rate limiting, potentially allowing API abuse. An attacker could perform credential stuffing attacks or abuse API endpoints due to insufficient rate limiting and authentication controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-306",
+      "recommendation: Implement API Gateway authorization",
+      "recommendation: Enable request throttling and validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-3",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure API Gateway Configuration The API Gateway configuration lacks comprehensive authentication mechanisms and rate limiting, potentially allowing API abuse. An attacker could perform credential stuffing attacks or abuse API endpoints due to insufficient rate limiting and authentication controls.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-306",
+      "recommendation: Implement API Gateway authorization",
+      "recommendation: Enable request throttling and validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.kinesis_data_streams",
+    "description": "Vulnerable Data Processing Pipeline Data ingested through Kinesis streams could contain malicious payloads that might exploit vulnerabilities in processing logic. An attacker could inject malformed data that crashes processing functions or manipulates analytics results.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-74",
+      "recommendation: Implement robust input validation",
+      "recommendation: Enhance error handling and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.kinesis_data_streams",
+    "description": "Vulnerable Data Processing Pipeline Data ingested through Kinesis streams could contain malicious payloads that might exploit vulnerabilities in processing logic. An attacker could inject malformed data that crashes processing functions or manipulates analytics results.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-74",
+      "recommendation: Implement robust input validation",
+      "recommendation: Enhance error handling and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.emr_cluster",
+    "description": "EMR Cluster Security Vulnerabilities EMR clusters running in the VPC could be vulnerable to unauthorized access or privilege escalation if security groups and IAM roles are not properly configured. An attacker with access to the VPC could potentially access the EMR cluster and execute unauthorized analytics jobs.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-732",
+      "recommendation: Enhance EMR security configuration",
+      "recommendation: Implement EMR access logging"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.emr_cluster",
+    "description": "EMR Cluster Security Vulnerabilities EMR clusters running in the VPC could be vulnerable to unauthorized access or privilege escalation if security groups and IAM roles are not properly configured. An attacker with access to the VPC could potentially access the EMR cluster and execute unauthorized analytics jobs.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-732",
+      "recommendation: Enhance EMR security configuration",
+      "recommendation: Implement EMR access logging"
+    ]
   }
 ]

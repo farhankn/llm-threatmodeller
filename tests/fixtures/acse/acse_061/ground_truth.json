@@ -1,42 +1,162 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.cognito",
+    "description": "Cognito Access Token Replay Attack Attackers could capture JWT tokens through various means (XSS, man-in-the-middle attacks, client-side storage exposure) and replay them until expiration to maintain unauthorized access. An attacker intercepts a valid user's token through compromised network traffic or XSS attack, then uses it to make authenticated API calls to access sensitive organization data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1528 - Steal Application Access Token",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-287",
+      "recommendation: Implement short token expiration times and secure token handling",
+      "recommendation: Enhance token security with additional controls"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cognito",
+    "description": "Cognito Access Token Replay Attack Attackers could capture JWT tokens through various means (XSS, man-in-the-middle attacks, client-side storage exposure) and replay them until expiration to maintain unauthorized access. An attacker intercepts a valid user's token through compromised network traffic or XSS attack, then uses it to make authenticated API calls to access sensitive organization data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1528 - Steal Application Access Token",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-287",
+      "recommendation: Implement short token expiration times and secure token handling",
+      "recommendation: Enhance token security with additional controls"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.cognito_user_pool",
+    "description": "Credential Stuffing Attack Attackers use automated tools to test large sets of stolen username/password combinations against the authentication endpoint, exploiting password reuse across services. An attacker obtains a database of leaked credentials and systematically attempts to authenticate to the application, potentially compromising accounts where users have reused passwords.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1110.004 - Credential Stuffing",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-307",
+      "recommendation: Implement multi-factor authentication (MFA)",
+      "recommendation: Add rate limiting and detection mechanisms"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cognito_user_pool",
+    "description": "Credential Stuffing Attack Attackers use automated tools to test large sets of stolen username/password combinations against the authentication endpoint, exploiting password reuse across services. An attacker obtains a database of leaked credentials and systematically attempts to authenticate to the application, potentially compromising accounts where users have reused passwords.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1110.004 - Credential Stuffing",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-307",
+      "recommendation: Implement multi-factor authentication (MFA)",
+      "recommendation: Add rate limiting and detection mechanisms"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "Insufficient Authorization Controls Missing or insufficient authorization checks in Lambda functions could allow authenticated users to access administrative endpoints or sensitive data they shouldn't have access to. A regular user modifies API requests to access admin-only endpoints, potentially gaining access to delegated administrator account information or sensitive policy data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-285",
+      "recommendation: Implement robust authorization checks",
+      "recommendation: Enhance API Gateway authorization"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "Insufficient Authorization Controls Missing or insufficient authorization checks in Lambda functions could allow authenticated users to access administrative endpoints or sensitive data they shouldn't have access to. A regular user modifies API requests to access admin-only endpoints, potentially gaining access to delegated administrator account information or sensitive policy data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-285",
+      "recommendation: Implement robust authorization checks",
+      "recommendation: Enhance API Gateway authorization"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.frontend_application",
+    "description": "Trust Boundary Violation Insufficient separation between frontend and backend components could expose sensitive configuration, allow direct access to backend resources, or enable unauthorized API access. An attacker discovers backend API endpoints or configuration details exposed in frontend code, leading to unauthorized access or information disclosure.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-501",
+      "recommendation: Implement proper trust boundary controls",
+      "recommendation: Enhance frontend security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.frontend_application",
+    "description": "Trust Boundary Violation Insufficient separation between frontend and backend components could expose sensitive configuration, allow direct access to backend resources, or enable unauthorized API access. An attacker discovers backend API endpoints or configuration details exposed in frontend code, leading to unauthorized access or information disclosure.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-501",
+      "recommendation: Implement proper trust boundary controls",
+      "recommendation: Enhance frontend security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.step_functions",
+    "description": "Step Functions Execution Manipulation Attackers could manipulate Step Functions execution by injecting malicious data or exploiting insufficient input validation in Lambda functions. An attacker modifies input data to a Step Functions workflow, causing it to execute unauthorized operations or access unauthorized resources.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-918",
+      "recommendation: Implement Step Functions security controls",
+      "recommendation: Enhance workflow security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.step_functions",
+    "description": "Step Functions Execution Manipulation Attackers could manipulate Step Functions execution by injecting malicious data or exploiting insufficient input validation in Lambda functions. An attacker modifies input data to a Step Functions workflow, causing it to execute unauthorized operations or access unauthorized resources.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-918",
+      "recommendation: Implement Step Functions security controls",
+      "recommendation: Enhance workflow security"
+    ]
   }
 ]

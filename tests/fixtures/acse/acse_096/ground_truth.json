@@ -1,50 +1,223 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.git_workers_ecs_tasks",
+    "description": "Unauthorized S3 Bucket Access and Object Manipulation The ECS Task Role has broad permissions to read and write to both S3 buckets. Without proper bucket policy controls or application-level access scoping, a compromised worker could access or modify any object in the buckets. An attacker who compromises a Git Worker container could exploit the broad IAM permissions to access repositories they shouldn't have access to or modify objects in the large object store.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement S3 bucket policy with strict path-based access control",
+      "recommendation: Implement request signing and validation for S3 operations"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.git_workers_ecs_tasks",
+    "description": "Unauthorized S3 Bucket Access and Object Manipulation The ECS Task Role has broad permissions to read and write to both S3 buckets. Without proper bucket policy controls or application-level access scoping, a compromised worker could access or modify any object in the buckets. An attacker who compromises a Git Worker container could exploit the broad IAM permissions to access repositories they shouldn't have access to or modify objects in the large object store.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement S3 bucket policy with strict path-based access control",
+      "recommendation: Implement request signing and validation for S3 operations"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_repository_store",
+    "description": "Multi-Tenant Data Leakage in S3 Buckets Multiple repositories share the same S3 buckets without proper logical or encryption-based isolation. Path-based separation alone may be insufficient if access controls are misconfigured. A malicious tenant could attempt path traversal or exploit misconfigured bucket policies to access another tenant's repository data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-200",
+      "recommendation: Implement per-repository encryption keys",
+      "recommendation: Enhance S3 bucket configuration for multi-tenancy"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.elasticache_redis_cluster",
+    "description": "Cache Race Conditions and Data Corruption Multiple Git Workers accessing the Redis cache simultaneously without proper locking mechanisms could lead to race conditions and data inconsistency. An attacker could deliberately trigger concurrent operations to corrupt cache data or cause service disruption.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement distributed locking mechanism",
+      "recommendation: Enhance cache consistency checks"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.elasticache_redis_cluster",
+    "description": "Cache Race Conditions and Data Corruption Multiple Git Workers accessing the Redis cache simultaneously without proper locking mechanisms could lead to race conditions and data inconsistency. An attacker could deliberately trigger concurrent operations to corrupt cache data or cause service disruption.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement distributed locking mechanism",
+      "recommendation: Enhance cache consistency checks"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
+    "threat_id": "THREAT-004-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_db_instance.dynamodb_repository_metadata_table",
+    "description": "DynamoDB Table Data Injection The DynamoDB table could be misused to store sensitive data or executable code, which might be executed by the application logic. An attacker could inject malicious code into metadata fields that might later be executed by application components, or store sensitive credentials that could be extracted.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-915",
+      "recommendation: Implement strict input validation and sanitization",
+      "recommendation: Use AWS Secrets Manager for sensitive data"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb_repository_metadata_table",
+    "description": "DynamoDB Table Data Injection The DynamoDB table could be misused to store sensitive data or executable code, which might be executed by the application logic. An attacker could inject malicious code into metadata fields that might later be executed by application components, or store sensitive credentials that could be extracted.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-915",
+      "recommendation: Implement strict input validation and sanitization",
+      "recommendation: Use AWS Secrets Manager for sensitive data"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_db_instance.dynamodb_repository_metadata_table",
+    "description": "DynamoDB Table Data Injection The DynamoDB table could be misused to store sensitive data or executable code, which might be executed by the application logic. An attacker could inject malicious code into metadata fields that might later be executed by application components, or store sensitive credentials that could be extracted.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-915",
+      "recommendation: Implement strict input validation and sanitization",
+      "recommendation: Use AWS Secrets Manager for sensitive data"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_cross-region_replication",
+    "description": "Cross-Region Replication Security Cross-region replication of S3 buckets and DynamoDB tables could expose data to different regional security contexts or lead to replication delays affecting consistency. An attacker could exploit differences in regional security controls or target replication delays to access or modify data during transit between regions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Enhance cross-region encryption",
+      "recommendation: Implement consistent security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.s3_cross-region_replication",
+    "description": "Cross-Region Replication Security Cross-region replication of S3 buckets and DynamoDB tables could expose data to different regional security contexts or lead to replication delays affecting consistency. An attacker could exploit differences in regional security controls or target replication delays to access or modify data during transit between regions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Enhance cross-region encryption",
+      "recommendation: Implement consistent security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "API Gateway and Lambda Security The API Gateway and Lambda functions handle Git operations and could be vulnerable to various attacks if not properly configured. An attacker could attempt to bypass authentication, exploit rate limiting, or perform DoS attacks against the API endpoints.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Denial of Service",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Enhance API Gateway security",
+      "recommendation: Implement robust monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "API Gateway and Lambda Security The API Gateway and Lambda functions handle Git operations and could be vulnerable to various attacks if not properly configured. An attacker could attempt to bypass authentication, exploit rate limiting, or perform DoS attacks against the API endpoints.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Denial of Service",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Enhance API Gateway security",
+      "recommendation: Implement robust monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "API Gateway and Lambda Security The API Gateway and Lambda functions handle Git operations and could be vulnerable to various attacks if not properly configured. An attacker could attempt to bypass authentication, exploit rate limiting, or perform DoS attacks against the API endpoints.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Denial of Service",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-306",
+      "recommendation: Enhance API Gateway security",
+      "recommendation: Implement robust monitoring and alerting"
+    ]
   }
 ]

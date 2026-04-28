@@ -1,50 +1,187 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-001",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.lambda-syntacticprocessing",
     "description": "Healthcare data processing pipeline may not properly anonymize Protected Health Information (PHI) before storage or transmission, leading to potential HIPAA violations and exposure of sensitive patient data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "cwe: CWE-359",
+      "recommendation: Implement data anonymization at system entry points",
+      "recommendation: Implement PHI scanning and blocking"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.generallambdarole",
     "description": "The system uses a general Lambda role with broad permissions and lacks fine-grained access controls, potentially allowing unauthorized access to sensitive healthcare data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-269",
+      "recommendation: Implement fine-grained IAM roles",
+      "recommendation: Implement proper authentication and authorization"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_iam_role.generallambdarole",
+    "description": "The system uses a general Lambda role with broad permissions and lacks fine-grained access controls, potentially allowing unauthorized access to sensitive healthcare data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-269",
+      "recommendation: Implement fine-grained IAM roles",
+      "recommendation: Implement proper authentication and authorization"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_vpc.vpc",
     "description": "The VPC configuration allows broad outbound access and has potential network exposure points through API Gateway and ELB configurations.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Scanning",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement strict network controls",
+      "recommendation: Implement network monitoring and protection"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc",
+    "description": "The VPC configuration allows broad outbound access and has potential network exposure points through API Gateway and ELB configurations.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Scanning",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement strict network controls",
+      "recommendation: Implement network monitoring and protection"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
+    "component": "aws_api_gateway_rest_api.api_gateway",
     "description": "The system lacks proper TLS configuration and certificate management through AWS Certificate Manager, potentially exposing data in transit.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Implement comprehensive TLS",
+      "recommendation: Enable encryption in transit"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "The system lacks proper TLS configuration and certificate management through AWS Certificate Manager, potentially exposing data in transit.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Implement comprehensive TLS",
+      "recommendation: Enable encryption in transit"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-3",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "The system lacks proper TLS configuration and certificate management through AWS Certificate Manager, potentially exposing data in transit.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Implement comprehensive TLS",
+      "recommendation: Enable encryption in transit"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_bucket",
     "description": "The system may not properly manage data retention and deletion according to healthcare compliance requirements.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "cwe: CWE-499",
+      "recommendation: Implement comprehensive data lifecycle policies",
+      "recommendation: Implement data inventory and tracking"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
     "description": "The system lacks comprehensive monitoring for data exfiltration and may log sensitive information inappropriately.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-779",
+      "recommendation: Implement comprehensive monitoring",
+      "recommendation: Implement data exfiltration controls",
+      "recommendation: Implement secure logging practices"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cloudwatch",
+    "description": "The system lacks comprehensive monitoring for data exfiltration and may log sensitive information inappropriately.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1537 - Transfer Data to Cloud Account",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "stride: Information Disclosure",
+      "cwe: CWE-779",
+      "recommendation: Implement comprehensive monitoring",
+      "recommendation: Implement data exfiltration controls",
+      "recommendation: Implement secure logging practices"
+    ]
   }
 ]

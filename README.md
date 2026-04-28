@@ -18,6 +18,7 @@ pip install -e ".[dev]"
 python -m threatcli --help
 python -m threatcli analyze --iac path/to/main.tf --format text
 python -m threatcli analyze --iac path/to/main.tf --provider gemini --format json
+python -m threatcli analyze --iac path/to/main.tf --provider gemini --format pdf --output threat-report.pdf
 python -m threatcli analyze --iac path/to/main.tf --doc design.md --doc-dir docs/ --format json
 python -m threatcli evaluation run --fixtures tests/fixtures --provider gemini --model gemini-2.5-flash-lite --include-docs --output evaluation/results/latest_run.json
 python -m threatcli evaluation import-acse --dataset acse_eval_export.json --output-root tests/fixtures/acse
@@ -25,6 +26,20 @@ python -m threatcli evaluation import-acse --dataset data/acse_eval/train_0.parq
 ```
 
 More commands and providers are implemented incrementally.
+
+## Documentation artifacts in `Design_Docs`
+
+- `Design_Docs/implementation-changes-summary.md`: full implementation summary of recent delivered features.
+- `Design_Docs/chapter-4-implementation-addendum.md`: extra Chapter 4 (Implementation) content you can merge into the dissertation/paper PDF.
+- `Design_Docs/chapter-4-implementation-issues-challenges-decisions.md`: chapter-ready write-up of implementation issues, engineering challenges, and design decisions.
+
+## Generated data / benchmark artifacts
+
+ACSE and evaluation outputs are intentionally ignored in git by default:
+
+- `data/acse_eval/`
+- `tests/fixtures/acse/`
+- `evaluation/results/`
 
 ### Document ingestion controls
 

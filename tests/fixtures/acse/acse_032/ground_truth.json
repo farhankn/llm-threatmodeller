@@ -1,58 +1,251 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.ev_charging_station",
+    "description": "Man-in-the-Middle Attack on OCPP Communication Attackers could position themselves between the charging station and the OCPP handler by exploiting DNS poisoning, ARP spoofing, or SSL stripping attacks. This would allow them to intercept, read, and potentially modify the OCPP traffic. An attacker on the same network as a charging station could use ARP spoofing to redirect traffic through their machine, then capture sensitive data or inject malicious commands into the OCPP stream.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-300",
+      "recommendation: Implement end-to-end TLS encryption for all OCPP communications",
+      "recommendation: Implement DNS security measures"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
+    "threat_id": "THREAT-001-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.ev_charging_station",
+    "description": "Man-in-the-Middle Attack on OCPP Communication Attackers could position themselves between the charging station and the OCPP handler by exploiting DNS poisoning, ARP spoofing, or SSL stripping attacks. This would allow them to intercept, read, and potentially modify the OCPP traffic. An attacker on the same network as a charging station could use ARP spoofing to redirect traffic through their machine, then capture sensitive data or inject malicious commands into the OCPP stream.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-300",
+      "recommendation: Implement end-to-end TLS encryption for all OCPP communications",
+      "recommendation: Implement DNS security measures"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-3",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.ev_charging_station",
+    "description": "Man-in-the-Middle Attack on OCPP Communication Attackers could position themselves between the charging station and the OCPP handler by exploiting DNS poisoning, ARP spoofing, or SSL stripping attacks. This would allow them to intercept, read, and potentially modify the OCPP traffic. An attacker on the same network as a charging station could use ARP spoofing to redirect traffic through their machine, then capture sensitive data or inject malicious commands into the OCPP stream.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-300",
+      "recommendation: Implement end-to-end TLS encryption for all OCPP communications",
+      "recommendation: Implement DNS security measures"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.ev_charging_station",
+    "description": "Unauthorized Charging Station Registration Attackers could create fake charging station identities by exploiting weak device registration processes or by cloning legitimate station credentials. An attacker creates multiple simulated charging stations using stolen or guessed credentials, flooding the system with fake telemetry data and potentially causing resource exhaustion.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1098 - Account Manipulation",
+      "mitreATT&CK: T1136 - Create Account",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Repudiation",
+      "cwe: CWE-287",
+      "recommendation: Implement secure device provisioning and authentication",
+      "recommendation: Implement device behavior monitoring and anomaly detection"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.ev_charging_station",
+    "description": "Unauthorized Charging Station Registration Attackers could create fake charging station identities by exploiting weak device registration processes or by cloning legitimate station credentials. An attacker creates multiple simulated charging stations using stolen or guessed credentials, flooding the system with fake telemetry data and potentially causing resource exhaustion.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1098 - Account Manipulation",
+      "mitreATT&CK: T1136 - Create Account",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Repudiation",
+      "cwe: CWE-287",
+      "recommendation: Implement secure device provisioning and authentication",
+      "recommendation: Implement device behavior monitoring and anomaly detection"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.admin_api_api_gateway",
+    "description": "Insecure Administrative Access The Admin API relies primarily on IP-based restrictions and lacks robust authentication mechanisms. IP spoofing or VPN usage could bypass these controls. An attacker could use a compromised system within the allowed IP range to access the Admin API and manipulate charging station configurations or access sensitive data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement robust authentication and authorization",
+      "recommendation: Enhance API security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.admin_api_api_gateway",
+    "description": "Insecure Administrative Access The Admin API relies primarily on IP-based restrictions and lacks robust authentication mechanisms. IP spoofing or VPN usage could bypass these controls. An attacker could use a compromised system within the allowed IP range to access the Admin API and manipulate charging station configurations or access sensitive data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement robust authentication and authorization",
+      "recommendation: Enhance API security controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_data_lake",
+    "description": "Data Lake Information Disclosure While the CDK code includes S3 bucket encryption and public access blocking, additional vulnerabilities could exist in bucket policies, cross-account access, or through compromised IAM credentials. An attacker with access to a compromised IAM role or through a misconfigured bucket policy could extract sensitive charging station data or customer information from the S3 data lake.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-200",
+      "recommendation: Enhance S3 bucket security controls",
+      "recommendation: Implement comprehensive data access monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.iot_core",
+    "description": "IoT Message Queue Manipulation Attackers could exploit weak IoT device authentication to flood the SQS queue with malicious messages, potentially causing processing delays, resource exhaustion, or data pollution. A compromised charging station or simulated device sends a high volume of fake telemetry data, overwhelming the message processing pipeline and causing legitimate messages to be delayed or dropped.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-406",
+      "recommendation: Implement message validation and rate limiting",
+      "recommendation: Enhance message processing security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.iot_core",
+    "description": "IoT Message Queue Manipulation Attackers could exploit weak IoT device authentication to flood the SQS queue with malicious messages, potentially causing processing delays, resource exhaustion, or data pollution. A compromised charging station or simulated device sends a high volume of fake telemetry data, overwhelming the message processing pipeline and causing legitimate messages to be delayed or dropped.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-406",
+      "recommendation: Implement message validation and rate limiting",
+      "recommendation: Enhance message processing security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Spoofing",
+    "component": "aws_route53_zone.route53_dns",
+    "description": "DNS Hijacking Attack Attackers could compromise DNS infrastructure, exploit DNSSEC vulnerabilities, or perform cache poisoning attacks to redirect charging station traffic to malicious servers. An attacker performs a DNS cache poisoning attack on the local DNS resolver used by charging stations, redirecting their connections to a malicious server that captures authentication credentials and charging data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1584.002 - Compromise Infrastructure: DNS Server",
+      "mitreATT&CK: T1557.002 - Adversary-in-the-Middle: DNS Hijacking",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-350",
+      "recommendation: Implement comprehensive DNS security measures",
+      "recommendation: Enhance endpoint validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Tampering",
+    "component": "aws_route53_zone.route53_dns",
+    "description": "DNS Hijacking Attack Attackers could compromise DNS infrastructure, exploit DNSSEC vulnerabilities, or perform cache poisoning attacks to redirect charging station traffic to malicious servers. An attacker performs a DNS cache poisoning attack on the local DNS resolver used by charging stations, redirecting their connections to a malicious server that captures authentication credentials and charging data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1584.002 - Compromise Infrastructure: DNS Server",
+      "mitreATT&CK: T1557.002 - Adversary-in-the-Middle: DNS Hijacking",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-350",
+      "recommendation: Implement comprehensive DNS security measures",
+      "recommendation: Enhance endpoint validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.ev_charging_station",
+    "description": "Telemetry Data Tampering Attackers could intercept and modify telemetry data during transmission, or directly manipulate stored data through compromised credentials or system vulnerabilities. An attacker modifies charging usage data to reduce billing amounts or manipulates power consumption metrics to hide electricity theft.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565.001 - Data Manipulation: Stored Data Manipulation",
+      "mitreATT&CK: T1565.003 - Data Manipulation: Runtime Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement data integrity controls",
+      "recommendation: Enhance data monitoring and validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.ev_charging_station",
+    "description": "Telemetry Data Tampering Attackers could intercept and modify telemetry data during transmission, or directly manipulate stored data through compromised credentials or system vulnerabilities. An attacker modifies charging usage data to reduce billing amounts or manipulates power consumption metrics to hide electricity theft.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565.001 - Data Manipulation: Stored Data Manipulation",
+      "mitreATT&CK: T1565.003 - Data Manipulation: Runtime Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Repudiation",
+      "cwe: CWE-345",
+      "recommendation: Implement data integrity controls",
+      "recommendation: Enhance data monitoring and validation"
+    ]
   }
 ]

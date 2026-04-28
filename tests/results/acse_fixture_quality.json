@@ -1,0 +1,26 @@
+{
+  "acse_scenarios": 100,
+  "placeholder_main_tf": 100,
+  "placeholder_main_tf_rate": 1.0,
+  "python_design_docs": 100,
+  "python_design_docs_rate": 1.0,
+  "normalized_total_threats": 618,
+  "normalized_unknown_component": 618,
+  "normalized_unknown_component_rate": 1.0,
+  "normalized_tampering": 618,
+  "normalized_tampering_rate": 1.0,
+  "normalized_non_tampering_count": 0,
+  "source_total_threats": 618,
+  "source_with_mitre": 618,
+  "source_stride_counts": {
+    "Spoofing": 133,
+    "Elevation of Privilege": 195,
+    "Information Disclosure": 343,
+    "Tampering": 284,
+    "Denial of Service": 115,
+    "Repudiation": 79,
+    "Lateral Movement": 1,
+    "Access Control": 1,
+    "Resource Exhaustion": 1
+  }
+}

@@ -1,58 +1,254 @@
 [
   {
-    "threat_id": "ACSE-001",
+    "threat_id": "THREAT-001-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.biddingservice",
+    "description": "Bid Transaction Race Condition and Inconsistency During high-volume bidding periods, multiple bid processors may simultaneously attempt to process bids for the same ad slot. Without proper transaction isolation and rollback mechanisms, this can lead to race conditions where the final state of the bid is incorrect or inconsistent. An attacker could exploit this by flooding the system with rapid bid requests, causing race conditions that result in duplicate bid acceptances or lost bids, potentially leading to financial losses.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement proper transaction isolation in the bidding service",
+      "recommendation: Add bid state machine and rollback mechanisms"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.biddingservice",
+    "description": "Bid Transaction Race Condition and Inconsistency During high-volume bidding periods, multiple bid processors may simultaneously attempt to process bids for the same ad slot. Without proper transaction isolation and rollback mechanisms, this can lead to race conditions where the final state of the bid is incorrect or inconsistent. An attacker could exploit this by flooding the system with rapid bid requests, causing race conditions that result in duplicate bid acceptances or lost bids, potentially leading to financial losses.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement proper transaction isolation in the bidding service",
+      "recommendation: Add bid state machine and rollback mechanisms"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-3",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.biddingservice",
+    "description": "Bid Transaction Race Condition and Inconsistency During high-volume bidding periods, multiple bid processors may simultaneously attempt to process bids for the same ad slot. Without proper transaction isolation and rollback mechanisms, this can lead to race conditions where the final state of the bid is incorrect or inconsistent. An attacker could exploit this by flooding the system with rapid bid requests, causing race conditions that result in duplicate bid acceptances or lost bids, potentially leading to financial losses.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement proper transaction isolation in the bidding service",
+      "recommendation: Add bid state machine and rollback mechanisms"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Spoofing",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Insufficient Transport Layer Security Without proper TLS configuration and certificate management, communications between various components could be vulnerable to interception and modification. An attacker could perform a man-in-the-middle attack to intercept bid requests, modify bid amounts, or steal sensitive advertiser information.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Implement end-to-end TLS encryption",
+      "recommendation: Implement certificate rotation and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Insufficient Transport Layer Security Without proper TLS configuration and certificate management, communications between various components could be vulnerable to interception and modification. An attacker could perform a man-in-the-middle attack to intercept bid requests, modify bid amounts, or steal sensitive advertiser information.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Implement end-to-end TLS encryption",
+      "recommendation: Implement certificate rotation and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-3",
+    "stride_category": "Information Disclosure",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Insufficient Transport Layer Security Without proper TLS configuration and certificate management, communications between various components could be vulnerable to interception and modification. An attacker could perform a man-in-the-middle attack to intercept bid requests, modify bid amounts, or steal sensitive advertiser information.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-319",
+      "recommendation: Implement end-to-end TLS encryption",
+      "recommendation: Implement certificate rotation and monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "Insufficient Authentication and Authorization The current implementation relies on API keys and IAM roles but lacks proper user authentication and session management. WAF protection is inconsistent across different user types. An attacker could steal API keys or exploit the lack of proper session management to impersonate advertisers or bypass spending limits.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement Cognito user pools for advertiser authentication",
+      "recommendation: Extend WAF protection to all endpoints"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "Insufficient Authentication and Authorization The current implementation relies on API keys and IAM roles but lacks proper user authentication and session management. WAF protection is inconsistent across different user types. An attacker could steal API keys or exploit the lack of proper session management to impersonate advertisers or bypass spending limits.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement Cognito user pools for advertiser authentication",
+      "recommendation: Extend WAF protection to all endpoints"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.bid_cache",
+    "description": "Cache Inconsistency and Data Race Conditions Cache inconsistencies can occur due to race conditions during concurrent updates or failed write-through operations to the primary data store. An attacker could exploit timing windows between cache and database updates to manipulate bid data or cause financial inconsistencies.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1492 - Stored Data Manipulation",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-664",
+      "recommendation: Implement robust cache consistency patterns",
+      "recommendation: Add monitoring and alerting for cache inconsistencies"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.bid_cache",
+    "description": "Cache Inconsistency and Data Race Conditions Cache inconsistencies can occur due to race conditions during concurrent updates or failed write-through operations to the primary data store. An attacker could exploit timing windows between cache and database updates to manipulate bid data or cause financial inconsistencies.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1492 - Stored Data Manipulation",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-664",
+      "recommendation: Implement robust cache consistency patterns",
+      "recommendation: Add monitoring and alerting for cache inconsistencies"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-3",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.bid_cache",
+    "description": "Cache Inconsistency and Data Race Conditions Cache inconsistencies can occur due to race conditions during concurrent updates or failed write-through operations to the primary data store. An attacker could exploit timing windows between cache and database updates to manipulate bid data or cause financial inconsistencies.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1492 - Stored Data Manipulation",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-664",
+      "recommendation: Implement robust cache consistency patterns",
+      "recommendation: Add monitoring and alerting for cache inconsistencies"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.event_stream",
+    "description": "Insufficient Data Privacy in Analytics Pipeline Sensitive user and bid data flows through multiple analytics components without proper anonymization or access controls, potentially exposing PII or business-sensitive information. An attacker with access to the analytics pipeline or data lake could extract sensitive user information or competitive bidding data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A03:2021-Sensitive Data Exposure",
+      "stride: Information Disclosure",
+      "cwe: CWE-359",
+      "recommendation: Implement data anonymization",
+      "recommendation: Enhance data lake security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006",
+    "stride_category": "Denial of Service",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Denial of Service Through Bid Request Flooding The system could be overwhelmed by a high volume of bid requests, either malicious or due to misconfigured clients, leading to service degradation. An attacker could flood the system with bid requests to overwhelm resources or cause processing delays that affect legitimate bids.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement comprehensive DoS protection",
+      "recommendation: Add request validation and filtering"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "Insecure Direct Object References in Campaign Management Campaign management endpoints might not properly validate object ownership and access rights, allowing unauthorized access to or modification of campaign data. An attacker could modify campaign IDs or reference parameters to access or modify campaigns belonging to other advertisers.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement robust access control checks",
+      "recommendation: Add audit logging for campaign operations"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Tampering",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "Insecure Direct Object References in Campaign Management Campaign management endpoints might not properly validate object ownership and access rights, allowing unauthorized access to or modification of campaign data. An attacker could modify campaign IDs or reference parameters to access or modify campaigns belonging to other advertisers.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-639",
+      "recommendation: Implement robust access control checks",
+      "recommendation: Add audit logging for campaign operations"
+    ]
   }
 ]

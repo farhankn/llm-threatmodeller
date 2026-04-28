@@ -1,58 +1,160 @@
 [
   {
-    "threat_id": "ACSE-001",
+    "threat_id": "THREAT-001-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_lambda_function.uploadprocessorlambda",
+    "description": "Image-Based Code Execution Attack Attackers can craft malicious image files that contain executable code in their metadata or pixel data. When these images are processed, the code could be executed if proper sanitization and isolation aren't in place. An attacker uploads a PNG file with embedded shellcode in its metadata. During image processing, the malicious code is executed within the Lambda environment, potentially leading to data exfiltration or further system compromise.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1059 - Command and Scripting Interpreter",
+      "mitreATT&CK: T1204.003 - User Execution: Malicious Image",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-434",
+      "recommendation: Implement secure image processing in an isolated environment",
+      "recommendation: Enhanced runtime security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.uploadprocessorlambda",
+    "description": "Image-Based Code Execution Attack Attackers can craft malicious image files that contain executable code in their metadata or pixel data. When these images are processed, the code could be executed if proper sanitization and isolation aren't in place. An attacker uploads a PNG file with embedded shellcode in its metadata. During image processing, the malicious code is executed within the Lambda environment, potentially leading to data exfiltration or further system compromise.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1059 - Command and Scripting Interpreter",
+      "mitreATT&CK: T1204.003 - User Execution: Malicious Image",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-434",
+      "recommendation: Implement secure image processing in an isolated environment",
+      "recommendation: Enhanced runtime security controls"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "Missing TLS and Certificate Management Without proper TLS configuration and valid certificates, communications between clients and the API/CDN could be intercepted or manipulated through man-in-the-middle attacks. An attacker performing a man-in-the-middle attack could intercept traffic between users and the API Gateway, potentially capturing sensitive data or session tokens.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement ACM and TLS for all endpoints",
+      "recommendation: Enforce HTTPS-only communication"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-002-2",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "Missing TLS and Certificate Management Without proper TLS configuration and valid certificates, communications between clients and the API/CDN could be intercepted or manipulated through man-in-the-middle attacks. An attacker performing a man-in-the-middle attack could intercept traffic between users and the API Gateway, potentially capturing sensitive data or session tokens.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-319",
+      "recommendation: Implement ACM and TLS for all endpoints",
+      "recommendation: Enforce HTTPS-only communication"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.rawimagesbucket",
+    "description": "Insufficient Access Controls in S3 Misconfigured bucket policies or IAM roles could allow unauthorized access to private images stored in S3 buckets, bypassing intended access controls. An attacker could exploit overly permissive IAM roles to access private images directly from S3, bypassing the CloudFront distribution and access controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies",
+      "recommendation: Enable S3 encryption and logging"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_s3_bucket.rawimagesbucket",
+    "description": "Insufficient Access Controls in S3 Misconfigured bucket policies or IAM roles could allow unauthorized access to private images stored in S3 buckets, bypassing intended access controls. An attacker could exploit overly permissive IAM roles to access private images directly from S3, bypassing the CloudFront distribution and access controls.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies",
+      "recommendation: Enable S3 encryption and logging"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-004",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.imageretrievallambda",
+    "description": "Insecure Direct Object References in Image Retrieval The image retrieval endpoint accepts an imageId parameter that could be manipulated to access other users' images if proper authorization checks aren't implemented. An authenticated user modifies the imageId parameter in their request to access images belonging to other users by trying different ID values.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "cwe: CWE-639",
+      "recommendation: Implement robust authorization checks",
+      "recommendation: Implement resource-based access patterns"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "DDoS Vulnerability in API Gateway Attackers could overwhelm the API Gateway with a large number of requests, potentially exhausting Lambda concurrency limits or causing throttling. An attacker launches a distributed denial of service attack against the API endpoints, making the service unavailable to legitimate users.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement AWS Shield and WAF",
+      "recommendation: Configure proper throttling and caching"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006",
+    "stride_category": "Repudiation",
+    "component": "aws_lambda_function.all_lambda_functions",
+    "description": "Insufficient Logging and Monitoring Without comprehensive logging and monitoring, security incidents might go undetected or be discovered too late for effective response. An attacker performs reconnaissance and eventual data exfiltration while staying undetected due to insufficient logging and monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive logging",
+      "recommendation: Implement security monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb",
+    "description": "Sensitive Data Exposure in DynamoDB Sensitive metadata stored in DynamoDB could be exposed through over-privileged IAM roles, improper access patterns, or unencrypted DAX cache. An attacker with access to an over-privileged Lambda function could scan the DynamoDB table to extract sensitive metadata about all users' images.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-359",
+      "recommendation: Implement fine-grained access control",
+      "recommendation: Enhance data protection"
+    ]
   }
 ]

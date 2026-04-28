@@ -183,7 +183,7 @@ class GeminiClient(LLMClient):
         self,
         *,
         api_key: str | None = None,
-        model: str = "gemini-1.5-flash",
+        model: str = "gemini-2.5-pro",
         base_url: str | None = None,
         api_version: str | None = None,
         api_mode: str | None = None,

@@ -1,42 +1,158 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.efs_primary_us-west-2",
+    "description": "Unauthorized EFS Access via Misconfigured Mount Targets Attackers could exploit overly permissive security group rules or IAM policies to mount the EFS file system. The current configuration creates security groups with potentially broad access patterns and uses access points with 777 permissions. An attacker who gains access to the VPC could attempt to mount the EFS file system if security group rules are not properly restricted. The current Lambda access point configuration with 777 permissions could be exploited if access is not properly restricted.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement least privilege access for EFS mount targets",
+      "recommendation: Secure EFS access points with minimal permissions"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.efs_primary_us-west-2",
+    "description": "Unauthorized EFS Access via Misconfigured Mount Targets Attackers could exploit overly permissive security group rules or IAM policies to mount the EFS file system. The current configuration creates security groups with potentially broad access patterns and uses access points with 777 permissions. An attacker who gains access to the VPC could attempt to mount the EFS file system if security group rules are not properly restricted. The current Lambda access point configuration with 777 permissions could be exploited if access is not properly restricted.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-284",
+      "recommendation: Implement least privilege access for EFS mount targets",
+      "recommendation: Secure EFS access points with minimal permissions"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_db_instance.dynamodb_global_tables",
+    "description": "Data Loss During Cross-Region Replication During replication, there is a time window where data exists in the primary region but hasn't been replicated to secondary regions. Network issues or regional failures during this window could result in data loss or inconsistency. An attacker could exploit the replication lag by performing rapid changes in the primary region while simultaneously disrupting network connectivity, leading to data inconsistency across regions.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "mitreATT&CK: T1486 - Data Encrypted for Impact",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-1051",
+      "recommendation: Implement robust consistency checking and reconciliation",
+      "recommendation: Enhance monitoring and alerting for replication issues"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb_global_tables",
+    "description": "Data Loss During Cross-Region Replication During replication, there is a time window where data exists in the primary region but hasn't been replicated to secondary regions. Network issues or regional failures during this window could result in data loss or inconsistency. An attacker could exploit the replication lag by performing rapid changes in the primary region while simultaneously disrupting network connectivity, leading to data inconsistency across regions.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "mitreATT&CK: T1486 - Data Encrypted for Impact",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-1051",
+      "recommendation: Implement robust consistency checking and reconciliation",
+      "recommendation: Enhance monitoring and alerting for replication issues"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-3",
+    "stride_category": "Denial of Service",
+    "component": "aws_db_instance.dynamodb_global_tables",
+    "description": "Data Loss During Cross-Region Replication During replication, there is a time window where data exists in the primary region but hasn't been replicated to secondary regions. Network issues or regional failures during this window could result in data loss or inconsistency. An attacker could exploit the replication lag by performing rapid changes in the primary region while simultaneously disrupting network connectivity, leading to data inconsistency across regions.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "mitreATT&CK: T1486 - Data Encrypted for Impact",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-1051",
+      "recommendation: Implement robust consistency checking and reconciliation",
+      "recommendation: Enhance monitoring and alerting for replication issues"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.efs_primary_and_secondary",
+    "description": "Insufficient Data Encryption Controls While EFS is configured with encryption enabled, the current implementation may not fully protect data in transit between regions or may use default encryption keys instead of customer-managed keys. An attacker with network access could potentially intercept data in transit between regions if TLS is not properly enforced. Additionally, using default encryption keys reduces control over key rotation and access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-311",
+      "recommendation: Implement customer-managed KMS keys",
+      "recommendation: Enforce in-transit encryption"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "Inadequate Monitoring and Audit Controls While basic CloudWatch logging is implemented, the system may lack comprehensive audit trails and real-time monitoring across regions, making it difficult to detect and investigate security incidents. An attacker could perform malicious activities across regions without detection due to gaps in monitoring coverage or delayed log aggregation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-223",
+      "recommendation: Implement centralized logging and monitoring",
+      "recommendation: Enable advanced threat detection"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.lambda_controllers",
+    "description": "Consensus Protocol Manipulation The consensus protocol relies on Step Functions orchestration and Lambda functions across regions. Race conditions or timing attacks could be exploited to manipulate the consensus process. An attacker could introduce delays or network disruptions to cause inconsistent state across regions, potentially leading to split-brain scenarios or consensus failures.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement robust consensus verification",
+      "recommendation: Enhance network resilience"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_lambda_function.lambda_controllers",
+    "description": "Consensus Protocol Manipulation The consensus protocol relies on Step Functions orchestration and Lambda functions across regions. Race conditions or timing attacks could be exploited to manipulate the consensus process. An attacker could introduce delays or network disruptions to cause inconsistent state across regions, potentially leading to split-brain scenarios or consensus failures.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement robust consensus verification",
+      "recommendation: Enhance network resilience"
+    ]
   }
 ]

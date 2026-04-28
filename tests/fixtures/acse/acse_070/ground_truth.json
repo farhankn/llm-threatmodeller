@@ -1,58 +1,187 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "User Profile Data Cross-Access The vulnerability could manifest in several ways: 1) Insufficient user context validation in the recommendation engine, 2) Race conditions in the cache layer, 3) Improper session handling allowing session fixation or hijacking, 4) Inadequate input validation allowing parameter manipulation. An attacker with a valid account could modify their request parameters or intercept and modify API calls to include another user's identifier, potentially receiving that user's personalized recommendations and activity history.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-639",
+      "recommendation: Implement robust user context validation throughout the request processing pipeline",
+      "recommendation: Enhance session management and caching controls"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "User Profile Data Cross-Access The vulnerability could manifest in several ways: 1) Insufficient user context validation in the recommendation engine, 2) Race conditions in the cache layer, 3) Improper session handling allowing session fixation or hijacking, 4) Inadequate input validation allowing parameter manipulation. An attacker with a valid account could modify their request parameters or intercept and modify API calls to include another user's identifier, potentially receiving that user's personalized recommendations and activity history.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-639",
+      "recommendation: Implement robust user context validation throughout the request processing pipeline",
+      "recommendation: Enhance session management and caching controls"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002",
+    "stride_category": "Repudiation",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient Audit Trail While basic AWS service logs exist, the application lacks structured audit logging for security-relevant events, user actions, and system changes. Critical user interactions and data access patterns are not adequately tracked. An attacker could perform malicious actions without leaving sufficient forensic evidence, making incident investigation and response difficult or impossible.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562.008 - Impair Defenses: Disable Cloud Logs",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive audit logging across all components",
+      "recommendation: Set up centralized log aggregation and analysis"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
+    "threat_id": "THREAT-003-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_lambda_function.event_processor_lambda",
+    "description": "ML Model Poisoning via Biased Activity Data Attackers could generate synthetic user activities or manipulate legitimate event data to influence the ML model's training data, causing it to learn biased patterns and produce inaccurate recommendations. An attacker could create multiple accounts and generate coordinated fake activities to promote specific items or suppress others, effectively manipulating the recommendation system's output.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-915",
+      "recommendation: Implement robust activity validation and anomaly detection",
+      "recommendation: Set up model monitoring and validation pipeline"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_lambda_function.event_processor_lambda",
+    "description": "ML Model Poisoning via Biased Activity Data Attackers could generate synthetic user activities or manipulate legitimate event data to influence the ML model's training data, causing it to learn biased patterns and produce inaccurate recommendations. An attacker could create multiple accounts and generate coordinated fake activities to promote specific items or suppress others, effectively manipulating the recommendation system's output.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A08:2021-Software and Data Integrity Failures",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-915",
+      "recommendation: Implement robust activity validation and anomaly detection",
+      "recommendation: Set up model monitoring and validation pipeline"
+    ]
   },
   {
-    "threat_id": "ACSE-006",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure Direct Object References in API API endpoints accepting user IDs or resource identifiers might not properly validate access rights, allowing attackers to access unauthorized resources by manipulating these identifiers. An attacker could modify resource IDs in API requests to access other users' profiles or recommendation data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-639",
+      "recommendation: Implement proper authorization checks"
+    ]
   },
   {
-    "threat_id": "ACSE-007",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insecure Direct Object References in API API endpoints accepting user IDs or resource identifiers might not properly validate access rights, allowing attackers to access unauthorized resources by manipulating these identifiers. An attacker could modify resource IDs in API requests to access other users' profiles or recommendation data.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1552.001 - Unsecured Credentials: Credentials In Files",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-639",
+      "recommendation: Implement proper authorization checks"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.elasticache_redis",
+    "description": "Cache Poisoning in Redis Layer Insufficient validation of cached data or improper cache key construction could allow attackers to poison the cache with malicious data or access cached data belonging to other users. An attacker could manipulate cache keys or inject malicious data into the cache, affecting the recommendations served to other users.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565.001 - Data Manipulation: Stored Data Manipulation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-444",
+      "recommendation: Implement secure cache key generation and validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.elasticache_redis",
+    "description": "Cache Poisoning in Redis Layer Insufficient validation of cached data or improper cache key construction could allow attackers to poison the cache with malicious data or access cached data belonging to other users. An attacker could manipulate cache keys or inject malicious data into the cache, affecting the recommendations served to other users.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565.001 - Data Manipulation: Stored Data Manipulation",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-444",
+      "recommendation: Implement secure cache key generation and validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.kinesis_event_stream",
+    "description": "Event Stream Data Injection Insufficient validation of event data could allow injection of malformed or malicious events into the processing pipeline. An attacker could inject malicious events that crash the processing lambdas or corrupt the analytics data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565.003 - Data Manipulation: Runtime Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-74",
+      "recommendation: Implement strict event validation and sanitization"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.kinesis_event_stream",
+    "description": "Event Stream Data Injection Insufficient validation of event data could allow injection of malformed or malicious events into the processing pipeline. An attacker could inject malicious events that crash the processing lambdas or corrupt the analytics data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565.003 - Data Manipulation: Runtime Data Manipulation",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-74",
+      "recommendation: Implement strict event validation and sanitization"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Insufficient Resource Management Lack of proper resource limits and rate limiting could allow attackers to exhaust system resources through high-volume requests. An attacker could send a high volume of API requests, causing increased latency or service unavailability.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement comprehensive rate limiting and resource quotas"
+    ]
   }
 ]

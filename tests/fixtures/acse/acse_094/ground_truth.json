@@ -1,42 +1,185 @@
 [
   {
-    "threat_id": "ACSE-001",
+    "threat_id": "THREAT-001-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_vpc.vpc",
+    "description": "Unauthorized VPC Tag Manipulation The system relies on VPC tags to trigger network orchestration workflows. If an attacker can modify these tags, they can influence the network topology. An attacker with EC2 permissions in a spoke account modifies VPC tags to trigger attachment to the Transit Gateway, potentially gaining unauthorized access to other VPCs.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1098 - Account Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict IAM policies for VPC tag modifications",
+      "recommendation: Implement tag validation in the orchestration Lambda"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_vpc.vpc",
+    "description": "Unauthorized VPC Tag Manipulation The system relies on VPC tags to trigger network orchestration workflows. If an attacker can modify these tags, they can influence the network topology. An attacker with EC2 permissions in a spoke account modifies VPC tags to trigger attachment to the Transit Gateway, potentially gaining unauthorized access to other VPCs.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1098 - Account Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict IAM policies for VPC tag modifications",
+      "recommendation: Implement tag validation in the orchestration Lambda"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.route_table",
+    "description": "Route Table Poisoning Route tables control traffic flow between VPCs through the Transit Gateway. Manipulation of these routes could redirect traffic through unauthorized paths. An attacker modifies route table entries to redirect traffic through their controlled instances, enabling man-in-the-middle attacks.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562.007 - Adversary-in-the-Middle",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-306",
+      "recommendation: Implement strict route table change controls",
+      "recommendation: Implement route table monitoring and validation"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.route_table",
+    "description": "Route Table Poisoning Route tables control traffic flow between VPCs through the Transit Gateway. Manipulation of these routes could redirect traffic through unauthorized paths. An attacker modifies route table entries to redirect traffic through their controlled instances, enabling man-in-the-middle attacks.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562.007 - Adversary-in-the-Middle",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-306",
+      "recommendation: Implement strict route table change controls",
+      "recommendation: Implement route table monitoring and validation"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-3",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.route_table",
+    "description": "Route Table Poisoning Route tables control traffic flow between VPCs through the Transit Gateway. Manipulation of these routes could redirect traffic through unauthorized paths. An attacker modifies route table entries to redirect traffic through their controlled instances, enabling man-in-the-middle attacks.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1562.007 - Adversary-in-the-Middle",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-306",
+      "recommendation: Implement strict route table change controls",
+      "recommendation: Implement route table monitoring and validation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.graphql_api",
+    "description": "GraphQL Authentication Bypass If the GraphQL API implementation doesn't properly validate Cognito tokens or has gaps in authentication coverage, attackers could bypass authentication. An attacker crafts modified API requests that bypass authentication checks, gaining unauthorized access to network orchestration functions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement consistent Cognito authentication",
+      "recommendation: Implement additional authentication logging"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.graphql_api",
+    "description": "GraphQL Authentication Bypass If the GraphQL API implementation doesn't properly validate Cognito tokens or has gaps in authentication coverage, attackers could bypass authentication. An attacker crafts modified API requests that bypass authentication checks, gaining unauthorized access to network orchestration functions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement consistent Cognito authentication",
+      "recommendation: Implement additional authentication logging"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_api_gateway_rest_api.graphql_api",
+    "description": "GraphQL Data Exposure and IDOR GraphQL's flexible query capability could allow attackers to access unauthorized data through introspection or manipulation of object references. An attacker modifies GraphQL queries to access network state information from other accounts or manipulates object references to access unauthorized resources.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-639",
+      "recommendation: Implement GraphQL security controls",
+      "recommendation: Implement proper data access controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.graphql_api",
+    "description": "GraphQL Data Exposure and IDOR GraphQL's flexible query capability could allow attackers to access unauthorized data through introspection or manipulation of object references. An attacker modifies GraphQL queries to access network state information from other accounts or manipulates object references to access unauthorized resources.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-639",
+      "recommendation: Implement GraphQL security controls",
+      "recommendation: Implement proper data access controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_db_instance.dynamodb",
+    "description": "DynamoDB State Table Manipulation Direct access to or manipulation of DynamoDB network state entries could allow attackers to disrupt network operations or create unauthorized network paths. An attacker with DynamoDB access modifies network state entries to create unauthorized Transit Gateway attachments or modify routing information.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-922",
+      "recommendation: Implement strict DynamoDB access controls",
+      "recommendation: Implement state validation and monitoring",
+      "recommendation: Enable DynamoDB encryption and logging"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb",
+    "description": "DynamoDB State Table Manipulation Direct access to or manipulation of DynamoDB network state entries could allow attackers to disrupt network operations or create unauthorized network paths. An attacker with DynamoDB access modifies network state entries to create unauthorized Transit Gateway attachments or modify routing information.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-922",
+      "recommendation: Implement strict DynamoDB access controls",
+      "recommendation: Implement state validation and monitoring",
+      "recommendation: Enable DynamoDB encryption and logging"
+    ]
   }
 ]

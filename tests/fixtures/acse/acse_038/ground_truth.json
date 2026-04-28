@@ -1,42 +1,246 @@
 [
   {
-    "threat_id": "ACSE-001",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.aws-s3-training-data",
+    "description": "Unauthorized Access to Training Data in S3 Attackers could exploit overly permissive IAM policies, steal credentials, or take advantage of misconfigured bucket policies to access training data stored in S3. An attacker compromises a HyperPod node's IAM role or obtains temporary credentials, then uses these to download sensitive training data from the S3 bucket.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-284",
+      "recommendation: Implement S3 bucket key to reduce KMS costs and strengthen encryption",
+      "recommendation: Implement strict S3 bucket policy",
+      "recommendation: Enable S3 access logging and implement automated monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-002",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Spoofing",
+    "component": "aws_s3_bucket.aws-s3-training-data",
+    "description": "Unauthorized Access to Training Data in S3 Attackers could exploit overly permissive IAM policies, steal credentials, or take advantage of misconfigured bucket policies to access training data stored in S3. An attacker compromises a HyperPod node's IAM role or obtains temporary credentials, then uses these to download sensitive training data from the S3 bucket.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-284",
+      "recommendation: Implement S3 bucket key to reduce KMS costs and strengthen encryption",
+      "recommendation: Implement strict S3 bucket policy",
+      "recommendation: Enable S3 access logging and implement automated monitoring"
+    ]
   },
   {
-    "threat_id": "ACSE-003",
+    "threat_id": "THREAT-002-1",
     "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "component": "aws_resource.aws-efs",
+    "description": "EFS Shared Storage Race Conditions and Data Corruption Concurrent access to shared files on EFS by multiple HyperPod nodes without proper synchronization mechanisms could lead to data corruption or inconsistent states. During distributed training, multiple nodes attempt to write checkpoints simultaneously, causing corruption of model weights or loss of training progress.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1495 - Firmware Corruption",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement distributed locking mechanism",
+      "recommendation: Implement file-level locking",
+      "recommendation: Monitor EFS metrics for potential issues"
+    ]
   },
   {
-    "threat_id": "ACSE-004",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.aws-efs",
+    "description": "EFS Shared Storage Race Conditions and Data Corruption Concurrent access to shared files on EFS by multiple HyperPod nodes without proper synchronization mechanisms could lead to data corruption or inconsistent states. During distributed training, multiple nodes attempt to write checkpoints simultaneously, causing corruption of model weights or loss of training progress.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1495 - Firmware Corruption",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement distributed locking mechanism",
+      "recommendation: Implement file-level locking",
+      "recommendation: Monitor EFS metrics for potential issues"
+    ]
   },
   {
-    "threat_id": "ACSE-005",
-    "stride_category": "Tampering",
-    "component": "unknown.component",
-    "description": "Threat imported from ACSE-Eval dataset.",
+    "threat_id": "THREAT-002-3",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.aws-efs",
+    "description": "EFS Shared Storage Race Conditions and Data Corruption Concurrent access to shared files on EFS by multiple HyperPod nodes without proper synchronization mechanisms could lead to data corruption or inconsistent states. During distributed training, multiple nodes attempt to write checkpoints simultaneously, causing corruption of model weights or loss of training progress.",
     "discrepancy_flag": false,
-    "references": []
+    "references": [
+      "mitreATT&CK: T1495 - Firmware Corruption",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement distributed locking mechanism",
+      "recommendation: Implement file-level locking",
+      "recommendation: Monitor EFS metrics for potential issues"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.aws-alb",
+    "description": "Insecure HTTPS Configuration on Load Balancer The current implementation has a placeholder HTTPS listener without proper certificate configuration, potentially allowing for weak cipher suites or vulnerable TLS versions. An attacker performs a MITM attack by exploiting weak TLS configuration or invalid certificates, intercepting sensitive data between users and the HPC cluster.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-295",
+      "recommendation: Configure ACM certificate for HTTPS",
+      "recommendation: Enforce strong TLS configuration",
+      "recommendation: Implement HSTS"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.aws-alb",
+    "description": "Insecure HTTPS Configuration on Load Balancer The current implementation has a placeholder HTTPS listener without proper certificate configuration, potentially allowing for weak cipher suites or vulnerable TLS versions. An attacker performs a MITM attack by exploiting weak TLS configuration or invalid certificates, intercepting sensitive data between users and the HPC cluster.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-295",
+      "recommendation: Configure ACM certificate for HTTPS",
+      "recommendation: Enforce strong TLS configuration",
+      "recommendation: Implement HSTS"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Tampering",
+    "component": "aws_resource.aws-alb",
+    "description": "Insecure HTTPS Configuration on Load Balancer The current implementation has a placeholder HTTPS listener without proper certificate configuration, potentially allowing for weak cipher suites or vulnerable TLS versions. An attacker performs a MITM attack by exploiting weak TLS configuration or invalid certificates, intercepting sensitive data between users and the HPC cluster.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-295",
+      "recommendation: Configure ACM certificate for HTTPS",
+      "recommendation: Enforce strong TLS configuration",
+      "recommendation: Implement HSTS"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam-roles",
+    "description": "Excessive IAM Permissions on HyperPod Instance Role The current implementation uses AWS managed policies which may provide more permissions than necessary for the HyperPod nodes to function. An attacker who compromises a HyperPod node could leverage the instance's IAM role to access other AWS services or escalate privileges.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-269",
+      "recommendation: Create custom IAM policies with minimal permissions",
+      "recommendation: Implement IAM permission boundaries",
+      "recommendation: Regular IAM access review"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_iam_role.iam-roles",
+    "description": "Excessive IAM Permissions on HyperPod Instance Role The current implementation uses AWS managed policies which may provide more permissions than necessary for the HyperPod nodes to function. An attacker who compromises a HyperPod node could leverage the instance's IAM role to access other AWS services or escalate privileges.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "mitreATT&CK: T1548 - Abuse Elevation Control Mechanism",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Elevation of Privilege",
+      "stride: Information Disclosure",
+      "cwe: CWE-269",
+      "recommendation: Create custom IAM policies with minimal permissions",
+      "recommendation: Implement IAM permission boundaries",
+      "recommendation: Regular IAM access review"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc",
+    "description": "Insufficient Network Segmentation and Security Group Rules Current security group configurations may allow broader network access than necessary, potentially enabling lateral movement or unauthorized access to services. An attacker who compromises one HyperPod node could potentially access other nodes or services due to overly permissive security group rules.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Scanning",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1008",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Implement network ACLs",
+      "recommendation: Enable VPC Flow Logs"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_vpc.vpc",
+    "description": "Insufficient Network Segmentation and Security Group Rules Current security group configurations may allow broader network access than necessary, potentially enabling lateral movement or unauthorized access to services. An attacker who compromises one HyperPod node could potentially access other nodes or services due to overly permissive security group rules.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Scanning",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1008",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Implement network ACLs",
+      "recommendation: Enable VPC Flow Logs"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_vpc.vpc",
+    "description": "Insufficient Network Segmentation and Security Group Rules Current security group configurations may allow broader network access than necessary, potentially enabling lateral movement or unauthorized access to services. An attacker who compromises one HyperPod node could potentially access other nodes or services due to overly permissive security group rules.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Scanning",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1008",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Implement network ACLs",
+      "recommendation: Enable VPC Flow Logs"
+    ]
   }
 ]
