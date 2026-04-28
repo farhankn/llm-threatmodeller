@@ -6,93 +6,39 @@
 
 ## 1. Objective
 
-Run the current CLI against the local ACSE fixture corpus and compare observed metrics with published ACSE-Eval baselines.
+Create an updated live benchmark report using the newly generated Gemini Pro full-run file and preserve historical runs for comparison.
 
-## 2. Test execution
+## 2. Result Relocation
 
-## 2.1 Command used
+Moved existing result sets into separate folders:
+- Legacy full run (Gemini Flash Lite, zero-output run): `tests/results/history/2026-04-28-gemini-flash-lite-zero/acse_live_eval_gemini.json`
+- Gemini Pro subset run (3 scenarios): `tests/results/history/2026-04-28-gemini-pro-subset3`
 
-```bash
-source .venv/bin/activate
-set -a; source .env; set +a
-python -m threatcli evaluation run \
-  --fixtures tests/fixtures/acse \
-  --provider gemini \
-  --model gemini-2.5-flash-lite \
-  --output /tmp/acse_live_eval_gemini.json
-```
+New full-run artifact copied from `/tmp`:
+- `tests/results/current/2026-04-28-gemini-pro-full-retry/acse_live_eval_gemini_pro_retry.json`
 
-## 2.2 Run result
+## 3. Run Comparison Snapshot
 
-- **Successful scenarios:** 100 / 100
-- **Output artifact:** `tests/results/acse_live_eval_gemini.json`
-- **Summary artifact:** `tests/results/acse_eval_summary.json`
-- **Fixture quality artifact:** `tests/results/acse_fixture_quality.json`
-- **Paper baseline artifact:** `tests/results/acse_paper_baselines.json`
+| Run | Total | Success | Failed | Threats Generated | Ground Truth | Micro Precision | Micro Recall | Micro F1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Legacy full (Flash Lite) | 100 | 100 | 0 | 0 | 618 | 0.0000 | 0.0000 | 0.0000 |
+| Pro subset (3 scenarios) | 3 | 3 | 0 | 22 | 38 | 0.0455 | 0.0263 | 0.0333 |
+| Pro full retry | 100 | 74 | 26 | 532 | 857 | 0.0301 | 0.0187 | 0.0230 |
 
-## 3. Metrics and calculations
+## 4. Key Findings
 
-Project comparator formulas:
-- `Precision = TP / (TP + FP)`
-- `Recall = TP / (TP + FN)`
-- `F1 = 2PR / (P + R)`
-- `Hallucination Rate = hallucinated_count / total_output_count`
+1. The previous **0-threat issue is resolved** in Gemini Pro runs (subset: `22` threats, full retry: `532` threats).
+2. The full retry run is **partially successful** (`74/100`), with `26` failed scenarios.
+3. Failure root cause observed: `NameError(_llm_debug_enabled)` in `26` scenarios (captured during that run artifact).
+4. Precision/recall remain low, so this is progress on generation robustness, not yet on benchmark quality.
 
-Observed aggregate counts:
-- `TP = 0`, `FP = 0`, `FN = 618`
-- `total_generated_threats = 0`
-- `total_ground_truth_threats = 618`
+## 5. Artifact Index
 
-Computed values:
-- `Micro Precision = 0 / (0 + 0) = 0.0` (implementation returns 0 on zero denominator)
-- `Micro Recall = 0 / (0 + 618) = 0.0`
-- `Micro F1 = 0.0`
-- `Mean Precision = 0.0`
-- `Mean Recall = 0.0`
-- `Mean Hallucination Rate = 0.0`
-- `No-output scenarios = 100 / 100 (100%)`
-- `Mean scenario latency = 0.541s` (median `0.529s`)
+- Legacy summary: `tests/results/acse_eval_summary.json`
+- Subset summary: `tests/results/history/2026-04-28-gemini-pro-subset3/acse_subset3_eval_summary.json`
+- New full-run summary: `tests/results/current/2026-04-28-gemini-pro-full-retry/acse_live_eval_gemini_pro_retry_summary.json`
+- New full-run report: `tests/results/current/2026-04-28-gemini-pro-full-retry/acse_live_eval_gemini_pro_retry_report.md`
 
-## 4. Comparison against ACSE-Eval paper baselines
+## 6. Bottom Line
 
-From ACSE-Eval tables:
-- STRIDE TFC (Gemini 2.5 Pro, IaC 0-shot): **96.2%**  
-  (source: extracted paper text lines 300-308)
-- MITRE ATT&CK TFC (Gemini 2.5 Pro, IaC 0-shot): **45.9%**  
-  (source: extracted paper text lines 330-338)
-
-Current run (this project on local ACSE fixtures):
-- STRIDE-like recall proxy: **0.0%** (`0/618`)
-- MITRE ATT&CK coverage: **not computable in current comparator pipeline** (and normalized fixtures do not retain MITRE labels)
-
-Direct delta (STRIDE proxy):
-- `0.0% - 96.2% = -96.2 percentage points`
-
-## 5. Why this comparison currently collapses (data quality check)
-
-Fixture diagnostics on `tests/fixtures/acse`:
-- Placeholder Terraform files: **100 / 100 (100%)**
-- `design.md` as Python diagram scripts: **100 / 100 (100%)**
-- Normalized ground-truth threats with `component = "unknown.component"`: **618 / 618 (100%)**
-- Normalized ground-truth threats with `stride_category = "Tampering"`: **618 / 618 (100%)**
-- Source records with MITRE labels: **618 / 618**
-- Normalized ground truth with MITRE labels: **0 / 618**
-
-Interpretation:
-1. The live benchmark execution is technically successful.
-2. However, the imported ACSE fixtures in this repo are not fidelity-equivalent to the original benchmark setup.
-3. Because IaC is placeholder-only and labels are collapsed during normalization, this run is **not an apples-to-apples performance comparison** with the paper.
-
-## 6. Output produced
-
-Generated outputs are saved and reproducible:
-- `tests/results/acse_live_eval_gemini.json` (full 100-scenario run output)
-- `tests/results/acse_eval_summary.json` (aggregate metrics)
-- `tests/results/acse_fixture_quality.json` (fixture fidelity diagnostics)
-- `tests/results/acse_paper_baselines.json` (paper baseline values used for comparison)
-
-## 7. Bottom line
-
-I performed the ACSE-Eval test and produced a full comparison output.  
-**Result:** the current local ACSE fixture representation yields 0 generated threats across all scenarios, so quantitative comparison against published ACSE-Eval numbers is currently invalid for model-quality claims and should be reported as a **dataset/ingestion fidelity limitation**, not as an LLM capability result.
-
+The new Gemini Pro full-run artifact demonstrates that the hard `0 generated threats` failure mode has been fixed for successful scenarios. The benchmark still needs quality improvements (and a clean 100/100 execution) before claiming strong ACSE-Eval parity.
