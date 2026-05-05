@@ -1,0 +1,77 @@
+[
+  {
+    "threat_id": "T001",
+    "stride_category": "Denial of Service",
+    "component": "aws-sqs-emailqueue",
+    "description": "Malformed or excessive email messages could repeatedly fail processing by the Email Processor Lambda, remaining in the queue and causing a Denial of Service (poison pill attack). The design specifies a Dead Letter Queue to mitigate this, but it is missing from the infrastructure code.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design document specifies 'dlq = SQS(\"Dead Letter Queue\")' and 'queue >> Edge(label=\"Failed processing\") >> dlq', but no corresponding DLQ resource exists in the Terraform summary for 'aws-sqs-emailqueue'.",
+    "severity": "High",
+    "references": [
+      "aws-sqs-emailqueue"
+    ]
+  },
+  {
+    "threat_id": "T002",
+    "stride_category": "Information Disclosure",
+    "component": "aws-s3-emailarchivebucket",
+    "description": "The S3 bucket storing archived emails may expose sensitive PII or confidential communications if public access is not explicitly blocked or if encryption at rest is not enforced via bucket policies.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws-s3-emailarchivebucket"
+    ]
+  },
+  {
+    "threat_id": "T003",
+    "stride_category": "Spoofing",
+    "component": "aws-ses",
+    "description": "Without proper domain identity verification and DKIM/SPF records configured in Route53, malicious actors could spoof the sender domain, sending unauthorized emails through SES.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws-ses",
+      "aws-route53"
+    ]
+  },
+  {
+    "threat_id": "T004",
+    "stride_category": "Tampering",
+    "component": "aws-dynamodb-metricsstore",
+    "description": "If the DynamoDB metrics store lacks strict IAM access controls, an attacker or compromised Lambda function could tamper with email delivery metrics, masking failed deliveries or malicious activity.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws-dynamodb-metricsstore"
+    ]
+  },
+  {
+    "threat_id": "T005",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws-elasticbeanstalk-adminpanel",
+    "description": "Vulnerabilities in the Admin Panel application hosted on Elastic Beanstalk could be exploited to gain unauthorized administrative access, allowing an attacker to reconfigure the Notification Manager Lambda or other system settings.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Critical",
+    "references": [
+      "aws-elasticbeanstalk-adminpanel",
+      "aws-lambda-notificationmanager"
+    ]
+  },
+  {
+    "threat_id": "T006",
+    "stride_category": "Denial of Service",
+    "component": "aws-ses",
+    "description": "The design indicates an ELB routing traffic to SES to handle load and potentially provide WAF protection. The absence of this ELB in the infrastructure code exposes SES directly to potential volumetric attacks or unmitigated traffic spikes.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design document specifies 'lb = ELB(\"Load Balancer\")' and 'dns >> Edge(label=\"Route email traffic\") >> lb', but no ELB resource is present in the Terraform summary.",
+    "severity": "Medium",
+    "references": [
+      "aws-ses",
+      "aws-route53"
+    ]
+  }
+]

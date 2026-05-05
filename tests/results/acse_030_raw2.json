@@ -1,0 +1,134 @@
+[
+  {
+    "threat_id": "T001",
+    "stride_category": "Spoofing",
+    "component": "aws-ses",
+    "description": "Without proper domain identity verification, SPF, DKIM, and DMARC configurations enforced on the SES resource, attackers could spoof emails originating from the organization's domain, leading to phishing attacks.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.aws-ses"
+    ]
+  },
+  {
+    "threat_id": "T002",
+    "stride_category": "Spoofing",
+    "component": "aws-route53",
+    "description": "Lack of DNSSEC configuration on the Route53 hosted zone could allow attackers to perform DNS spoofing or cache poisoning attacks, redirecting legitimate email traffic to malicious servers.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_route53_zone.aws-route53"
+    ]
+  },
+  {
+    "threat_id": "T003",
+    "stride_category": "Tampering",
+    "component": "aws-s3-emailarchivebucket",
+    "description": "If the S3 bucket lacks object lock, versioning, or restrictive IAM bucket policies, an attacker with compromised credentials could tamper with or delete archived emails, destroying critical audit trails.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_s3_bucket.aws-s3-emailarchivebucket"
+    ]
+  },
+  {
+    "threat_id": "T004",
+    "stride_category": "Tampering",
+    "component": "aws-lambda-emailprocessor",
+    "description": "The design specifies an S3 bucket for Email Templates, but it is missing in the IaC. If templates are not securely stored in a dedicated, access-controlled bucket, attackers could tamper with the email content generation process.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design specifies `templates = S3(\"Email Templates\")` but no corresponding `aws_s3_bucket` resource for templates exists in the IaC summary.",
+    "severity": "Medium",
+    "references": [
+      "aws_lambda_function.aws-lambda-emailprocessor"
+    ]
+  },
+  {
+    "threat_id": "T005",
+    "stride_category": "Repudiation",
+    "component": "aws-elasticbeanstalk-adminpanel",
+    "description": "If the Elastic Beanstalk environment does not have access logs and CloudTrail enabled for administrative actions, malicious configuration changes made via the Admin Panel cannot be traced back to a specific admin user.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.aws-elasticbeanstalk-adminpanel"
+    ]
+  },
+  {
+    "threat_id": "T006",
+    "stride_category": "Information Disclosure",
+    "component": "aws-s3-emailarchivebucket",
+    "description": "If the S3 bucket is not configured with Block Public Access and server-side encryption (SSE-KMS), sensitive email archives could be exposed to unauthorized parties or leaked publicly.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_s3_bucket.aws-s3-emailarchivebucket"
+    ]
+  },
+  {
+    "threat_id": "T007",
+    "stride_category": "Information Disclosure",
+    "component": "aws-dynamodb-metricsstore",
+    "description": "The metrics store may contain sensitive email metadata. If encryption at rest is not enabled, this data could be exposed if the underlying storage is compromised. Furthermore, the IaC provisions an RDS instance instead of the designed DynamoDB table, potentially altering the expected security posture and access control mechanisms.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design specifies `metrics_db = Dynamodb(\"Metrics Store\")`, but the IaC provisions an `aws_db_instance` (RDS) named `aws-dynamodb-metricsstore` instead of an `aws_dynamodb_table`.",
+    "severity": "Medium",
+    "references": [
+      "aws_db_instance.aws-dynamodb-metricsstore"
+    ]
+  },
+  {
+    "threat_id": "T008",
+    "stride_category": "Denial of Service",
+    "component": "aws-sqs-emailqueue",
+    "description": "The design specifies a Dead Letter Queue (DLQ) for failed processing, but it is missing from the IaC. Without a DLQ, poison pill messages could repeatedly fail and block the queue, causing a Denial of Service in the email processing pipeline.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design specifies `dlq = SQS(\"Dead Letter Queue\")` but no corresponding `aws_sqs_queue` resource exists in the IaC summary for the DLQ.",
+    "severity": "High",
+    "references": [
+      "aws_resource.aws-sqs-emailqueue"
+    ]
+  },
+  {
+    "threat_id": "T009",
+    "stride_category": "Denial of Service",
+    "component": "aws-route53",
+    "description": "The design specifies an ELB to route traffic to SES, but it is missing in the IaC. This could lead to availability issues or DoS if traffic is not properly load-balanced and routed.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design specifies `lb = ELB(\"Load Balancer\")` but no `aws_elb` or `aws_lb` resource is present in the IaC summary.",
+    "severity": "Medium",
+    "references": [
+      "aws_route53_zone.aws-route53"
+    ]
+  },
+  {
+    "threat_id": "T010",
+    "stride_category": "Denial of Service",
+    "component": "aws-lambda-notificationmanager",
+    "description": "The design requires an SNS topic for notifications, but it is missing in IaC. This prevents critical alerts from being delivered to admins and users, effectively causing a DoS on the notification system.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design specifies `notifications = SNS(\"Notifications\")` but no `aws_sns_topic` resource is present in the IaC summary.",
+    "severity": "Medium",
+    "references": [
+      "aws_lambda_function.aws-lambda-notificationmanager"
+    ]
+  },
+  {
+    "threat_id": "T011",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws-lambda-emailprocessor",
+    "description": "If the Lambda function's execution role is overly permissive (e.g., wildcard permissions to S3, SES, or DynamoDB), a vulnerability in the email processing logic (such as command injection via malicious email content) could be exploited to escalate privileges and move laterally within the AWS environment.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_lambda_function.aws-lambda-emailprocessor"
+    ]
+  }
+]

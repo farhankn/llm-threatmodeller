@@ -1,0 +1,208 @@
+{
+  "run_id": "run_20260504_104118",
+  "timestamp": "2026-05-04T10:41:22.717491+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.0,
+  "include_docs": true,
+  "repeats": 1,
+  "scenario_results": [
+    {
+      "scenario_id": "ACSE_030_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_030",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.15
+    },
+    {
+      "scenario_id": "ACSE_031_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_031",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.142
+    },
+    {
+      "scenario_id": "ACSE_032_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_032",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.141
+    },
+    {
+      "scenario_id": "ACSE_033_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_033",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.141
+    },
+    {
+      "scenario_id": "ACSE_034_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_034",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.141
+    },
+    {
+      "scenario_id": "ACSE_035_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_035",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.143
+    },
+    {
+      "scenario_id": "ACSE_036_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_036",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.145
+    },
+    {
+      "scenario_id": "ACSE_037_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_037",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.142
+    },
+    {
+      "scenario_id": "ACSE_038_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_038",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.143
+    },
+    {
+      "scenario_id": "ACSE_039_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_039",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.145
+    },
+    {
+      "scenario_id": "ACSE_040_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_040",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.142
+    },
+    {
+      "scenario_id": "ACSE_041_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_041",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.168
+    },
+    {
+      "scenario_id": "ACSE_042_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_042",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.162
+    },
+    {
+      "scenario_id": "ACSE_043_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_043",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.172
+    },
+    {
+      "scenario_id": "ACSE_044_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_044",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.164
+    },
+    {
+      "scenario_id": "ACSE_045_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_045",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.155
+    },
+    {
+      "scenario_id": "ACSE_046_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_046",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.145
+    },
+    {
+      "scenario_id": "ACSE_047_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_047",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.146
+    },
+    {
+      "scenario_id": "ACSE_048_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_048",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.144
+    },
+    {
+      "scenario_id": "ACSE_049_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_049",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.146
+    },
+    {
+      "scenario_id": "ACSE_050_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_050",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.143
+    },
+    {
+      "scenario_id": "ACSE_051_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_051",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.151
+    },
+    {
+      "scenario_id": "ACSE_052_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_052",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.147
+    },
+    {
+      "scenario_id": "ACSE_053_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_053",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.143
+    },
+    {
+      "scenario_id": "ACSE_054_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_054",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.145
+    },
+    {
+      "scenario_id": "ACSE_055_R1",
+      "fixture_path": "/private/tmp/acse_failed_subset_rerun/acse_055",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Max retries exceeded with url: /v1/publishers/google/models/gemini-3.1-pro-preview:generateContent\\1<redacted>sed by NameResolutionError(\"HTTPSConnection(host='aiplatform.googleapis.com', port=443): Failed to resolve 'aiplatform.googleapis.com' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "latency_seconds": 0.143
+    }
+  ],
+  "aggregate": {
+    "mean_precision": 0.0,
+    "mean_recall": 0.0,
+    "mean_ddr": 0.0,
+    "mean_hallucination_rate": 0.0,
+    "mean_stride_tfc_recall": 0.0,
+    "mean_mitre_tfc_recall": 0.0,
+    "micro_stride_tfc_recall": 0.0,
+    "micro_mitre_tfc_recall": 0.0,
+    "total_scenarios": 26,
+    "successful_scenarios": 0,
+    "failed_scenarios": 26,
+    "total_threats_generated": 0,
+    "total_ground_truth_threats": 0
+  }
+}

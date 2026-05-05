@@ -1,0 +1,340 @@
+{
+  "name": "big-data-processing-and-analytics-platform",
+  "architecture": "big-data-processing-and-analytics-platform/architecture.png",
+  "architecture_description": "big-data-processing-and-analytics-platform/diagram.py",
+  "threat_model": "big-data-processing-and-analytics-platform/threat-model.json",
+  "infra_as_code": "big-data-processing-and-analytics-platform/cdk/",
+  "ground_truth": [
+    {
+      "threatID": "THREAT-001",
+      "threatName": "Unauthorized Data Lake Access via Misconfigured S3 Bucket",
+      "affectedComponents": [
+        "S3 Data Lake",
+        "Lake Formation",
+        "IAM Roles"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Tampering"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control"
+        ],
+        "mitreATT&CK": [
+          "T1530 - Data from Cloud Storage Object"
+        ]
+      },
+      "cwe": "CWE-284",
+      "vulnerabilityDetails": {
+        "howItWorks": "Attackers could exploit misconfigured bucket policies, overly permissive IAM roles, or Lake Formation permission gaps to access sensitive data in the S3 data lake. This could happen through direct S3 API calls or by assuming compromised IAM roles.",
+        "exploitationScenario": "An attacker discovers a misconfigured bucket policy that allows authenticated AWS users to list and read objects. They could then use stolen credentials or a compromised role to access and exfiltrate sensitive data."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "Medium",
+        "availability": "Low"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-001-A",
+          "description": "Implement strict S3 bucket policies and block public access",
+          "implementationDetails": "Enable S3 Block Public Access at the bucket and account level. Configure bucket policies to enforce encryption and restrict access to specific IAM roles and AWS services.",
+          "awsServiceContext": [
+            "S3",
+            "IAM"
+          ]
+        },
+        {
+          "recommendationID": "REC-001-B",
+          "description": "Implement Lake Formation permissions",
+          "implementationDetails": "Use Lake Formation as the primary access control mechanism for the data lake. Define granular permissions at the database, table, and column levels. Register all data lake locations with Lake Formation.",
+          "awsServiceContext": [
+            "Lake Formation",
+            "S3",
+            "IAM"
+          ]
+        },
+        {
+          "recommendationID": "REC-001-C",
+          "description": "Enable encryption and logging",
+          "implementationDetails": "Enable default encryption with AWS KMS keys. Enable S3 access logging and CloudTrail object-level logging. Monitor access patterns using Amazon Macie.",
+          "awsServiceContext": [
+            "S3",
+            "KMS",
+            "CloudTrail",
+            "Macie"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use S3 Block Public Access, bucket policies, and Lake Formation permissions together. Enable versioning for data protection. Consider using AWS KMS customer managed keys for granular encryption control. Implement S3 Object Lock for sensitive data that requires immutability."
+    },
+    {
+      "threatID": "THREAT-002",
+      "threatName": "Real-time Data Processing Pipeline Injection",
+      "affectedComponents": [
+        "Kinesis Data Streams",
+        "MSK",
+        "Lambda Functions",
+        "Kinesis Data Analytics"
+      ],
+      "frameworks": {
+        "stride": [
+          "Tampering",
+          "Repudiation",
+          "Denial of Service"
+        ],
+        "owaspTop10": [
+          "A03:2021-Injection"
+        ],
+        "mitreATT&CK": [
+          "T1565 - Data Manipulation",
+          "T1499 - Endpoint Denial of Service"
+        ]
+      },
+      "cwe": "CWE-74",
+      "vulnerabilityDetails": {
+        "howItWorks": "Attackers could inject malformed or malicious data into the ingestion pipeline, potentially causing processing errors, buffer overflows, or SQL injection in downstream systems. Unsanitized data could propagate through the pipeline and affect multiple components.",
+        "exploitationScenario": "An attacker injects malicious data through the Kinesis stream that contains SQL injection payloads. When this data is processed by Lambda and written to Redshift, it could execute unauthorized queries."
+      },
+      "impact": {
+        "confidentiality": "Medium",
+        "integrity": "High",
+        "availability": "High"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-002-A",
+          "description": "Implement data validation and sanitization",
+          "implementationDetails": "Add input validation in Lambda functions. Use Kinesis Data Analytics SQL to filter malformed data. Implement schema validation using Glue Schema Registry.",
+          "awsServiceContext": [
+            "Lambda",
+            "Kinesis Data Analytics",
+            "Glue"
+          ]
+        },
+        {
+          "recommendationID": "REC-002-B",
+          "description": "Secure MSK cluster configuration",
+          "implementationDetails": "Enable encryption in transit and at rest for MSK. Configure ACLs for topic-level security. Use IAM authentication for MSK clients.",
+          "awsServiceContext": [
+            "MSK",
+            "IAM"
+          ]
+        },
+        {
+          "recommendationID": "REC-002-C",
+          "description": "Implement monitoring and alerting",
+          "implementationDetails": "Set up CloudWatch metrics and alarms for abnormal patterns. Use Lambda dead letter queues for failed processing. Enable MSK broker logging.",
+          "awsServiceContext": [
+            "CloudWatch",
+            "Lambda",
+            "MSK"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS Glue Schema Registry to enforce data schemas. Enable MSK encryption and authentication. Implement proper error handling in Lambda functions with dead letter queues. Use CloudWatch for comprehensive monitoring."
+    },
+    {
+      "threatID": "THREAT-003",
+      "threatName": "API Gateway Security Vulnerabilities",
+      "affectedComponents": [
+        "API Gateway",
+        "Lambda Functions",
+        "SageMaker Endpoints"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Information Disclosure",
+          "Denial of Service"
+        ],
+        "owaspTop10": [
+          "A07:2021-Identification and Authentication Failures",
+          "A04:2021-Insecure Design"
+        ],
+        "mitreATT&CK": [
+          "T1552 - Unsecured Credentials",
+          "T1190 - Exploit Public-Facing Application"
+        ]
+      },
+      "cwe": "CWE-306",
+      "vulnerabilityDetails": {
+        "howItWorks": "Attackers could exploit weak API security controls to gain unauthorized access, perform credential stuffing attacks, or launch DoS attacks against the API endpoints.",
+        "exploitationScenario": "An attacker performs a credential stuffing attack against the API endpoints, attempting to gain unauthorized access to the analytics platform using compromised credentials from other breaches."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "High"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-003-A",
+          "description": "Implement comprehensive API security controls",
+          "implementationDetails": "Enable AWS WAF with rate limiting rules. Implement Cognito or custom Lambda authorizers. Use API keys and usage plans. Enable request validation.",
+          "awsServiceContext": [
+            "API Gateway",
+            "WAF",
+            "Cognito",
+            "Lambda"
+          ]
+        },
+        {
+          "recommendationID": "REC-003-B",
+          "description": "Secure communication channels",
+          "implementationDetails": "Enforce TLS 1.2 or higher. Configure specific CORS origins. Consider using private API endpoints with VPC endpoints for internal access.",
+          "awsServiceContext": [
+            "API Gateway",
+            "VPC"
+          ]
+        },
+        {
+          "recommendationID": "REC-003-C",
+          "description": "Enable monitoring and logging",
+          "implementationDetails": "Enable CloudWatch logging for API Gateway. Set up metrics and alarms for unusual patterns. Use X-Ray for request tracing.",
+          "awsServiceContext": [
+            "CloudWatch",
+            "X-Ray"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS WAF for additional protection against common web exploits. Consider private APIs with VPC endpoints for internal services. Implement proper authentication using Cognito or custom authorizers."
+    },
+    {
+      "threatID": "THREAT-004",
+      "threatName": "Insufficient Monitoring and Incident Detection",
+      "affectedComponents": [
+        "CloudWatch",
+        "All Platform Components"
+      ],
+      "frameworks": {
+        "stride": [
+          "Repudiation",
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A09:2021-Security Logging and Monitoring Failures"
+        ],
+        "mitreATT&CK": [
+          "T1562 - Impair Defenses",
+          "T1078 - Valid Accounts"
+        ]
+      },
+      "cwe": "CWE-223",
+      "vulnerabilityDetails": {
+        "howItWorks": "Without proper monitoring and logging, attackers could perform reconnaissance, gain unauthorized access, or exfiltrate data without detection. System misuse or performance issues might also go unnoticed.",
+        "exploitationScenario": "An attacker gains access to the system through compromised credentials and slowly exfiltrates data over time. Without proper monitoring, this activity goes undetected for months."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-004-A",
+          "description": "Implement comprehensive logging",
+          "implementationDetails": "Enable CloudTrail for API activity logging. Configure CloudWatch Logs for application and service logs. Enable VPC Flow Logs for network monitoring.",
+          "awsServiceContext": [
+            "CloudTrail",
+            "CloudWatch",
+            "VPC"
+          ]
+        },
+        {
+          "recommendationID": "REC-004-B",
+          "description": "Set up security monitoring",
+          "implementationDetails": "Enable GuardDuty for threat detection. Use Security Hub for security posture monitoring. Configure Macie for sensitive data discovery.",
+          "awsServiceContext": [
+            "GuardDuty",
+            "Security Hub",
+            "Macie"
+          ]
+        },
+        {
+          "recommendationID": "REC-004-C",
+          "description": "Configure alerts and dashboards",
+          "implementationDetails": "Create CloudWatch dashboards for visibility. Set up SNS topics and Lambda functions for alerts. Configure metric filters and alarms.",
+          "awsServiceContext": [
+            "CloudWatch",
+            "SNS",
+            "Lambda"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Leverage AWS-native security services like GuardDuty, Security Hub, and Macie. Use CloudWatch Logs Insights for log analysis. Consider using AWS OpenSearch for advanced log analytics."
+    },
+    {
+      "threatID": "THREAT-005",
+      "threatName": "Data Privacy and PII Exposure",
+      "affectedComponents": [
+        "SageMaker",
+        "OpenSearch",
+        "QuickSight",
+        "Redshift"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "mitreATT&CK": [
+          "T1213 - Data from Information Repositories"
+        ]
+      },
+      "cwe": "CWE-359",
+      "vulnerabilityDetails": {
+        "howItWorks": "PII and sensitive data could be inadvertently exposed through analytics outputs, machine learning model predictions, or search results. This could occur due to insufficient data sanitization or access controls.",
+        "exploitationScenario": "An analyst uses QuickSight to create a dashboard that accidentally exposes customer PII. The dashboard is then shared with unauthorized users or exported to external systems."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "Low",
+        "availability": "Low"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-005-A",
+          "description": "Implement data privacy controls",
+          "implementationDetails": "Use Glue ETL jobs to identify and redact PII. Implement column-level encryption in Redshift. Use Lake Formation tags for sensitive data classification.",
+          "awsServiceContext": [
+            "Glue",
+            "Redshift",
+            "Lake Formation"
+          ]
+        },
+        {
+          "recommendationID": "REC-005-B",
+          "description": "Secure analytics outputs",
+          "implementationDetails": "Configure row-level security in QuickSight. Implement fine-grained access control in OpenSearch. Use SageMaker model monitoring to detect data leakage.",
+          "awsServiceContext": [
+            "QuickSight",
+            "OpenSearch",
+            "SageMaker"
+          ]
+        },
+        {
+          "recommendationID": "REC-005-C",
+          "description": "Enable data discovery and monitoring",
+          "implementationDetails": "Use Macie to discover and protect sensitive data. Implement CloudWatch alerts for suspicious access patterns. Enable audit logging for all data access.",
+          "awsServiceContext": [
+            "Macie",
+            "CloudWatch",
+            "CloudTrail"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS Macie for automated sensitive data discovery. Implement Lake Formation tags and permissions for fine-grained access control. Consider using AWS KMS for column-level encryption in Redshift."
+    }
+  ],
+  "design_doc": "#!/usr/bin/env python3\n\n# Analytics Services\nfrom diagrams.aws.analytics import (\n    KinesisDataStreams,\n    KinesisDataAnalytics,\n    KinesisDataFirehose,\n    EMR,\n    Glue,\n    LakeFormation,\n    Quicksight,\n    Redshift\n)\n\n# Integration Services (Including MSK)\nfrom diagrams.aws.integration import (\n    StepFunctions,\n    MQ as MSK  # Using MQ as alternative for MSK since it's not available\n)\n\n# API Gateway is in the network module\nfrom diagrams.aws.network import APIGateway\n\n# Compute Services\nfrom diagrams.aws.compute import (\n    Lambda,\n    ECS\n)\n\n# Storage Services\nfrom diagrams.aws.storage import (\n    S3\n)\n\n# Database Services\nfrom diagrams.aws.database import (\n    Dynamodb,\n    ElastiCache\n)\n\n\n# Management Services\nfrom diagrams.aws.management import (\n    Cloudwatch\n)\n\n# Machine Learning Services\nfrom diagrams.aws.ml import (\n    Sagemaker\n)\n\n\n# General diagram components\nfrom diagrams import Diagram, Cluster, Edge\nfrom diagrams.onprem.client import Users\nfrom diagrams.aws.general import General\n\n# Import for custom styling\nfrom diagrams.aws.security import Shield\n\n# Main diagram configuration\nwith Diagram(\n    \"AWS Big Data Architecture\",\n    filename=\"aws_big_data_architecture\",\n    show=False,\n    direction=\"LR\",  # Changed to left-to-right for better flow\n    graph_attr={\n        \"splines\": \"polyline\",  # Changed from ortho to polyline for better label handling\n        \"nodesep\": \"0.8\",\n        \"ranksep\": \"1.0\",\n        \"pad\": \"2.0\",\n        \"dpi\": \"120\",\n        \"fontsize\": \"14\",\n        \"fontname\": \"Arial\"\n        \"scale:\" \"0.75\"\n    },\n    node_attr={\n        \"fontsize\": \"10\",\n        \"fontname\": \"Arial\",\n        \"width\": \"1\",\n        \"height\": \"1\",\n        \"margin\": \"0.3\"\n    }\n) as diag:\n    \n    # Define edge styles with labels\n    def edge_with_label(label, color=\"black\", style=\"solid\"):\n        return Edge(\n            color=color,\n            style=style,\n            label=label,\n            labelfontsize=\"10\",\n            labelfontname=\"Arial\",\n            minlen=\"2\"\n        )\n\n    # Define different types of flows\n    data_flow = lambda n: edge_with_label(f\"{n}. Data Flow\", color=\"#2D6EB4\")\n    event_flow = lambda n: edge_with_label(f\"{n}. Event Flow\", color=\"#D64A42\", style=\"dashed\")\n    control_flow = lambda n: edge_with_label(f\"{n}. Control Flow\", color=\"#6B8E23\")\n    \n    # Create end users\n    users = Users(\"End Users\")\n    \n    # Create AWS Account boundary with styling\n    with Cluster(\"AWS Account\", graph_attr={\n        \"bgcolor\": \"#F8F8F8\",\n        \"penwidth\": \"2\",\n        \"pencolor\": \"#147EBA\",\n        \"fontsize\": \"20\",\n        \"fontname\": \"Arial\",\n        \"margin\": \"30\"\n    }):\n        # Data Ingestion Layer with styling\n        with Cluster(\"Data Ingestion Layer\", graph_attr={\n            \"bgcolor\": \"#E8F4FA\",\n            \"fontsize\": \"12\",\n            \"fontname\": \"Arial\",\n            \"margin\": \"10\"\n        }):\n            kinesis_streams = KinesisDataStreams(\"Kinesis Data Streams\")\n            data_lake = S3(\"Data Lake (S3)\")\n            \n        # Real-time Processing Layer\n        with Cluster(\"Real-time Processing Layer\", graph_attr={\n            \"bgcolor\": \"#F0F7E8\",\n            \"fontsize\": \"12\",\n            \"fontname\": \"Arial\",\n            \"margin\": \"20\"\n        }):\n            kinesis_analytics = KinesisDataAnalytics(\"Kinesis Analytics\")\n            kafka = MSK(\"Amazon MSK\")\n            lambda_fn = Lambda(\"Lambda Functions\")\n            firehose = KinesisDataFirehose(\"Kinesis Firehose\")\n            \n        # Data Lake Management Layer\n        with Cluster(\"Data Lake Management\", graph_attr={\n            \"bgcolor\": \"#FCF2E9\",\n            \"fontsize\": \"12\",\n            \"fontname\": \"Arial\",\n            \"margin\": \"20\"\n        }):\n            lake_formation = LakeFormation(\"Lake Formation\")\n            glue_crawlers = Glue(\"Glue Crawlers\")\n            glue_etl = Glue(\"Glue ETL\")\n            \n        # Batch Processing Layer\n        with Cluster(\"Batch Processing Layer\", graph_attr={\n            \"bgcolor\": \"#EFF4FB\",\n            \"fontsize\": \"12\",\n            \"fontname\": \"Arial\",\n            \"margin\": \"20\"\n        }):\n            emr_cluster = EMR(\"EMR Cluster\")\n            step_functions = StepFunctions(\"Step Functions\")\n            \n        # Storage and Database Layer\n        with Cluster(\"Storage & Database Layer\", graph_attr={\n            \"bgcolor\": \"#F7F0F7\",\n            \"fontsize\": \"12\",\n            \"fontname\": \"Arial\",\n            \"margin\": \"20\"\n        }):\n            redshift = Redshift(\"Redshift\")\n            dynamodb = Dynamodb(\"DynamoDB\")\n            elasticache = ElastiCache(\"ElastiCache\")\n            \n        # Analytics and ML Layer\n        with Cluster(\"Analytics & ML Layer\", graph_attr={\n            \"bgcolor\": \"#F0FFFF\",\n            \"fontsize\": \"12\",\n            \"fontname\": \"Arial\",\n            \"margin\": \"10\"\n        }):\n            opensearch = General(\"OpenSearch\")  # Using General icon since OpenSearch is not available\n            sagemaker = Sagemaker(\"SageMaker\")\n            \n        # API and Visualization Layer\n        with Cluster(\"API & Visualization Layer\", graph_attr={\n            \"bgcolor\": \"#FFF0F5\",\n            \"fontsize\": \"12\",\n            \"fontname\": \"Arial\",\n            \"margin\": \"10\"\n        }):\n            api_gateway = APIGateway(\"API Gateway\")\n            quicksight = Quicksight(\"QuickSight\")\n            \n        # Monitoring with styling\n        with Cluster(\"Monitoring\", graph_attr={\n            \"bgcolor\": \"#F5F5F5\",\n            \"fontsize\": \"12\",\n            \"fontname\": \"Arial\",\n            \"margin\": \"20\"\n        }):\n            cloudwatch = Cloudwatch(\"CloudWatch\")\n\n    # Numbered flows with labels\n    users >> data_flow(\"1\") >> kinesis_streams\n    users >> data_flow(\"2\") >> data_lake\n    \n    kinesis_streams >> data_flow(\"3a\") >> kinesis_analytics\n    kinesis_streams >> data_flow(\"3b\") >> kafka\n    kafka >> event_flow(\"4\") >> lambda_fn\n    kinesis_streams >> data_flow(\"5\") >> firehose\n    firehose >> data_flow(\"6\") >> data_lake\n    \n    data_lake >> control_flow(\"7a\") >> lake_formation\n    lake_formation >> control_flow(\"7b\") >> glue_crawlers\n    glue_crawlers >> control_flow(\"7c\") >> glue_etl\n    \n    data_lake >> data_flow(\"8a\") >> emr_cluster\n    step_functions >> control_flow(\"8b\") >> emr_cluster\n    step_functions >> control_flow(\"8c\") >> glue_etl\n    \n    glue_etl >> data_flow(\"9a\") >> redshift\n    emr_cluster >> data_flow(\"9b\") >> redshift\n    lambda_fn >> data_flow(\"10\") >> dynamodb\n    redshift >> data_flow(\"11\") >> elasticache\n    \n    redshift >> data_flow(\"12a\") >> sagemaker\n    data_lake >> data_flow(\"12b\") >> sagemaker\n    [redshift, data_lake] >> data_flow(\"13\") >> opensearch\n    \n    sagemaker >> data_flow(\"14\") >> api_gateway\n    [redshift, opensearch] >> data_flow(\"15\") >> quicksight\n    api_gateway >> data_flow(\"16a\") >> users\n    quicksight >> data_flow(\"16b\") >> users\n    \n    # Monitoring connections with numbered labels\n    cloudwatch << control_flow(\"17\") << kinesis_streams\n    cloudwatch << control_flow(\"18\") << kinesis_analytics\n    cloudwatch << control_flow(\"19\") << kafka\n    cloudwatch << control_flow(\"20\") << lambda_fn\n",
+  "terraform": "# ACSE-Eval IaC source path (dataset-relative):\n# big-data-processing-and-analytics-platform/cdk/\n# Terraform source files were not available under this path.\n# Synthetic resource stubs generated from affected components:\n\nresource \"aws_api_gateway_rest_api\" \"api_gateway\" {\n  tags = {\n    acse_component = \"API Gateway\"\n  }\n}\n\nresource \"aws_resource\" \"all_platform_components\" {\n  tags = {\n    acse_component = \"All Platform Components\"\n  }\n}\n\nresource \"aws_resource\" \"cloudwatch\" {\n  tags = {\n    acse_component = \"CloudWatch\"\n  }\n}\n\nresource \"aws_iam_role\" \"iam_roles\" {\n  tags = {\n    acse_component = \"IAM Roles\"\n  }\n}\n\nresource \"aws_resource\" \"kinesis_data_analytics\" {\n  tags = {\n    acse_component = \"Kinesis Data Analytics\"\n  }\n}\n\nresource \"aws_resource\" \"kinesis_data_streams\" {\n  tags = {\n    acse_component = \"Kinesis Data Streams\"\n  }\n}\n\nresource \"aws_resource\" \"lake_formation\" {\n  tags = {\n    acse_component = \"Lake Formation\"\n  }\n}\n\nresource \"aws_lambda_function\" \"lambda_functions\" {\n  tags = {\n    acse_component = \"Lambda Functions\"\n  }\n}\n\nresource \"aws_resource\" \"msk\" {\n  tags = {\n    acse_component = \"MSK\"\n  }\n}\n\nresource \"aws_resource\" \"opensearch\" {\n  tags = {\n    acse_component = \"OpenSearch\"\n  }\n}\n\nresource \"aws_resource\" \"quicksight\" {\n  tags = {\n    acse_component = \"QuickSight\"\n  }\n}\n\nresource \"aws_resource\" \"redshift\" {\n  tags = {\n    acse_component = \"Redshift\"\n  }\n}\n\nresource \"aws_s3_bucket\" \"s3_data_lake\" {\n  tags = {\n    acse_component = \"S3 Data Lake\"\n  }\n}\n\nresource \"aws_resource\" \"sagemaker\" {\n  tags = {\n    acse_component = \"SageMaker\"\n  }\n}\n\nresource \"aws_resource\" \"sagemaker_endpoints\" {\n  tags = {\n    acse_component = \"SageMaker Endpoints\"\n  }\n}\n"
+}

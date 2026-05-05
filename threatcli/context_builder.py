@@ -119,12 +119,61 @@ def build_multisource_prompt(
     return {"system": system_prompt, "user": user_prompt}
 
 
-def _select_chunks(chunks: list[DocumentChunk], *, token_budget: int) -> list[DocumentChunk]:
+def _extract_resource_keywords(resource_map: dict[str, Any]) -> set[str]:
+    keywords = set()
+    for res in resource_map.get("resources", []):
+        if isinstance(res, dict):
+            if res.get("name"):
+                keywords.add(str(res["name"]).lower())
+            if res.get("type"):
+                keywords.add(str(res["type"]).lower())
+    return keywords
+
+
+def _score_chunk(chunk: DocumentChunk, resource_keywords: set[str], total_chunks: int) -> float:
+    text_lower = chunk.text.lower()
+    heading_lower = chunk.heading.lower()
+    
+    # 1. Keyword overlap (0.40): presence of Terraform resource names
+    overlap_count = sum(1 for kw in resource_keywords if kw in text_lower)
+    overlap_score = min(1.0, overlap_count / 5.0)  # cap at 5 matches
+    
+    # 2. Security keyword density (0.30)
+    security_terms = {"security", "encrypt", "auth", "iam", "policy", "vpc", "tls", "ssl", "secret", "password", "key", "stride", "threat", "risk", "access", "public", "private", "firewall", "sg", "waf"}
+    sec_count = sum(1 for term in security_terms if term in text_lower)
+    sec_score = min(1.0, sec_count / 5.0)
+    
+    # 3. Heading relevance (0.20)
+    heading_sec_terms = {"security", "architecture", "design", "infrastructure", "network", "auth", "threat"}
+    heading_score = 1.0 if any(term in heading_lower for term in heading_sec_terms) else 0.0
+    
+    # 4. Position bonus (0.10)
+    position_score = max(0.0, 1.0 - (chunk.section_index / max(1, total_chunks)))
+    
+    return (0.40 * overlap_score) + (0.30 * sec_score) + (0.20 * heading_score) + (0.10 * position_score)
+
+
+def _select_chunks(chunks: list[DocumentChunk], *, token_budget: int, resource_map: dict[str, Any] = None) -> list[DocumentChunk]:
+    if not chunks:
+        return []
+        
+    resource_keywords = _extract_resource_keywords(resource_map) if resource_map else set()
+    total_chunks = len(chunks)
+    
+    scored_chunks = [
+        (chunk, _score_chunk(chunk, resource_keywords, total_chunks))
+        for chunk in chunks
+    ]
+    
+    scored_chunks.sort(key=lambda x: x[1], reverse=True)
+    
     selected: list[DocumentChunk] = []
     consumed = 0
-    for chunk in sorted(chunks, key=lambda item: (item.section_index, item.chunk_id)):
+    for chunk, _ in scored_chunks:
         if consumed + chunk.token_estimate > token_budget:
-            break
+            continue # Skip and try to fit smaller chunks if any
         selected.append(chunk)
         consumed += chunk.token_estimate
+        
+    selected.sort(key=lambda item: (item.section_index, item.chunk_id))
     return selected

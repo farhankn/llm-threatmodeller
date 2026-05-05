@@ -1,0 +1,49 @@
+{
+  "run_id": "run_20260428_150913",
+  "timestamp": "2026-04-28T15:09:53.953733+00:00",
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "temperature": 0.0,
+  "include_docs": true,
+  "repeats": 1,
+  "scenario_results": [
+    {
+      "scenario_id": "ACSE_001_R1",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001",
+      "threats_generated": 6,
+      "ground_truth_threats": 11,
+      "tp": 0,
+      "fp": 6,
+      "fn": 11,
+      "precision": 0.0,
+      "recall": 0.0,
+      "ddr": 0.0,
+      "hallucination_rate": 1.0,
+      "stride_tfc_tp": 5,
+      "stride_tfc_total": 11,
+      "stride_tfc_recall": 0.45454545454545453,
+      "mitre_tfc_tp": 0,
+      "mitre_tfc_total": 13,
+      "mitre_tfc_recall": 0.0,
+      "matched_discrepancies": 0,
+      "planted_discrepancies": 0,
+      "exit_code": 0,
+      "latency_seconds": 40.801
+    }
+  ],
+  "aggregate": {
+    "mean_precision": 0.0,
+    "mean_recall": 0.0,
+    "mean_ddr": 0.0,
+    "mean_hallucination_rate": 1.0,
+    "mean_stride_tfc_recall": 0.45454545454545453,
+    "mean_mitre_tfc_recall": 0.0,
+    "micro_stride_tfc_recall": 0.45454545454545453,
+    "micro_mitre_tfc_recall": 0.0,
+    "total_scenarios": 1,
+    "successful_scenarios": 1,
+    "failed_scenarios": 0,
+    "total_threats_generated": 6,
+    "total_ground_truth_threats": 11
+  }
+}

@@ -139,14 +139,22 @@ def _component_match(output_component: str, ground_component: str) -> bool:
         return True
     if output_component == "unknown.component":
         return False
-    if "." not in output_component or "." not in ground_component:
-        return output_component == ground_component
-    out_type, out_name = output_component.split(".", 1)
-    gt_type, gt_name = ground_component.split(".", 1)
+        
+    out_parts = output_component.split(".", 1)
+    gt_parts = ground_component.split(".", 1)
+
+    out_name = out_parts[-1]
+    gt_name = gt_parts[-1]
+    
     if out_name == gt_name:
         return True
-    if out_type == gt_type:
+        
+    out_type = out_parts[0] if len(out_parts) == 2 else None
+    gt_type = gt_parts[0] if len(gt_parts) == 2 else None
+    
+    if out_type and gt_type and out_type == gt_type:
         return True
+        
     return False
 
 

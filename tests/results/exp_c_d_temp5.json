@@ -1,0 +1,63 @@
+{
+  "run_id": "run_20260505_113049",
+  "timestamp": "2026-05-05T11:33:32.444620+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.5,
+  "include_docs": true,
+  "repeats": 3,
+  "scenario_results": [
+    {
+      "scenario_id": "ACSE_030_R1",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_030",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Read timed out. (read timeout=60.0)",
+      "latency_seconds": 60.194
+    },
+    {
+      "scenario_id": "ACSE_030_R2",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_030",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Read timed out. (read timeout=60.0)",
+      "latency_seconds": 60.237
+    },
+    {
+      "scenario_id": "ACSE_030_R3",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_030",
+      "threats_generated": 9,
+      "ground_truth_threats": 13,
+      "tp": 3,
+      "fp": 6,
+      "fn": 10,
+      "precision": 0.3333333333333333,
+      "recall": 0.23076923076923078,
+      "ddr": 0.0,
+      "hallucination_rate": 0.0,
+      "stride_tfc_tp": 8,
+      "stride_tfc_total": 13,
+      "stride_tfc_recall": 0.6153846153846154,
+      "mitre_tfc_tp": 0,
+      "mitre_tfc_total": 16,
+      "mitre_tfc_recall": 0.0,
+      "matched_discrepancies": 0,
+      "planted_discrepancies": 0,
+      "exit_code": 0,
+      "latency_seconds": 42.83
+    }
+  ],
+  "aggregate": {
+    "mean_precision": 0.3333333333333333,
+    "mean_recall": 0.23076923076923078,
+    "mean_ddr": 0.0,
+    "mean_hallucination_rate": 0.0,
+    "mean_stride_tfc_recall": 0.6153846153846154,
+    "mean_mitre_tfc_recall": 0.0,
+    "micro_stride_tfc_recall": 0.6153846153846154,
+    "micro_mitre_tfc_recall": 0.0,
+    "total_scenarios": 3,
+    "successful_scenarios": 1,
+    "failed_scenarios": 2,
+    "total_threats_generated": 9,
+    "total_ground_truth_threats": 13
+  }
+}

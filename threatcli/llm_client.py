@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 import sys
 import time
 from abc import ABC, abstractmethod
@@ -132,7 +133,9 @@ class OllamaClient(LLMClient):
         try:
             response = self._session.get(f"{self.base_url}/api/tags", timeout=self.timeout)
         except requests.RequestException as exc:
-            raise LLMError(f"Unable to reach Ollama at {self.base_url}: {exc}") from exc
+            raise LLMError(
+                f"Unable to reach Ollama at {self.base_url}: {_sanitize_exception_message(str(exc))}"
+            ) from exc
 
         if response.status_code != 200:
             raise LLMHTTPError(
@@ -159,7 +162,7 @@ class OllamaClient(LLMClient):
                     timeout=self.timeout,
                 )
             except requests.RequestException as exc:
-                raise LLMError(f"Ollama request failed: {exc}") from exc
+                raise LLMError(f"Ollama request failed: {_sanitize_exception_message(str(exc))}") from exc
 
             if response.status_code != 200:
                 raise LLMHTTPError(
@@ -227,7 +230,9 @@ class GeminiClient(LLMClient):
                 timeout=self.timeout,
             )
         except requests.RequestException as exc:
-            raise LLMError(f"Unable to reach Gemini API at {self.base_url}: {exc}") from exc
+            raise LLMError(
+                f"Unable to reach Gemini API at {self.base_url}: {_sanitize_exception_message(str(exc))}"
+            ) from exc
 
         if response.status_code != 200:
             raise LLMHTTPError(
@@ -253,7 +258,7 @@ class GeminiClient(LLMClient):
                     timeout=self.timeout,
                 )
             except requests.RequestException as exc:
-                raise LLMError(f"Gemini request failed: {exc}") from exc
+                raise LLMError(f"Gemini request failed: {_sanitize_exception_message(str(exc))}") from exc
 
             if response.status_code != 200:
                 raise LLMHTTPError(
@@ -291,7 +296,8 @@ def _retry_with_backoff(
                 _llm_debug(
                     "attempt "
                     f"{attempt_number}/{max_retries}: {exc.__class__.__name__} "
-                    f"(status={status}, retryable={retryable}) {_truncate_debug(str(exc))}"
+                    f"(status={status}, retryable={retryable}) "
+                    f"{_truncate_debug(_sanitize_exception_message(str(exc)))}"
                 )
             if not retryable or attempt == max_retries - 1:
                 break
@@ -303,7 +309,7 @@ def _retry_with_backoff(
     message = f"LLM request failed after {max_retries} attempts"
     if last_error is not None:
         if debug_enabled:
-            _llm_debug(f"all attempts failed: {_truncate_debug(str(last_error))}")
+            _llm_debug(f"all attempts failed: {_truncate_debug(_sanitize_exception_message(str(last_error)))}")
         raise LLMError(f"{message}: {last_error}") from last_error
     raise LLMError(message)
 
@@ -436,3 +442,12 @@ def _truncate_debug(message: str, limit: int = 240) -> str:
     if len(message) <= limit:
         return message
     return message[: limit - 3] + "..."
+
+
+def _sanitize_exception_message(message: str) -> str:
+    """Redact API keys that may appear in provider URLs or exception strings."""
+    if not message:
+        return message
+    sanitized = re.sub(r"([?&]key=)[^&\\s]+", r"\\1<redacted>", message)
+    sanitized = re.sub(r"(api[_-]?key=)[^&\\s]+", r"\\1<redacted>", sanitized, flags=re.IGNORECASE)
+    return sanitized

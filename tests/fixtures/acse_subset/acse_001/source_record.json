@@ -1,0 +1,388 @@
+{
+  "name": "app-runner",
+  "architecture": "app-runner/architecture.png",
+  "architecture_description": "app-runner/diagram.py",
+  "threat_model": "app-runner/threat-model.json",
+  "infra_as_code": "app-runner/cdk/",
+  "ground_truth": [
+    {
+      "threatID": "THREAT-001",
+      "threatName": "Unauthorized GitHub Workflow Trigger",
+      "affectedComponents": [
+        "GitHub Source Repo",
+        "AWS CodeStar",
+        "AWS CodeBuild",
+        "App Runner ECR"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1199 - Trusted Relationship",
+          "T1204 - User Execution"
+        ]
+      },
+      "cwe": "CWE-284",
+      "vulnerabilityDetails": {
+        "howItWorks": "Attackers can create pull requests or comment on existing PRs to trigger workflow runs. If not properly configured, forked repositories can also trigger workflows with access to secrets.",
+        "exploitationScenario": "An attacker forks the repository, modifies the workflow to exfiltrate secrets, and creates a PR to trigger the malicious workflow."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-001-A",
+          "description": "Implement strict GitHub workflow trigger controls",
+          "implementationDetails": "1. Set 'GITHUB_TOKEN' permissions to read-only by default\n2. Enable 'Pull Request Target' event instead of 'Pull Request'\n3. Disable workflow runs from forks\n4. Implement required reviewers for workflow file changes",
+          "awsServiceContext": [
+            "CodeStar",
+            "CodeBuild"
+          ]
+        },
+        {
+          "recommendationID": "REC-001-B",
+          "description": "Implement branch protection rules",
+          "implementationDetails": "1. Enable required reviews before merging\n2. Require status checks to pass\n3. Restrict who can push to matching branches\n4. Enable signed commits",
+          "awsServiceContext": [
+            "CodeStar"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Review AWS CodeStar connection permissions and ensure minimal access is granted. Consider implementing AWS CodeBuild project-level permissions to restrict resource access during builds."
+    },
+    {
+      "threatID": "THREAT-002",
+      "threatName": "Container Image Vulnerabilities",
+      "affectedComponents": [
+        "Customer ECR",
+        "App Runner Service",
+        "Fargate Tasks"
+      ],
+      "frameworks": {
+        "stride": [
+          "Tampering",
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A06:2021-Vulnerable and Outdated Components"
+        ],
+        "mitreATT&CK": [
+          "T1525 - Implant Container Image"
+        ]
+      },
+      "cwe": "CWE-1104",
+      "vulnerabilityDetails": {
+        "howItWorks": "Vulnerable container images may contain known CVEs in base images, application dependencies, or system packages that could be exploited once deployed.",
+        "exploitationScenario": "An attacker exploits a known vulnerability in an outdated package within the deployed container to achieve remote code execution."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "High"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-002-A",
+          "description": "Implement container image scanning and policy enforcement",
+          "implementationDetails": "1. Enable ECR image scanning on push\n2. Configure scan findings threshold in App Runner\n3. Implement automated image patching pipeline\n4. Use distroless or minimal base images",
+          "awsServiceContext": [
+            "ECR",
+            "App Runner"
+          ]
+        },
+        {
+          "recommendationID": "REC-002-B",
+          "description": "Implement runtime container security controls",
+          "implementationDetails": "1. Enable App Runner runtime monitoring\n2. Configure container security group rules\n3. Implement least privilege runtime permissions",
+          "awsServiceContext": [
+            "App Runner",
+            "VPC",
+            "Security Groups"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS ECR image scanning with Snyk or Amazon Inspector integration. Configure App Runner to only deploy images that pass security scans."
+    },
+    {
+      "threatID": "THREAT-003",
+      "threatName": "Secrets and Configuration Exposure",
+      "affectedComponents": [
+        "GitHub Source Repo",
+        "Secrets Manager",
+        "Parameter Store",
+        "CloudWatch Logs"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1552 - Unsecured Credentials"
+        ]
+      },
+      "cwe": "CWE-798",
+      "vulnerabilityDetails": {
+        "howItWorks": "Secrets can be exposed through committed code, environment variables in logs, or misconfigured access policies to AWS Secrets Manager.",
+        "exploitationScenario": "An attacker finds AWS credentials in Git history or CloudWatch logs, using them to access AWS resources."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-003-A",
+          "description": "Implement secure secrets management",
+          "implementationDetails": "1. Use AWS Secrets Manager for all secrets\n2. Implement automatic secret rotation\n3. Use KMS encryption for all secrets\n4. Implement least privilege access to secrets",
+          "awsServiceContext": [
+            "Secrets Manager",
+            "KMS",
+            "IAM"
+          ]
+        },
+        {
+          "recommendationID": "REC-003-B",
+          "description": "Prevent secrets exposure in logs and code",
+          "implementationDetails": "1. Implement Git pre-commit hooks\n2. Configure log patterns to mask sensitive data\n3. Use environment variable encryption\n4. Implement secret detection in CI/CD",
+          "awsServiceContext": [
+            "CloudWatch",
+            "CodeBuild"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS Secrets Manager with automatic rotation and AWS KMS for encryption. Implement CloudWatch Logs pattern matching to prevent logging of sensitive data."
+    },
+    {
+      "threatID": "THREAT-004",
+      "threatName": "DDoS and Resource Exhaustion",
+      "affectedComponents": [
+        "App Runner Service",
+        "Network Load Balancer",
+        "Route 53"
+      ],
+      "frameworks": {
+        "stride": [
+          "Denial of Service"
+        ],
+        "owaspTop10": [
+          "A04:2021-Insecure Design"
+        ],
+        "mitreATT&CK": [
+          "T1498 - Network Denial of Service"
+        ]
+      },
+      "cwe": "CWE-400",
+      "vulnerabilityDetails": {
+        "howItWorks": "Attackers can generate high volumes of traffic to trigger App Runner auto-scaling, leading to increased costs and potential service disruption.",
+        "exploitationScenario": "An attacker launches a DDoS attack causing App Runner to scale up significantly, resulting in unexpected costs."
+      },
+      "impact": {
+        "confidentiality": "Low",
+        "integrity": "Low",
+        "availability": "Critical"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-004-A",
+          "description": "Implement DDoS protection",
+          "implementationDetails": "1. Enable AWS Shield\n2. Configure WAF rules\n3. Implement rate limiting\n4. Set up CloudWatch alarms for unusual scaling events",
+          "awsServiceContext": [
+            "Shield",
+            "WAF",
+            "CloudWatch"
+          ]
+        },
+        {
+          "recommendationID": "REC-004-B",
+          "description": "Configure auto-scaling limits",
+          "implementationDetails": "1. Set maximum instance limits\n2. Configure scaling thresholds\n3. Implement cost alerts\n4. Use AWS Budgets for monitoring",
+          "awsServiceContext": [
+            "App Runner",
+            "Budgets"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Consider using AWS Shield Advanced for enhanced DDoS protection. Implement AWS WAF rules to filter malicious traffic before it reaches App Runner."
+    },
+    {
+      "threatID": "THREAT-005",
+      "threatName": "VPC Network Security Misconfigurations",
+      "affectedComponents": [
+        "Customer VPC",
+        "NAT Gateway",
+        "Internet Gateway",
+        "Security Groups"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "mitreATT&CK": [
+          "T1046 - Network Service Discovery"
+        ]
+      },
+      "cwe": "CWE-923",
+      "vulnerabilityDetails": {
+        "howItWorks": "Overly permissive security groups, misconfigured route tables, or improperly configured network ACLs can expose services to unauthorized access.",
+        "exploitationScenario": "An attacker exploits overly permissive security group rules to access internal services that should not be exposed."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-005-A",
+          "description": "Implement network security controls",
+          "implementationDetails": "1. Configure restrictive security groups\n2. Enable VPC Flow Logs\n3. Implement AWS Network Firewall\n4. Use Network ACLs for subnet-level control",
+          "awsServiceContext": [
+            "VPC",
+            "Security Groups",
+            "Network Firewall"
+          ]
+        },
+        {
+          "recommendationID": "REC-005-B",
+          "description": "Implement network monitoring and alerting",
+          "implementationDetails": "1. Enable VPC Flow Logs analysis\n2. Configure GuardDuty\n3. Set up network traffic anomaly detection\n4. Implement automated response to suspicious activity",
+          "awsServiceContext": [
+            "VPC",
+            "GuardDuty",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS Network Firewall for additional network protection. Enable AWS GuardDuty for threat detection."
+    },
+    {
+      "threatID": "THREAT-006",
+      "threatName": "IAM Role and Permission Misconfigurations",
+      "affectedComponents": [
+        "IAM Roles",
+        "App Runner Service",
+        "Secrets Manager",
+        "KMS"
+      ],
+      "frameworks": {
+        "stride": [
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control"
+        ],
+        "mitreATT&CK": [
+          "T1078 - Valid Accounts"
+        ]
+      },
+      "cwe": "CWE-269",
+      "vulnerabilityDetails": {
+        "howItWorks": "Overly permissive IAM roles or policies can allow services or users to access resources beyond their intended scope.",
+        "exploitationScenario": "An attacker exploits an overly permissive App Runner instance role to access sensitive data in other AWS services."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "Critical",
+        "availability": "High"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-006-A",
+          "description": "Implement least privilege access",
+          "implementationDetails": "1. Use AWS managed policies\n2. Implement custom policies with minimal permissions\n3. Regular IAM policy reviews\n4. Enable IAM Access Analyzer",
+          "awsServiceContext": [
+            "IAM",
+            "Access Analyzer"
+          ]
+        },
+        {
+          "recommendationID": "REC-006-B",
+          "description": "Implement IAM security controls",
+          "implementationDetails": "1. Enable AWS Organizations SCP\n2. Implement permission boundaries\n3. Regular access reviews\n4. Enable CloudTrail for IAM events",
+          "awsServiceContext": [
+            "IAM",
+            "Organizations",
+            "CloudTrail"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS IAM Access Analyzer to identify unintended resource access. Implement AWS Organizations SCPs for additional control."
+    },
+    {
+      "threatID": "THREAT-007",
+      "threatName": "DNS-Based Attacks",
+      "affectedComponents": [
+        "Route 53",
+        "Network Load Balancer",
+        "App Runner Service"
+      ],
+      "frameworks": {
+        "stride": [
+          "Tampering",
+          "Denial of Service"
+        ],
+        "owaspTop10": [
+          "A05:2021-Security Misconfiguration"
+        ],
+        "mitreATT&CK": [
+          "T1071.004 - Application Layer Protocol: DNS"
+        ]
+      },
+      "cwe": "CWE-350",
+      "vulnerabilityDetails": {
+        "howItWorks": "Attackers can exploit DNS misconfigurations for zone enumeration, cache poisoning, or denial of service attacks.",
+        "exploitationScenario": "An attacker performs DNS zone walking to enumerate subdomains and identify potential targets."
+      },
+      "impact": {
+        "confidentiality": "Medium",
+        "integrity": "High",
+        "availability": "High"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-007-A",
+          "description": "Implement DNS security controls",
+          "implementationDetails": "1. Enable DNSSEC\n2. Implement DNS query logging\n3. Configure throttling controls\n4. Monitor for unauthorized DNS changes",
+          "awsServiceContext": [
+            "Route 53"
+          ]
+        },
+        {
+          "recommendationID": "REC-007-B",
+          "description": "Implement DNS monitoring and alerting",
+          "implementationDetails": "1. Enable Route 53 query logging\n2. Configure CloudWatch alarms for DNS changes\n3. Implement automated response to suspicious DNS activity\n4. Regular DNS configuration audits",
+          "awsServiceContext": [
+            "Route 53",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use Route 53 health checks and DNS failover for high availability. Consider implementing AWS Shield for DNS DDoS protection."
+    }
+  ],
+  "design_doc": "#!/usr/bin/env python3\n\n# AWS Service Category Imports\n# Compute Services\nfrom diagrams.aws.compute import (\n    AppRunner,\n    Fargate,\n    ECR\n)\n\n# Network Services\nfrom diagrams.aws.network import (\n    Route53,\n    NLB,\n    InternetGateway,\n    NATGateway,\n    VPC\n)\n\n# Security Services\nfrom diagrams.aws.security import (\n    IAM,\n    SecretsManager,\n    KMS,\n    IdentityAndAccessManagementIamRole\n)\n\n# Management Services\nfrom diagrams.aws.management import (\n    Cloudwatch,\n    SystemsManagerParameterStore\n)\n\n# Developer Tools\nfrom diagrams.aws.devtools import (\n    Codestar,\n    Codebuild\n)\n\n# General diagram components\nfrom diagrams import Diagram, Cluster, Edge\nfrom diagrams.generic.network import Router\nfrom diagrams.generic.place import Datacenter\nfrom diagrams.onprem.vcs import Github\n\n# Graph attributes for better visualization\ngraph_attr = {\n    \"splines\": \"ortho\",\n    \"nodesep\": \"0.8\",\n    \"ranksep\": \"1.0\",\n    \"pad\": \"1.5\",\n}\n\n# Create main diagram\nwith Diagram(\n    \"AWS App Runner Architecture\",\n    filename=\"aws_app_runner_architecture\",\n    show=False,\n    direction=\"TB\",\n    graph_attr=graph_attr,\n    outformat=\"png\",\n):\n    # External Services\n    github = Github(\"GitHub\\nSource Repo\")\n    client = Datacenter(\"Client\")\n\n    # AWS Identity and Security Services\n    with Cluster(\"Security & Identity Services\"):\n        iam = IAM(\"IAM\")\n        kms = KMS(\"KMS\")\n        secrets = SecretsManager(\"Secrets\\nManager\")\n        ssm = SystemsManagerParameterStore(\"Parameter\\nStore\")\n        iam_role = IdentityAndAccessManagementIamRole(\"IAM Role\")\n\n    # Monitoring Services\n    with Cluster(\"Monitoring\"):\n        cloudwatch = Cloudwatch(\"CloudWatch\")\n\n    # Route 53 and Load Balancer\n    route53 = Route53(\"Route 53\")\n    nlb = NLB(\"Network\\nLoad Balancer\")\n\n    # Scenario 1: Source Code Path\n    with Cluster(\"Source Code Path\"):\n        codestar = Codestar(\"AWS CodeStar\")\n        codebuild = Codebuild(\"AWS CodeBuild\")\n        ecr_app_runner = ECR(\"App Runner ECR\")\n\n    # Scenario 2: Source Image Path\n    with Cluster(\"Source Image Path\"):\n        customer_ecr = ECR(\"Customer ECR\")\n\n    # App Runner Service VPC\n    with Cluster(\"AWS App Runner Service VPC\"):\n        app_runner = AppRunner(\"App Runner\\nService\")\n        router = Router(\"L7 Request\\nRouter\")\n        \n        with Cluster(\"Fargate Cluster (Multi-AZ)\"):\n            fargate = Fargate(\"Fargate Tasks\")\n\n        with Cluster(\"Default Networking\"):\n            app_runner_nat = NATGateway(\"NAT Gateway\")\n            app_runner_igw = InternetGateway(\"Internet\\nGateway\")\n\n    # Customer VPC\n    with Cluster(\"Customer VPC (Optional)\"):\n        customer_vpc = VPC(\"Customer VPC\")\n        customer_nat = NATGateway(\"Customer\\nNAT Gateway\")\n        customer_igw = InternetGateway(\"Customer\\nInternet Gateway\")\n\n    # Scenario 1: Source Code Path Connections\n    github >> Edge(label=\"1. Code Push\") >> codestar\n    codestar >> Edge(label=\"2. Auth\") >> codebuild\n    codebuild >> Edge(label=\"3. Build\") >> ecr_app_runner\n    ecr_app_runner >> Edge(label=\"4. Deploy\") >> app_runner\n\n    # Scenario 2: Source Image Path Connections\n    customer_ecr >> Edge(label=\"1. Auth via IAM\") >> iam_role\n    customer_ecr >> Edge(label=\"2. Push Image\") >> app_runner\n\n    # Inbound Traffic Path\n    client >> Edge(label=\"Request\") >> route53\n    route53 >> nlb\n    nlb >> router\n    router >> fargate\n\n    # Outbound Traffic Paths\n    # Scenario 1: Default Networking\n    fargate >> app_runner_nat\n    app_runner_nat >> app_runner_igw\n    app_runner_igw >> Edge(label=\"Internet\") >> Datacenter(\"Internet\")\n\n    # Scenario 2: VPC Egress\n    fargate >> customer_vpc\n    customer_vpc >> customer_nat\n    customer_nat >> customer_igw\n    customer_igw >> Edge(label=\"Internet\") >> Datacenter(\"Internet\")\n\n    # Security and Monitoring Connections\n    app_runner >> cloudwatch\n    app_runner >> secrets\n    app_runner >> kms\n    app_runner >> ssm\n",
+  "terraform": "# ACSE-Eval IaC source path (dataset-relative):\n# app-runner/cdk/\n# Terraform source files were not available under this path.\n# Synthetic resource stubs generated from affected components:\n\nresource \"aws_resource\" \"aws_codebuild\" {\n  tags = {\n    acse_component = \"AWS CodeBuild\"\n  }\n}\n\nresource \"aws_resource\" \"aws_codestar\" {\n  tags = {\n    acse_component = \"AWS CodeStar\"\n  }\n}\n\nresource \"aws_ecr_repository\" \"app_runner_ecr\" {\n  tags = {\n    acse_component = \"App Runner ECR\"\n  }\n}\n\nresource \"aws_resource\" \"app_runner_service\" {\n  tags = {\n    acse_component = \"App Runner Service\"\n  }\n}\n\nresource \"aws_resource\" \"cloudwatch_logs\" {\n  tags = {\n    acse_component = \"CloudWatch Logs\"\n  }\n}\n\nresource \"aws_ecr_repository\" \"customer_ecr\" {\n  tags = {\n    acse_component = \"Customer ECR\"\n  }\n}\n\nresource \"aws_vpc\" \"customer_vpc\" {\n  tags = {\n    acse_component = \"Customer VPC\"\n  }\n}\n\nresource \"aws_resource\" \"fargate_tasks\" {\n  tags = {\n    acse_component = \"Fargate Tasks\"\n  }\n}\n\nresource \"aws_resource\" \"github_source_repo\" {\n  tags = {\n    acse_component = \"GitHub Source Repo\"\n  }\n}\n\nresource \"aws_iam_role\" \"iam_roles\" {\n  tags = {\n    acse_component = \"IAM Roles\"\n  }\n}\n\nresource \"aws_resource\" \"internet_gateway\" {\n  tags = {\n    acse_component = \"Internet Gateway\"\n  }\n}\n\nresource \"aws_resource\" \"kms\" {\n  tags = {\n    acse_component = \"KMS\"\n  }\n}\n\nresource \"aws_resource\" \"nat_gateway\" {\n  tags = {\n    acse_component = \"NAT Gateway\"\n  }\n}\n\nresource \"aws_resource\" \"network_load_balancer\" {\n  tags = {\n    acse_component = \"Network Load Balancer\"\n  }\n}\n\nresource \"aws_resource\" \"parameter_store\" {\n  tags = {\n    acse_component = \"Parameter Store\"\n  }\n}\n\nresource \"aws_route53_zone\" \"route_53\" {\n  tags = {\n    acse_component = \"Route 53\"\n  }\n}\n\nresource \"aws_ecr_repository\" \"secrets_manager\" {\n  tags = {\n    acse_component = \"Secrets Manager\"\n  }\n}\n\nresource \"aws_security_group\" \"security_groups\" {\n  tags = {\n    acse_component = \"Security Groups\"\n  }\n}\n"
+}
