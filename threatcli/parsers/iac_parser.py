@@ -41,8 +41,12 @@ def parse_iac(paths: Sequence[str | Path]) -> dict[str, Any]:
 
 def serialize_resource_map(resource_map: dict[str, Any], char_budget: int = MAX_SUMMARY_CHARS) -> str:
     """Serialize ResourceMap into a compact JSON summary for LLM prompts."""
+    resources = [_summarize_resource(resource) for resource in resource_map.get("resources", [])]
+    relationships = _infer_relationships(resource_map)
+    
     summary = {
-        "resources": [_summarize_resource(resource) for resource in resource_map.get("resources", [])],
+        "resources": resources,
+        "relationships": relationships,
         "providers": [_summarize_value(provider) for provider in resource_map.get("providers", [])],
         "variables": _summarize_value(resource_map.get("variables", [])),
         "data_sources": [_summarize_resource(source) for source in resource_map.get("data_sources", [])],
@@ -53,7 +57,8 @@ def serialize_resource_map(resource_map: dict[str, Any], char_budget: int = MAX_
     if len(text) <= char_budget:
         return text
 
-    # If still too large, progressively trim least important sections first.
+    # Truncate logic...
+    summary["relationships"] = []
     summary["variables"] = []
     text = json.dumps(summary, indent=2)
     if len(text) <= char_budget:
@@ -80,6 +85,23 @@ def serialize_resource_map(resource_map: dict[str, Any], char_budget: int = MAX_
     # Final safeguard: truncate by characters while preserving valid JSON string type.
     overflow = len(text) - char_budget
     return json.dumps({"summary": text[: char_budget - 32], "truncated_chars": overflow}, indent=2)
+
+
+def _infer_relationships(resource_map: dict[str, Any]) -> list[str]:
+    relationships = []
+    resources = resource_map.get("resources", [])
+    # Map of short names (name) to canonical identifiers (type.name)
+    names_to_ids = {r['name']: f"{r['type']}.{r['name']}" for r in resources if 'name' in r and 'type' in r}
+    
+    for resource in resources:
+        source_id = f"{resource['type']}.{resource['name']}"
+        # Search attributes for references to other resource names
+        attr_str = str(resource.get("attributes", {}))
+        for short_name, target_id in names_to_ids.items():
+            if short_name != resource['name'] and (f'"{short_name}"' in attr_str or f"'{short_name}'" in attr_str or f"={short_name}" in attr_str):
+                relationships.append(f"{source_id} -> {target_id}")
+    
+    return sorted(list(set(relationships)))
 
 
 def discover_tf_files(paths: Iterable[str | Path]) -> list[Path]:

@@ -1,0 +1,136 @@
+{
+  "run_id": "run_20260509_113710",
+  "timestamp": "2026-05-09T11:38:03.957601+00:00",
+  "scenario_number": 1,
+  "scenario_id": "ACSE_001_R1",
+  "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001",
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "temperature": 0.2,
+  "include_docs": true,
+  "exit_code": 0,
+  "latency_seconds": 53.255,
+  "error": null,
+  "threat_count": 8,
+  "threats": [
+    {
+      "threat_id": "ACSE-T001",
+      "stride_category": "Information Disclosure",
+      "component": "aws_resource.app_runner_service",
+      "description": "The design specifies the use of AWS Secrets Manager for handling sensitive data, but the infrastructure summary shows an `aws_ecr_repository` named `secrets_manager` was provisioned instead. This indicates the intended security control is absent, forcing sensitive data (e.g., API keys, database credentials) to be stored in a less secure manner, such as plaintext environment variables or insecure Parameter Store strings, making them vulnerable to disclosure.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design document specifies 'SecretsManager' for the App Runner service, but the Infrastructure Summary provisions 'aws_ecr_repository.secrets_manager' instead of an actual Secrets Manager resource.",
+      "severity": "Critical",
+      "references": [
+        "aws_resource.app_runner_service.attributes",
+        "aws_ecr_repository.secrets_manager.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-T002",
+      "stride_category": "Elevation of Privilege",
+      "component": "aws_iam_role.iam_roles",
+      "description": "A generic IAM role resource is defined without any specific policy attachments detailed. Such roles are often created with overly permissive policies (e.g., wildcard actions or resources). If this role is assumed by a compromised resource, an attacker could elevate their privileges to perform unauthorized actions across various AWS services, far exceeding the intended permissions for ECR authentication.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_iam_role.iam_roles.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-T003",
+      "stride_category": "Tampering",
+      "component": "aws_ecr_repository.app_runner_ecr",
+      "description": "The ECR repository configuration does not specify image tag immutability. This allows image tags, such as 'latest', to be overwritten. An attacker could push a malicious image that overwrites a known, trusted image tag, leading to the deployment of a compromised container without changing any deployment configuration.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_ecr_repository.app_runner_ecr.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-T004",
+      "stride_category": "Denial of Service",
+      "component": "aws_resource.network_load_balancer",
+      "description": "The Network Load Balancer is exposed to client traffic without any associated AWS WAF or AWS Shield Advanced protection. This exposes the application to Layer 3/4 DDoS attacks like SYN floods or UDP reflection, which could exhaust the resources of the backend Fargate tasks or incur significant financial costs.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_resource.network_load_balancer.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-T005",
+      "stride_category": "Information Disclosure",
+      "component": "aws_resource.parameter_store",
+      "description": "The infrastructure summary does not specify that parameters stored in AWS Systems Manager Parameter Store are of type 'SecureString'. If standard 'String' parameters are used to store secrets, any identity with `ssm:GetParameter` permissions can retrieve them in plaintext, bypassing the additional layer of security provided by KMS encryption and key policies.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_resource.parameter_store.attributes",
+        "aws_resource.kms.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-T006",
+      "stride_category": "Spoofing",
+      "component": "aws_resource.github_source_repo",
+      "description": "The CI/CD pipeline is triggered by a code push to the GitHub repository. The infrastructure summary provides no indication that commit signing is enforced. An attacker who compromises a developer's credentials could push malicious code impersonating that developer, which would then be automatically built and deployed by the trusted CodeStar and CodeBuild pipeline.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_resource.github_source_repo.attributes",
+        "aws_resource.aws_codestar.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-T007",
+      "stride_category": "Repudiation",
+      "component": "aws_resource.cloudwatch_logs",
+      "description": "The infrastructure summary defines a generic CloudWatch Logs resource but does not ensure that comprehensive logging is enabled for all critical components. Without guaranteed CloudTrail data and management event logging for services like ECR, IAM, and CodeBuild, an attacker could perform malicious actions (e.g., push a malicious image, create a backdoor IAM user) without leaving a sufficient audit trail, hindering investigation and response.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_resource.cloudwatch_logs.attributes",
+        "aws_ecr_repository.app_runner_ecr.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-T008",
+      "stride_category": "Tampering",
+      "component": "aws_resource.aws_codebuild",
+      "description": "The CodeBuild project's configuration lacks details on security controls. An attacker with write access to the linked GitHub repository could modify the `buildspec.yml` file to execute arbitrary commands during the build phase. This could be used to exfiltrate build-time secrets, inject malware into the container image, or otherwise compromise the integrity of the application artifact before it is pushed to ECR.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_resource.aws_codebuild.attributes",
+        "aws_resource.github_source_repo.attributes"
+      ]
+    }
+  ],
+  "metrics": {
+    "tp": 5,
+    "fp": 3,
+    "fn": 6,
+    "precision": 0.625,
+    "recall": 0.45454545454545453,
+    "jaccard_index": 0.11764705882352941,
+    "ddr": 0.0,
+    "hallucination_rate": 0.0,
+    "matched_discrepancies": 0,
+    "planted_discrepancies": 0,
+    "stride_tfc_tp": 7,
+    "stride_tfc_total": 11,
+    "stride_tfc_recall": 0.6363636363636364,
+    "mitre_tfc_tp": 0,
+    "mitre_tfc_total": 13,
+    "mitre_tfc_recall": 0.0
+  }
+}

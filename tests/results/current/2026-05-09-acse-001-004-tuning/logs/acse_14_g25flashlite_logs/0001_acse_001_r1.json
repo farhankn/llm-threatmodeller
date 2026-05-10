@@ -1,0 +1,267 @@
+{
+  "run_id": "run_20260509_100921",
+  "timestamp": "2026-05-09T10:09:30.091881+00:00",
+  "scenario_number": 1,
+  "scenario_id": "ACSE_001_R1",
+  "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001",
+  "provider": "gemini",
+  "model": "gemini-2.5-flash-lite",
+  "temperature": 0.0,
+  "include_docs": true,
+  "exit_code": 0,
+  "latency_seconds": 8.671,
+  "error": null,
+  "threat_count": 18,
+  "threats": [
+    {
+      "threat_id": "STRIDE-001",
+      "stride_category": "Spoofing",
+      "component": "IAM Roles",
+      "description": "An attacker could assume an overly permissive IAM role used by AWS services (e.g., CodeBuild, App Runner) to impersonate legitimate AWS service principals and gain unauthorized access to other AWS resources.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'arn'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-002",
+      "stride_category": "Tampering",
+      "component": "AWS CodeBuild",
+      "description": "A compromised build environment or malicious code injection within the build process could lead to tampering of the application artifacts (e.g., container images) stored in ECR repositories, introducing backdoors or malicious functionality.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'aws_codebuild', 'attribute': 'arn'}",
+        "{'resource_type': 'aws_ecr_repository', 'resource_name': 'app_runner_ecr', 'attribute': 'repository_url'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-003",
+      "stride_category": "Tampering",
+      "component": "App Runner Service",
+      "description": "If the deployment pipeline is compromised, an attacker could deploy a tampered version of the application to the App Runner service, potentially altering its functionality or introducing malicious behavior.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'app_runner_service', 'attribute': 'service_url'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-004",
+      "stride_category": "Tampering",
+      "component": "Parameter Store",
+      "description": "An attacker with sufficient privileges could tamper with sensitive configuration values stored in Parameter Store, leading to misconfigurations, unauthorized access, or disruption of the application.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'parameter_store', 'attribute': 'name'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-005",
+      "stride_category": "Tampering",
+      "component": "KMS",
+      "description": "An attacker could tamper with KMS keys, potentially leading to the inability to decrypt sensitive data or, if key policies are misconfigured, unauthorized decryption of data.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'kms', 'attribute': 'arn'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-006",
+      "stride_category": "Repudiation",
+      "component": "AWS CodeBuild",
+      "description": "Lack of detailed audit logs or insufficient logging configuration for AWS CodeBuild could allow a malicious actor to perform unauthorized actions during the build process and later deny their involvement.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Low",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'aws_codebuild', 'attribute': 'arn'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'cloudwatch_logs', 'attribute': 'name'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-007",
+      "stride_category": "Information Disclosure",
+      "component": "App Runner Service",
+      "description": "If the App Runner service is not configured with appropriate network controls (e.g., security groups, VPC access controls), sensitive data processed by the application could be exposed to unauthorized networks or entities.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'app_runner_service', 'attribute': 'service_url'}",
+        "{'resource_type': 'aws_security_group', 'resource_name': 'security_groups', 'attribute': 'id'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-008",
+      "stride_category": "Information Disclosure",
+      "component": "Parameter Store",
+      "description": "If Parameter Store is not configured with appropriate access policies, sensitive secrets (e.g., API keys, database credentials) could be disclosed to unauthorized IAM principals or services.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'parameter_store', 'attribute': 'name'}",
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'arn'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-009",
+      "stride_category": "Information Disclosure",
+      "component": "Customer ECR",
+      "description": "If the Customer ECR repository is not configured with appropriate access controls, unauthorized entities could pull or view container images, potentially revealing application code or sensitive configurations embedded within images.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_ecr_repository', 'resource_name': 'customer_ecr', 'attribute': 'repository_url'}",
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'arn'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-010",
+      "stride_category": "Information Disclosure",
+      "component": "CloudWatch Logs",
+      "description": "If CloudWatch Logs are not adequately protected with access policies, sensitive application logs containing PII, credentials, or other confidential information could be exposed to unauthorized users.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'cloudwatch_logs', 'attribute': 'name'}",
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'arn'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-011",
+      "stride_category": "Denial of Service",
+      "component": "App Runner Service",
+      "description": "An attacker could overwhelm the App Runner service with a flood of requests, exhausting its resources and causing a denial of service for legitimate users. This is exacerbated if rate limiting or WAF is not implemented.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'app_runner_service', 'attribute': 'service_url'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'network_load_balancer', 'attribute': 'arn'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-012",
+      "stride_category": "Denial of Service",
+      "component": "Fargate Tasks",
+      "description": "An attacker could exploit vulnerabilities in the application running on Fargate tasks or flood them with traffic, leading to resource exhaustion and service unavailability.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'fargate_tasks', 'attribute': 'arn'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'network_load_balancer', 'attribute': 'arn'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-013",
+      "stride_category": "Denial of Service",
+      "component": "Internet Gateway",
+      "description": "While not directly exploitable for DoS, misconfigurations or vulnerabilities in services relying on the Internet Gateway could lead to DoS. For instance, if the IGW is the only egress and is misconfigured, it could block legitimate outbound traffic.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Low",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'internet_gateway', 'attribute': 'id'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-014",
+      "stride_category": "Denial of Service",
+      "component": "NAT Gateway",
+      "description": "If the NAT Gateway becomes a bottleneck or fails, instances in private subnets that rely on it for outbound internet access will be unable to communicate, leading to a denial of service for those instances.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'nat_gateway', 'attribute': 'id'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-015",
+      "stride_category": "Elevation of Privilege",
+      "component": "IAM Roles",
+      "description": "An attacker could exploit overly permissive IAM policies attached to roles used by services like CodeBuild or App Runner to gain elevated privileges, allowing them to access or modify resources they are not authorized to interact with.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'arn'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-016",
+      "stride_category": "Elevation of Privilege",
+      "component": "Security Groups",
+      "description": "If security groups are configured with overly permissive inbound or outbound rules, an attacker who gains access to a compromised instance could potentially pivot to other instances or services within the VPC with elevated privileges.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_security_group', 'resource_name': 'security_groups', 'attribute': 'id'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-017",
+      "stride_category": "Discrepancy",
+      "component": "Customer VPC",
+      "description": "The design document explicitly mentions 'Customer VPC (Optional)' and depicts it with a NAT Gateway and Internet Gateway. However, the provided Terraform summary does not contain explicit resources for 'customer_nat' or 'customer_igw', only a generic 'nat_gateway' and 'internet_gateway' which might be intended for the App Runner Service VPC.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": {
+        "design_element": "Customer VPC (Optional) with Customer NAT Gateway and Customer Internet Gateway",
+        "iac_element": "Missing explicit 'customer_nat' and 'customer_igw' resources in Terraform summary."
+      },
+      "severity": "Low",
+      "references": [
+        "{'resource_type': 'aws_vpc', 'resource_name': 'customer_vpc', 'attribute': 'id'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'nat_gateway', 'attribute': 'id'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'internet_gateway', 'attribute': 'id'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-018",
+      "stride_category": "Information Disclosure",
+      "component": "Secrets Manager",
+      "description": "The Terraform summary lists 'secrets_manager' as an aws_ecr_repository, which is incorrect. Secrets Manager is a distinct AWS service. If this misconfiguration implies that secrets are not being managed by AWS Secrets Manager, or are being stored insecurely (e.g., in ECR images or code), sensitive information could be disclosed.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": {
+        "design_element": "Secrets Manager service",
+        "iac_element": "Resource 'secrets_manager' is incorrectly typed as 'aws_ecr_repository'."
+      },
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_ecr_repository', 'resource_name': 'secrets_manager', 'attribute': 'name'}"
+      ]
+    }
+  ],
+  "metrics": {
+    "tp": 0,
+    "fp": 18,
+    "fn": 11,
+    "precision": 0.0,
+    "recall": 0.0,
+    "jaccard_index": 0.0,
+    "ddr": 0.0,
+    "hallucination_rate": 1.0,
+    "matched_discrepancies": 0,
+    "planted_discrepancies": 0,
+    "stride_tfc_tp": 10,
+    "stride_tfc_total": 11,
+    "stride_tfc_recall": 0.9090909090909091,
+    "mitre_tfc_tp": 0,
+    "mitre_tfc_total": 13,
+    "mitre_tfc_recall": 0.0
+  }
+}

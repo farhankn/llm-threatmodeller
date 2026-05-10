@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import re
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -315,6 +317,165 @@ def _infer_component(
     return "unknown.component"
 
 
+def _align_components_to_resource_map(
+    threats: list[dict[str, Any]],
+    resource_map: dict[str, Any],
+) -> list[dict[str, Any]]:
+    index = _build_component_index(resource_map)
+    aligned: list[dict[str, Any]] = []
+    for threat in threats:
+        normalized = dict(threat)
+        component = str(normalized.get("component", "")).strip()
+        if component:
+            normalized["component"] = _resolve_component(component, index)
+        aligned.append(normalized)
+    return aligned
+
+
+def _deduplicate_threats(threats: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduped: list[dict[str, Any]] = []
+    index_by_key: dict[tuple[str, str], int] = {}
+    for threat in threats:
+        component = str(threat.get("component", "")).strip().lower()
+        category = str(threat.get("stride_category", "")).strip().lower()
+        key = (component, category)
+        if not component or not category:
+            deduped.append(threat)
+            continue
+
+        existing_index = index_by_key.get(key)
+        if existing_index is None:
+            index_by_key[key] = len(deduped)
+            deduped.append(threat)
+            continue
+
+        existing = deduped[existing_index]
+        existing_flag = bool(existing.get("discrepancy_flag"))
+        incoming_flag = bool(threat.get("discrepancy_flag"))
+        existing_desc_len = len(str(existing.get("description", "")))
+        incoming_desc_len = len(str(threat.get("description", "")))
+        if (incoming_flag and not existing_flag) or (incoming_flag == existing_flag and incoming_desc_len > existing_desc_len):
+            deduped[existing_index] = threat
+
+    return deduped
+
+
+def _build_component_index(resource_map: dict[str, Any]) -> dict[str, Any]:
+    canonical_by_lower: dict[str, str] = {}
+    by_name: dict[str, list[str]] = {}
+    by_type: dict[str, list[str]] = {}
+    by_alias: dict[str, list[str]] = {}
+
+    for resource in resource_map.get("resources", []):
+        if not isinstance(resource, dict):
+            continue
+        resource_type = str(resource.get("type", "")).strip()
+        resource_name = str(resource.get("name", "")).strip()
+        if not resource_type or not resource_name:
+            continue
+        canonical = f"{resource_type}.{resource_name}"
+        canonical_lower = canonical.lower()
+        canonical_by_lower[canonical_lower] = canonical
+
+        _append_unique(by_name, resource_name.lower(), canonical)
+        _append_unique(by_type, resource_type.lower(), canonical)
+
+        for alias in (
+            resource_name,
+            resource_type,
+            canonical,
+            resource_name.replace("_", " "),
+            resource_name.replace("-", " "),
+        ):
+            token = _alias_token(alias)
+            if token:
+                _append_unique(by_alias, token, canonical)
+
+        attributes = resource.get("attributes")
+        if isinstance(attributes, dict):
+            tags = attributes.get("tags")
+            if isinstance(tags, dict):
+                for tag_key in ("acse_component", "component", "name", "Name"):
+                    value = tags.get(tag_key)
+                    if isinstance(value, str):
+                        token = _alias_token(value)
+                        if token:
+                            _append_unique(by_alias, token, canonical)
+
+    return {
+        "canonical_by_lower": canonical_by_lower,
+        "by_name": by_name,
+        "by_type": by_type,
+        "by_alias": by_alias,
+    }
+
+
+def _resolve_component(component: str, index: dict[str, Any]) -> str:
+    lower_component = component.strip().lower()
+    canonical_by_lower = index["canonical_by_lower"]
+    by_name = index["by_name"]
+    by_type = index["by_type"]
+    by_alias = index["by_alias"]
+
+    if lower_component in canonical_by_lower:
+        return canonical_by_lower[lower_component]
+
+    if lower_component in by_name:
+        resolved = _choose_candidate(by_name[lower_component], expected_type=None)
+        if resolved:
+            return resolved
+
+    if "." in lower_component:
+        candidate_type, candidate_name = lower_component.split(".", 1)
+        if candidate_name in by_name:
+            resolved = _choose_candidate(by_name[candidate_name], expected_type=candidate_type)
+            if resolved:
+                return resolved
+        if candidate_type in by_type and len(by_type[candidate_type]) == 1:
+            return by_type[candidate_type][0]
+        name_alias = _alias_token(candidate_name)
+        if name_alias and name_alias in by_alias:
+            resolved = _choose_candidate(by_alias[name_alias], expected_type=candidate_type)
+            if resolved:
+                return resolved
+
+    alias = _alias_token(lower_component)
+    if alias and alias in by_alias:
+        resolved = _choose_candidate(by_alias[alias], expected_type=None)
+        if resolved:
+            return resolved
+
+    return component
+
+
+def _choose_candidate(candidates: list[str], expected_type: str | None) -> str | None:
+    unique = sorted(set(candidates))
+    if not unique:
+        return None
+
+    if expected_type:
+        expected_matches = [item for item in unique if item.lower().startswith(expected_type + ".")]
+        if len(expected_matches) == 1:
+            return expected_matches[0]
+
+    if len(unique) == 1:
+        return unique[0]
+
+    return None
+
+
+def _append_unique(mapping: dict[str, list[str]], key: str, value: str) -> None:
+    if not key:
+        return
+    mapping.setdefault(key, [])
+    if value not in mapping[key]:
+        mapping[key].append(value)
+
+
+def _alias_token(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", value.strip().lower())
+
+
 def _emit_output(content: str | bytes, output: Path | None) -> None:
     if isinstance(content, bytes):
         if output is None:
@@ -374,6 +535,11 @@ def analyze(
         "--discrepancies-only",
         help="Show only threats with discrepancy_flag=true.",
     ),
+    dedupe_threats: bool = typer.Option(
+        True,
+        "--dedupe-threats/--no-dedupe-threats",
+        help="Deduplicate threats with identical (component, category) pairs, preferring those with discrepancy flags or longer descriptions.",
+    ),
 ) -> None:
     """Analyze infrastructure and generate threats."""
     normalized_format = format.strip().lower()
@@ -413,6 +579,11 @@ def analyze(
 
         raw_output = client.generate(prompt=prompt, temperature=temperature)
         threats = parse_threats(raw_output)
+        threats = _align_components_to_resource_map(threats, resource_map)
+        
+        if dedupe_threats:
+            threats = _deduplicate_threats(threats)
+            
         if discrepancies_only:
             threats = filter_discrepancies(threats)
 
@@ -421,7 +592,18 @@ def analyze(
         elif normalized_format == "json":
             rendered = render_json(threats)
         else:
-            rendered = render_pdf(threats)
+            rendered = render_pdf(
+                threats,
+                report_meta={
+                    "title": "Threat Modeling Report",
+                    "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
+                    "tool_version": __version__,
+                    "provider": provider,
+                    "model": model or "",
+                    "iac_inputs": [str(path) for path in iac],
+                    "doc_inputs": [str(path) for path in [*doc, *doc_dir]],
+                },
+            )
         _emit_output(rendered, output)
     except (ParseError, LLMError, ThreatSchemaError, OSError, ValueError) as exc:
         typer.echo(f"Error: {exc}", err=True)
@@ -481,11 +663,21 @@ def evaluation_run(
         "--progress-file",
         help="Optional JSON checkpoint file continuously updated during execution.",
     ),
+    threat_log_dir: Path | None = typer.Option(
+        None,
+        "--threat-log-dir",
+        help="Optional directory where per-scenario generated threat logs are dumped as JSON.",
+    ),
     output: Path = typer.Option(
         Path("evaluation/results/latest_run.json"),
         "--output",
         "-o",
         help="Output JSON file path for the run result.",
+    ),
+    dedupe_threats: bool = typer.Option(
+        True,
+        "--dedupe-threats/--no-dedupe-threats",
+        help="Deduplicate threats during analysis runs.",
     ),
 ) -> None:
     """Run batch evaluation across fixture scenarios and write aggregate metrics."""
@@ -509,6 +701,8 @@ def evaluation_run(
             progress=progress,
             debug=debug,
             progress_file=progress_file,
+            threat_log_dir=threat_log_dir,
+            dedupe_threats=dedupe_threats,
         )
         write_run_result(result, output)
         typer.echo(
@@ -518,6 +712,8 @@ def evaluation_run(
         typer.echo(f"Results written to: {output}")
         if progress_file is not None:
             typer.echo(f"Progress checkpoints written to: {progress_file}")
+        if threat_log_dir is not None:
+            typer.echo(f"Threat logs written to: {threat_log_dir}")
     except (OSError, ValueError, ParseError, LLMError) as exc:
         typer.echo(f"Error: {exc}", err=True)
         raise typer.Exit(code=1) from exc

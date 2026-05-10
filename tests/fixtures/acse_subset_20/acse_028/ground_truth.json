@@ -1,0 +1,147 @@
+[
+  {
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.lambda_file_manager_function",
+    "description": "Unauthorized EFS Access via Lambda Function Compromise The Lambda function has direct access to EFS through a mounted access point. If compromised through code injection or other means, an attacker could manipulate file operations within the Lambda's permission scope. An attacker exploits a vulnerability in the Lambda function's input handling to execute arbitrary file operations on the EFS mount point, potentially accessing or modifying sensitive files.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict input validation and sanitization in Lambda functions",
+      "recommendation: Further restrict EFS access point permissions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.lambda_file_manager_function",
+    "description": "Unauthorized EFS Access via Lambda Function Compromise The Lambda function has direct access to EFS through a mounted access point. If compromised through code injection or other means, an attacker could manipulate file operations within the Lambda's permission scope. An attacker exploits a vulnerability in the Lambda function's input handling to execute arbitrary file operations on the EFS mount point, potentially accessing or modifying sensitive files.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict input validation and sanitization in Lambda functions",
+      "recommendation: Further restrict EFS access point permissions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "API Gateway DDoS and Resource Exhaustion Multiple API calls trigger two Lambda functions (API Handler and File Manager), potentially leading to resource exhaustion and increased costs. An attacker scripts automated requests to the API endpoint, causing excessive Lambda invocations and potential service disruption.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement AWS WAF with rate limiting",
+      "recommendation: Add request throttling at API Gateway level"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cognito_user_pool",
+    "description": "Insufficient Access Control for File Systems Without proper ACLs tied to Cognito identities, users might access files belonging to other users or outside their permitted scope. A user manipulates file paths or access tokens to access files belonging to another user.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1222 - File and Directory Permissions Modification",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-732",
+      "recommendation: Implement Cognito-based access control",
+      "recommendation: Implement path-based access control"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.cognito_user_pool",
+    "description": "Insufficient Access Control for File Systems Without proper ACLs tied to Cognito identities, users might access files belonging to other users or outside their permitted scope. A user manipulates file paths or access tokens to access files belonging to another user.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1222 - File and Directory Permissions Modification",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-732",
+      "recommendation: Implement Cognito-based access control",
+      "recommendation: Implement path-based access control"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.s3_bucket",
+    "description": "Insecure Frontend Asset Delivery Misconfigured S3 bucket policies or CloudFront settings could expose frontend assets or allow unauthorized modifications. An attacker attempts to directly access S3 content or inject malicious content into the delivery pipeline.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-16",
+      "recommendation: Secure S3 bucket configuration",
+      "recommendation: Implement secure content delivery"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_bucket",
+    "description": "Insecure Frontend Asset Delivery Misconfigured S3 bucket policies or CloudFront settings could expose frontend assets or allow unauthorized modifications. An attacker attempts to directly access S3 content or inject malicious content into the delivery pipeline.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-16",
+      "recommendation: Secure S3 bucket configuration",
+      "recommendation: Implement secure content delivery"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc",
+    "description": "VPC Network Exposure Misconfigured security groups or network ACLs could allow unauthorized access to EFS mount targets or Lambda functions. An attacker attempts to access EFS mount targets through misconfigured security group rules.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Scanning",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-668",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Implement network isolation"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Tampering",
+    "component": "aws_vpc.vpc",
+    "description": "VPC Network Exposure Misconfigured security groups or network ACLs could allow unauthorized access to EFS mount targets or Lambda functions. An attacker attempts to access EFS mount targets through misconfigured security group rules.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Scanning",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-668",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Implement network isolation"
+    ]
+  }
+]

@@ -1,0 +1,142 @@
+{
+  "run_id": "run_20260509_101303",
+  "timestamp": "2026-05-09T10:14:00.000553+00:00",
+  "scenario_number": 1,
+  "scenario_id": "ACSE_001_R1",
+  "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001",
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "temperature": 0.0,
+  "include_docs": true,
+  "exit_code": 0,
+  "latency_seconds": 56.254,
+  "error": null,
+  "threat_count": 8,
+  "threats": [
+    {
+      "threat_id": "ACSE-TH-001",
+      "stride_category": "Information Disclosure",
+      "component": "aws_ecr_repository.secrets_manager",
+      "description": "The infrastructure summary defines an `aws_ecr_repository` resource named `secrets_manager`, which directly contradicts the design document's intention to use the AWS Secrets Manager service. Storing secrets as container images or in repository metadata is highly insecure and makes them susceptible to exposure, as ECR is not designed for secret management. An attacker with read access to the repository could pull the 'image' and extract sensitive credentials.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "The design document explicitly defines a `SecretsManager` component (`secrets = SecretsManager(\"Secrets\\nManager\")`), but the Infrastructure Summary implements this as an ECR repository with the identifier `aws_ecr_repository.secrets_manager`.",
+      "severity": "Critical",
+      "references": [
+        "aws_ecr_repository.secrets_manager",
+        "Design chunk_004: from diagrams.aws.security import SecretsManager",
+        "Design chunk_009: secrets = SecretsManager(\"Secrets\\nManager\")"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-002",
+      "stride_category": "Tampering",
+      "component": "aws_ecr_repository.app_runner_ecr",
+      "description": "The ECR repository for the App Runner service does not have image scanning configured. A compromised CI/CD pipeline or developer credential could push a malicious container image containing backdoors, malware, or vulnerable libraries. Without automated scanning to detect these issues, the tampered image would be deployed directly to the App Runner service, compromising the application runtime environment.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_ecr_repository.app_runner_ecr.attributes",
+        "aws_resource.app_runner_service"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-003",
+      "stride_category": "Elevation of Privilege",
+      "component": "aws_iam_role.iam_roles",
+      "description": "The IAM role associated with the AWS CodeBuild project could be overly permissive. If a build process is compromised (e.g., via a malicious pull request or a compromised dependency), an attacker could leverage the role's permissions to perform unauthorized actions. A role with wildcard permissions (e.g., `iam:*`, `ec2:*`) could be used to create new admin users, exfiltrate data, or disrupt services, escalating privileges from the CI/CD environment to the entire AWS account.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_iam_role.iam_roles",
+        "aws_resource.aws_codebuild",
+        "Design chunk_009: codestar >> Edge(label=\"2. Auth\") >> codebuild"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-004",
+      "stride_category": "Information Disclosure",
+      "component": "aws_resource.app_runner_service",
+      "description": "The App Runner service configuration is not detailed, creating a risk that secrets are injected as plaintext environment variables instead of being securely referenced from AWS Secrets Manager or Parameter Store. Plaintext environment variables can be exposed via service logs or through `DescribeService` API calls to any principal with read access, leading to credential leakage.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_resource.app_runner_service.attributes",
+        "Design chunk_009: app_runner >> secrets",
+        "Design chunk_009: app_runner >> ssm"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-005",
+      "stride_category": "Repudiation",
+      "component": "aws_route53_zone.route_53",
+      "description": "The infrastructure summary does not indicate that Route 53 DNS query logging is enabled. Without these logs, it is impossible to audit or investigate DNS-level events, such as reconnaissance activities (e.g., subdomain enumeration), DNS tunneling for data exfiltration, or certain types of denial-of-service attacks. An attacker could perform these actions and there would be no log evidence, allowing for repudiation.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_route53_zone.route_53.attributes",
+        "aws_resource.cloudwatch_logs"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-006",
+      "stride_category": "Denial of Service",
+      "component": "aws_resource.network_load_balancer",
+      "description": "The infrastructure summary does not include AWS Shield Advanced protection for the public-facing Network Load Balancer and Route 53 zone. Without this, the service is only protected by AWS Shield Standard, leaving it vulnerable to more sophisticated or high-volume Layer 3/4 DDoS attacks that could overwhelm the NLB and cause service unavailability for legitimate users.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_resource.network_load_balancer",
+        "aws_route53_zone.route_53"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-007",
+      "stride_category": "Information Disclosure",
+      "component": "aws_security_group.security_groups",
+      "description": "The generic definition of `aws_security_group.security_groups` creates a risk of overly permissive ingress rules (e.g., `0.0.0.0/0` on a sensitive port). Such a misconfiguration could expose internal services running on Fargate tasks directly to the internet, bypassing intended controls like the Network Load Balancer and leading to unauthorized access and information disclosure.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_security_group.security_groups.attributes",
+        "aws_resource.fargate_tasks"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-008",
+      "stride_category": "Elevation of Privilege",
+      "component": "aws_resource.kms",
+      "description": "The KMS key policy is not defined in the infrastructure summary, creating a risk that it is overly permissive. A weak policy could allow an unauthorized IAM principal to gain `kms:Decrypt` permissions. An attacker who compromises a low-privilege role with access to encrypted data blobs (e.g., from Parameter Store) could then use the weak KMS key policy to decrypt these secrets, effectively elevating their privileges by gaining access to sensitive credentials.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_resource.kms.attributes",
+        "aws_resource.parameter_store"
+      ]
+    }
+  ],
+  "metrics": {
+    "tp": 6,
+    "fp": 2,
+    "fn": 5,
+    "precision": 0.75,
+    "recall": 0.5454545454545454,
+    "jaccard_index": 0.05555555555555555,
+    "ddr": 0.0,
+    "hallucination_rate": 0.0,
+    "matched_discrepancies": 0,
+    "planted_discrepancies": 0,
+    "stride_tfc_tp": 7,
+    "stride_tfc_total": 11,
+    "stride_tfc_recall": 0.6363636363636364,
+    "mitre_tfc_tp": 0,
+    "mitre_tfc_total": 13,
+    "mitre_tfc_recall": 0.0
+  }
+}

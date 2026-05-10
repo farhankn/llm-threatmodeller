@@ -1,0 +1,407 @@
+{
+  "run_id": "run_20260509_100921",
+  "timestamp": "2026-05-09T10:09:44.204344+00:00",
+  "scenario_number": 2,
+  "scenario_id": "ACSE_004_R1",
+  "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_004",
+  "provider": "gemini",
+  "model": "gemini-2.5-flash-lite",
+  "temperature": 0.0,
+  "include_docs": true,
+  "exit_code": 0,
+  "latency_seconds": 14.107,
+  "error": null,
+  "threat_count": 29,
+  "threats": [
+    {
+      "threat_id": "STRIDE-T001",
+      "stride_category": "Tampering",
+      "component": "Amazon EFS",
+      "description": "An attacker could tamper with data stored in Amazon EFS by exploiting a misconfigured security group or network ACL that allows unauthorized write access. This could lead to data corruption or the injection of malicious content.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'amazon_efs', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'internet_gateway', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'vpc', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T002",
+      "stride_category": "Tampering",
+      "component": "Amazon FSx",
+      "description": "An attacker could tamper with data stored in Amazon FSx by exploiting a misconfigured security group or network ACL that allows unauthorized write access. This could lead to data corruption or the injection of malicious content.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'amazon_fsx', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'internet_gateway', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'vpc', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T003",
+      "stride_category": "Information Disclosure",
+      "component": "Amazon EFS",
+      "description": "Sensitive data stored in Amazon EFS could be exposed if access controls (e.g., security groups, IAM policies) are not properly configured, allowing unauthorized users or services to read the data.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'amazon_efs', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T004",
+      "stride_category": "Information Disclosure",
+      "component": "Amazon FSx",
+      "description": "Sensitive data stored in Amazon FSx could be exposed if access controls (e.g., security groups, IAM policies) are not properly configured, allowing unauthorized users or services to read the data.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'amazon_fsx', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T005",
+      "stride_category": "Information Disclosure",
+      "component": "S3 Buckets",
+      "description": "Sensitive data stored in S3 buckets could be exposed if bucket policies or access control lists (ACLs) are misconfigured, allowing public or unauthorized access.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_s3_bucket', 'resource_name': 's3_buckets', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T006",
+      "stride_category": "Denial of Service",
+      "component": "Amazon WorkSpaces",
+      "description": "An attacker could launch a denial-of-service attack against Amazon WorkSpaces by overwhelming the service with excessive connection requests or resource-intensive operations, making virtual desktops unavailable to legitimate users.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'amazon_workspaces', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'internet_gateway', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T007",
+      "stride_category": "Denial of Service",
+      "component": "AppStream 2.0",
+      "description": "An attacker could launch a denial-of-service attack against AppStream 2.0 by overwhelming the service with excessive connection requests or resource-intensive operations, making application streaming unavailable to legitimate users.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'appstream_2_0', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'internet_gateway', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T008",
+      "stride_category": "Denial of Service",
+      "component": "AWS Directory Service",
+      "description": "An attacker could disrupt authentication services provided by AWS Directory Service by flooding it with invalid requests or exploiting vulnerabilities, leading to a denial of service for WorkSpaces and AppStream 2.0 users.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'aws_directory_service', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T009",
+      "stride_category": "Spoofing",
+      "component": "AWS Directory Service",
+      "description": "An attacker could attempt to spoof identities to gain unauthorized access to AWS Directory Service, potentially impersonating legitimate users or services to authenticate to WorkSpaces or AppStream 2.0.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'aws_directory_service', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T010",
+      "stride_category": "Elevation of Privilege",
+      "component": "Amazon WorkSpaces",
+      "description": "A user with limited privileges within an Amazon WorkSpace could exploit a vulnerability or misconfiguration within the operating system or applications to gain administrative privileges on the WorkSpace instance.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'amazon_workspaces', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T011",
+      "stride_category": "Elevation of Privilege",
+      "component": "AppStream 2.0",
+      "description": "A user accessing an application via AppStream 2.0 could exploit a vulnerability or misconfiguration within the application or the streaming session to gain elevated privileges on the underlying streaming instance.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'appstream_2_0', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T012",
+      "stride_category": "Repudiation",
+      "component": "AWS Directory Service",
+      "description": "If audit logging for AWS Directory Service is not adequately configured or retained, it may be difficult to prove that a specific user performed an authentication action, leading to repudiation.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'aws_directory_service', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T013",
+      "stride_category": "Information Disclosure",
+      "component": "Management Network Interface",
+      "description": "If the management network interface is not properly secured, sensitive network traffic or configuration details could be intercepted or exposed.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'management_network_interface', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T014",
+      "stride_category": "Denial of Service",
+      "component": "Internet Gateway",
+      "description": "While not directly a service, an attacker could target the Internet Gateway with a flood of traffic, potentially impacting the availability of resources within the VPC that rely on internet connectivity.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Low",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'internet_gateway', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'vpc', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T015",
+      "stride_category": "Tampering",
+      "component": "VPC",
+      "description": "An attacker could tamper with network configurations within the VPC, such as route tables or network ACLs, if they gain unauthorized access to management interfaces or compromise IAM roles with sufficient permissions. This could redirect traffic or block legitimate access.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_vpc', 'resource_name': 'vpc', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T016",
+      "stride_category": "Information Disclosure",
+      "component": "VPC",
+      "description": "Network topology and configuration details of the VPC could be disclosed to unauthorized parties if security group rules or network ACLs are overly permissive, or if management interfaces are compromised.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_vpc', 'resource_name': 'vpc', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T017",
+      "stride_category": "Tampering",
+      "component": "Security Groups",
+      "description": "An attacker could tamper with security group rules to allow unauthorized network access to or from resources, such as WorkSpaces, AppStream 2.0, EFS, or FSx, thereby bypassing intended network segmentation.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_security_group', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T018",
+      "stride_category": "Information Disclosure",
+      "component": "Security Groups",
+      "description": "An attacker could gain information about open ports and allowed traffic by analyzing security group configurations, which could aid in planning further attacks.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_security_group', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T019",
+      "stride_category": "Elevation of Privilege",
+      "component": "IAM Roles",
+      "description": "If IAM roles are assigned overly broad permissions, an attacker who compromises an entity assuming such a role (e.g., an EC2 instance, a Lambda function, or a user) could leverage these permissions to perform actions beyond their intended scope, leading to privilege escalation.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T020",
+      "stride_category": "Tampering",
+      "component": "IAM Roles",
+      "description": "An attacker could tamper with IAM role policies to grant themselves or other entities unauthorized permissions, allowing them to modify resources, access sensitive data, or disrupt services.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T021",
+      "stride_category": "Information Disclosure",
+      "component": "IAM Roles",
+      "description": "An attacker could enumerate IAM roles and their associated policies to discover sensitive permissions or identify potential targets for further exploitation.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_iam_role', 'resource_name': 'iam_roles', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T022",
+      "stride_category": "Information Disclosure",
+      "component": "AWS Directory Service",
+      "description": "The design document implies the use of AWS Directory Service for authentication. However, the provided Terraform summary does not explicitly define or configure the AWS Directory Service resource, raising concerns about its actual implementation and security posture.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design mentions 'DirectoryService(\"AWS Directory\\nService\")' and 'workspaces >> auth_req >> directory', but no corresponding Terraform resource for AWS Directory Service is present in the summary.",
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'aws_directory_service', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'directory_service', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T023",
+      "stride_category": "Information Disclosure",
+      "component": "Amazon WorkSpaces",
+      "description": "The design document explicitly includes Amazon WorkSpaces. While the infrastructure summary lists 'amazon_workspaces' and 'workspaces' as resources, the lack of specific configuration details (e.g., security group associations, network interfaces, user access controls) in the summary makes it difficult to assess the security of the WorkSpaces deployment.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design mentions 'Workspaces(\"Amazon\\nWorkSpaces\")' and 'nacl >> network_req >> workspaces', but the Terraform summary lacks detailed configuration attributes for the WorkSpaces resource.",
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'amazon_workspaces', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'workspaces', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T024",
+      "stride_category": "Information Disclosure",
+      "component": "AppStream 2.0",
+      "description": "The design document explicitly includes AppStream 2.0. While the infrastructure summary lists 'appstream_2_0' as a resource, the lack of specific configuration details (e.g., security group associations, network interfaces, image configurations) in the summary makes it difficult to assess the security of the AppStream 2.0 deployment.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design mentions 'Appstream20(\"Amazon\\nAppStream 2.0\")' and 'nacl >> network_req >> appstream', but the Terraform summary lacks detailed configuration attributes for the AppStream 2.0 resource.",
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'appstream_2_0', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T025",
+      "stride_category": "Information Disclosure",
+      "component": "Amazon EFS",
+      "description": "The design document shows Amazon EFS as a storage service. While 'amazon_efs' and 'efs' are listed in the infrastructure summary, the absence of specific configuration details like mount targets, access points, or encryption settings in the Terraform summary prevents a thorough security assessment.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design mentions 'ElasticFileSystemEFS(\"Amazon EFS\")' and 'workspaces >> data_req >> efs', but the Terraform summary lacks detailed configuration attributes for the EFS resource.",
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'amazon_efs', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'efs', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T026",
+      "stride_category": "Information Disclosure",
+      "component": "Amazon FSx",
+      "description": "The design document shows Amazon FSx as a storage service. While 'amazon_fsx' and 'fsx' are listed in the infrastructure summary, the absence of specific configuration details like storage type, backup policies, or access control mechanisms in the Terraform summary prevents a thorough security assessment.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design mentions 'FSx(\"Amazon FSx\")' and 'workspaces >> data_req >> fsx', but the Terraform summary lacks detailed configuration attributes for the FSx resource.",
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'amazon_fsx', 'attribute': 'tags.acse_component'}",
+        "{'resource_type': 'aws_resource', 'resource_name': 'fsx', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T027",
+      "stride_category": "Information Disclosure",
+      "component": "Internet Gateway",
+      "description": "The design document includes an Internet Gateway. The infrastructure summary lists 'internet_gateway' as a resource, but lacks specific configuration details such as its association with a VPC or any associated routing rules, making it difficult to assess its security implications.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design mentions 'InternetGateway(\"Internet\\nGateway\")' and 'dc >> network_req >> igw', but the Terraform summary lacks detailed configuration attributes for the Internet Gateway resource.",
+      "severity": "Low",
+      "references": [
+        "{'resource_type': 'aws_resource', 'resource_name': 'internet_gateway', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T028",
+      "stride_category": "Information Disclosure",
+      "component": "VPC",
+      "description": "The design document outlines a Virtual Private Cloud (VPC). The infrastructure summary lists 'vpc' as a resource, but lacks specific configuration details such as CIDR blocks, subnets, or associated network ACLs, which are crucial for assessing network security.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design mentions 'VPC(\"Virtual Private Cloud (VPC)\")' and 'igw >> network_req >> nacl' (implying VPC context), but the Terraform summary lacks detailed configuration attributes for the VPC resource.",
+      "severity": "Medium",
+      "references": [
+        "{'resource_type': 'aws_vpc', 'resource_name': 'vpc', 'attribute': 'tags.acse_component'}"
+      ]
+    },
+    {
+      "threat_id": "STRIDE-T029",
+      "stride_category": "Information Disclosure",
+      "component": "Security Groups",
+      "description": "The design document implies the use of Security Groups for network access control. The infrastructure summary lists 'security_groups' as a resource, but lacks specific ingress/egress rules or associations with network interfaces, making it impossible to verify the intended security posture.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design mentions 'nacl >> network_req >> workspaces' and 'nacl >> network_req >> appstream' (implying security group usage within VPC), but the Terraform summary lacks detailed configuration attributes for the Security Group resources.",
+      "severity": "High",
+      "references": [
+        "{'resource_type': 'aws_security_group', 'resource_name': 'security_groups', 'attribute': 'tags.acse_component'}"
+      ]
+    }
+  ],
+  "metrics": {
+    "tp": 0,
+    "fp": 29,
+    "fn": 15,
+    "precision": 0.0,
+    "recall": 0.0,
+    "jaccard_index": 0.0,
+    "ddr": 0.0,
+    "hallucination_rate": 1.0,
+    "matched_discrepancies": 0,
+    "planted_discrepancies": 0,
+    "stride_tfc_tp": 10,
+    "stride_tfc_total": 15,
+    "stride_tfc_recall": 0.6666666666666666,
+    "mitre_tfc_tp": 0,
+    "mitre_tfc_total": 24,
+    "mitre_tfc_recall": 0.0
+  }
+}

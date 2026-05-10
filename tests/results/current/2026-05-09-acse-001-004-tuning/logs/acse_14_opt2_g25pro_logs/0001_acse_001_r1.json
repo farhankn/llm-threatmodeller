@@ -1,0 +1,168 @@
+{
+  "run_id": "run_20260509_112541",
+  "timestamp": "2026-05-09T11:26:40.229593+00:00",
+  "scenario_number": 1,
+  "scenario_id": "ACSE_001_R1",
+  "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001",
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "temperature": 0.0,
+  "include_docs": true,
+  "exit_code": 0,
+  "latency_seconds": 58.334,
+  "error": null,
+  "threat_count": 10,
+  "threats": [
+    {
+      "threat_id": "ACSE-TH-001",
+      "stride_category": "Information Disclosure",
+      "component": "aws_ecr_repository.secrets_manager",
+      "description": "The design document explicitly requires AWS Secrets Manager for secret handling, but the Infrastructure-as-Code defines a resource named 'secrets_manager' as an 'aws_ecr_repository' type. This indicates a fundamental misconfiguration where secrets are not being managed by the intended secure service. This could lead to developers storing secrets in insecure locations like source code, environment variables, or unencrypted Parameter Store values, exposing them to compromise.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "The design in [chunk_004] and [chunk_009] specifies the use of 'SecretsManager', but the IaC summary defines 'aws_ecr_repository.secrets_manager', which is a container registry, not a secret store.",
+      "severity": "Critical",
+      "references": [
+        "aws_ecr_repository.secrets_manager",
+        "Design: [chunk_004] Security Services",
+        "Design: [chunk_009] Security and Monitoring Connections"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-002",
+      "stride_category": "Elevation of Privilege",
+      "component": "aws_iam_role.iam_roles",
+      "description": "The IAM role attached to the App Runner service, which is required to access KMS and other services as per the design, may be overly permissive. Since no policy is specified for 'aws_iam_role.iam_roles', it could have wildcard permissions (e.g., 'secretsmanager:*', 'kms:*' on resource '*'). If an attacker achieves remote code execution on the application, they could leverage these broad permissions to read all secrets in the account or decrypt data unrelated to the application, escalating their privileges far beyond the compromised service.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Critical",
+      "references": [
+        "aws_iam_role.iam_roles",
+        "aws_app_runner_service.app_runner_service",
+        "Design: [chunk_009] app_runner >> secrets, app_runner >> kms"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-003",
+      "stride_category": "Elevation of Privilege",
+      "component": "aws_iam_role.iam_roles",
+      "description": "The IAM role used by the 'aws_codebuild.aws_codebuild' service to push images to ECR may be overly permissive. Without a scoped-down policy, the role could have permissions like 'ecr:*' on all repositories ('*'). A compromise of the build environment (e.g., through a malicious dependency) would allow an attacker to use these elevated permissions to delete other container images, push malicious images to different application repositories, or exfiltrate images from private repositories.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_iam_role.iam_roles",
+        "aws_codebuild.aws_codebuild",
+        "aws_ecr_repository.app_runner_ecr"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-004",
+      "stride_category": "Tampering",
+      "component": "aws_ecr_repository.app_runner_ecr",
+      "description": "The ECR repositories lack explicit configuration for image scanning ('image_scanning_configuration'). This allows container images with known vulnerabilities in their packages and libraries to be stored and subsequently deployed to the App Runner service. An attacker could exploit a known vulnerability in the running container to gain unauthorized access, tamper with application data, or use it as a pivot point into the cloud environment.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_ecr_repository.app_runner_ecr.attributes",
+        "aws_ecr_repository.customer_ecr.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-005",
+      "stride_category": "Spoofing",
+      "component": "aws_resource.aws_codestar",
+      "description": "The connection between the GitHub source repository and AWS CodeStar is a critical trust boundary. The IaC summary lacks details on the connection type and authentication method. If this connection uses a static, long-lived credential (like a developer's Personal Access Token) instead of the recommended AWS CodeStar Connections (GitHub Apps), the credential could be stolen and used by an attacker to spoof the identity of the legitimate repository, allowing them to inject malicious code into the CI/CD pipeline.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_resource.aws_codestar",
+        "aws_resource.github_source_repo",
+        "Design: [chunk_009] github >> codestar"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-006",
+      "stride_category": "Information Disclosure",
+      "component": "aws_security_group.security_groups",
+      "description": "The 'aws_security_group.security_groups' resource is defined without any specific ingress or egress rules. This abstraction could hide overly permissive rules (e.g., '0.0.0.0/0' on sensitive ports like SSH or RDP) that might be applied to the Fargate tasks. Such a configuration would expose management interfaces or the application itself directly to the internet, bypassing the Network Load Balancer and creating a high-risk attack surface for unauthorized access and data exfiltration.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_security_group.security_groups.attributes",
+        "aws_resource.fargate_tasks"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-007",
+      "stride_category": "Tampering",
+      "component": "aws_ecr_repository.app_runner_ecr",
+      "description": "The 'aws_ecr_repository' resources lack a defined 'image_tag_mutability' attribute, which defaults to 'MUTABLE'. This allows an image tag, such as 'latest' or a version number, to be overwritten by a different image. An attacker with ECR push permissions could replace a validated, secure image with a malicious one using the same tag. The pipeline would then deploy the tampered image, believing it to be the legitimate version, leading to code compromise.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_ecr_repository.app_runner_ecr.attributes",
+        "aws_ecr_repository.customer_ecr.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-008",
+      "stride_category": "Repudiation",
+      "component": "aws_resource.network_load_balancer",
+      "description": "The 'aws_resource.network_load_balancer' is defined generically without attributes for access logging. Without access logs enabled and directed to a destination like CloudWatch Logs or an S3 bucket, there is no record of incoming requests to the application. This makes it impossible to perform forensic analysis after a security incident, audit traffic for compliance, or identify the source of malicious activity, effectively allowing an attacker's actions to be non-repudiable.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_resource.network_load_balancer.attributes",
+        "aws_resource.cloudwatch_logs"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-009",
+      "stride_category": "Denial of Service",
+      "component": "aws_resource.app_runner_service",
+      "description": "The 'aws_app_runner_service' resource does not specify an 'auto_scaling_configuration_arn'. While App Runner provides default auto-scaling, it may not be sufficient to withstand a targeted denial-of-service attack. Without defined minimum/maximum sizes and concurrency settings tailored to the application's expected load and resilience requirements, the service could be overwhelmed by malicious traffic, leading to resource exhaustion and unavailability for legitimate users.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_app_runner_service.app_runner_service.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-010",
+      "stride_category": "Information Disclosure",
+      "component": "aws_resource.cloudwatch_logs",
+      "description": "The 'aws_resource.cloudwatch_logs' resource lacks configuration for a log data retention policy and server-side encryption using a customer-managed KMS key. This can lead to logs containing sensitive information being stored indefinitely and protected only by AWS-managed default encryption. This reduces an organization's control over data lifecycle and encryption key policies, potentially violating compliance requirements and increasing the risk of data exposure if IAM permissions are misconfigured.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Low",
+      "references": [
+        "aws_resource.cloudwatch_logs.attributes",
+        "aws_resource.kms"
+      ]
+    }
+  ],
+  "metrics": {
+    "tp": 6,
+    "fp": 4,
+    "fn": 5,
+    "precision": 0.6,
+    "recall": 0.5454545454545454,
+    "jaccard_index": 0.11764705882352941,
+    "ddr": 0.0,
+    "hallucination_rate": 0.0,
+    "matched_discrepancies": 0,
+    "planted_discrepancies": 0,
+    "stride_tfc_tp": 9,
+    "stride_tfc_total": 11,
+    "stride_tfc_recall": 0.8181818181818182,
+    "mitre_tfc_tp": 0,
+    "mitre_tfc_total": 13,
+    "mitre_tfc_recall": 0.0
+  }
+}

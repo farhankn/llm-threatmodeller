@@ -8,7 +8,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from threatcli.evaluation.metrics import ddr, hallucination_rate, precision, recall
+from threatcli.evaluation.metrics import compute_jaccard, ddr, hallucination_rate, precision, recall
 
 
 def load_ground_truth(fixture_path: str | Path) -> list[dict[str, Any]]:
@@ -78,6 +78,7 @@ def compare(
         "fn": fn,
         "precision": precision(tp, fp),
         "recall": recall(tp, fn),
+        "jaccard_index": compute_jaccard(out_items, gt_items),
         "ddr": ddr(matched_discrepancies, planted_discrepancies),
         "hallucination_rate": hallucination_rate(hallucinated_count, len(llm_output)),
         "matched_discrepancies": matched_discrepancies,

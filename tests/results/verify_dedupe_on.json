@@ -1,0 +1,78 @@
+[
+  {
+    "threat_id": "T001",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.github_source_repo",
+    "description": "An attacker could spoof the GitHub source repository or manipulate the webhook payload sent to AWS CodeStar. If webhook secrets and branch protections are not strictly enforced, this could trigger unauthorized builds and deployments into the environment.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.aws_codestar"
+    ]
+  },
+  {
+    "threat_id": "T002",
+    "stride_category": "Tampering",
+    "component": "aws_resource.aws_codebuild",
+    "description": "A compromised AWS CodeBuild environment could be used to tamper with the application build process. An attacker could inject malicious dependencies, backdoors, or vulnerable packages into the container image before it is pushed to the App Runner ECR.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr"
+    ]
+  },
+  {
+    "threat_id": "T003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "Secrets intended for the App Runner service are at risk of exposure due to a severe misconfiguration where Secrets Manager is deployed as an ECR repository instead of the AWS Secrets Manager service. This could allow any identity with ECR pull permissions to access plaintext secrets stored improperly as container images.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design document specifies `SecretsManager(\"Secrets\\nManager\")` in `[chunk_004] Heading: Security Services (H1)`, but the IaC summary provisions this as `aws_ecr_repository.secrets_manager`, contradicting the intended security control and service type.",
+    "severity": "Critical",
+    "references": [
+      "aws_resource.app_runner_service"
+    ]
+  },
+  {
+    "threat_id": "T004",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.network_load_balancer",
+    "description": "The Network Load Balancer (NLB) is exposed to inbound client traffic and could be targeted by volumetric DDoS attacks. Without AWS Shield Advanced or a WAF (which cannot be directly attached to an NLB), malicious traffic could overwhelm the underlying Fargate tasks, causing a denial of service.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.fargate_tasks",
+      "aws_route53_zone.route_53"
+    ]
+  },
+  {
+    "threat_id": "T005",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_roles",
+    "description": "If the IAM roles assigned to the App Runner service or Fargate tasks are overly permissive, an attacker who achieves remote code execution within a container could escalate privileges to access sensitive resources like KMS keys, Parameter Store values, or other AWS infrastructure.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.app_runner_service",
+      "aws_resource.fargate_tasks",
+      "aws_resource.kms",
+      "aws_resource.parameter_store"
+    ]
+  },
+  {
+    "threat_id": "T006",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch_logs",
+    "description": "If CloudWatch Logs lack strict access controls or lifecycle policies, an attacker who compromises the App Runner environment could delete or tamper with application and access logs, destroying forensic evidence and leading to repudiation of malicious actions.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.app_runner_service"
+    ]
+  }
+]

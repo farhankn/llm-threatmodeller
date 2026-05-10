@@ -118,3 +118,54 @@ def test_build_multisource_prompt_contains_design_context(tmp_path: Path) -> Non
     assert "### Design Document Context" in prompt["user"]
     assert "chunk_001" in prompt["user"]
     assert "internet-accessible" in prompt["user"]
+
+
+def test_build_multisource_prompt_prioritizes_resource_aligned_chunk(tmp_path: Path) -> None:
+    prompt_file = tmp_path / "multisource.txt"
+    prompt_file.write_text("MULTI PROMPT", encoding="utf-8")
+
+    resource_map = {
+        "resources": [
+            {
+                "type": "aws_resource",
+                "name": "aws_directory_service",
+                "attributes": {"tags": {"acse_component": "AWS Directory Service"}},
+            }
+        ],
+        "providers": [],
+        "variables": [],
+        "data_sources": [],
+        "modules": [],
+    }
+
+    chunks = [
+        DocumentChunk(
+            chunk_id="chunk_generic",
+            heading="General Security",
+            heading_level=2,
+            text="Generic controls around network and policy hygiene.",
+            section_index=0,
+            token_estimate=24,
+            has_overlap=False,
+        ),
+        DocumentChunk(
+            chunk_id="chunk_component",
+            heading="Directory Architecture",
+            heading_level=2,
+            text="AWS Directory Service authenticates users for desktop sessions.",
+            section_index=1,
+            token_estimate=24,
+            has_overlap=False,
+        ),
+    ]
+
+    # Force a tiny design-context budget so only one chunk can be selected.
+    prompt = build_multisource_prompt(
+        resource_map,
+        chunks,
+        token_budget=80,
+        system_prompt_path=prompt_file,
+    )
+
+    assert "chunk_component" in prompt["user"]
+    assert "chunk_generic" not in prompt["user"]

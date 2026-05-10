@@ -218,4 +218,7 @@ def test_analyze_pdf_writes_pdf_file(monkeypatch, tmp_path: Path) -> None:
 
     assert result.exit_code == 0
     assert output_path.exists()
-    assert output_path.read_bytes().startswith(b"%PDF-")
+    pdf_bytes = output_path.read_bytes()
+    assert pdf_bytes.startswith(b"%PDF-")
+    assert b"Executive Summary" in pdf_bytes
+    assert b"Threat Table" in pdf_bytes

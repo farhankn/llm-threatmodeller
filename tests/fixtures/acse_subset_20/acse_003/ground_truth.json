@@ -1,0 +1,224 @@
+[
+  {
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.knowledgebasebucket",
+    "description": "Unauthorized Access to Knowledge Base S3 Bucket Attackers could exploit misconfigured bucket policies, overly permissive IAM roles, or leaked AWS credentials to access sensitive documents in the S3 bucket. An attacker obtains AWS credentials from a public code repository or through a compromised system and uses them to download sensitive documents from the S3 bucket.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket access controls",
+      "recommendation: Enable S3 bucket logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.knowledgebasebucket",
+    "description": "Unauthorized Access to Knowledge Base S3 Bucket Attackers could exploit misconfigured bucket policies, overly permissive IAM roles, or leaked AWS credentials to access sensitive documents in the S3 bucket. An attacker obtains AWS credentials from a public code repository or through a compromised system and uses them to download sensitive documents from the S3 bucket.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket access controls",
+      "recommendation: Enable S3 bucket logging and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cognitouserpool",
+    "description": "Token Exposure in Client-Side Storage Storing authentication tokens in browser localStorage or sessionStorage makes them vulnerable to XSS attacks and malicious browser extensions. An attacker exploits an XSS vulnerability to inject JavaScript that extracts authentication tokens from localStorage and sends them to a malicious server.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1528 - Steal Application Access Token",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-522",
+      "recommendation: Implement secure token handling",
+      "recommendation: Implement token security best practices"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.cognitouserpool",
+    "description": "Token Exposure in Client-Side Storage Storing authentication tokens in browser localStorage or sessionStorage makes them vulnerable to XSS attacks and malicious browser extensions. An attacker exploits an XSS vulnerability to inject JavaScript that extracts authentication tokens from localStorage and sends them to a malicious server.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1528 - Steal Application Access Token",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-522",
+      "recommendation: Implement secure token handling",
+      "recommendation: Implement token security best practices"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.bedrockclaudemodel",
+    "description": "PII Exposure Through AI Responses The AI model might include PII in its responses or store sensitive information in chat history, leading to potential privacy violations. A user asks questions that prompt the AI to reveal PII from the knowledge base or previous conversations.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Information Disclosure",
+      "cwe: CWE-359",
+      "recommendation: Implement AI guardrails and PII detection",
+      "recommendation: Implement PII cleanup processes"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.ecsfargateservice",
+    "description": "Code Execution via User Input Attackers could attempt to inject malicious code through chat inputs or file uploads that could be executed in the application environment. An attacker crafts special input that exploits input validation vulnerabilities to execute arbitrary code in the Fargate container.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-94",
+      "recommendation: Implement strict input validation",
+      "recommendation: Harden container and Lambda environments"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.ecsfargateservice",
+    "description": "Code Execution via User Input Attackers could attempt to inject malicious code through chat inputs or file uploads that could be executed in the application environment. An attacker crafts special input that exploits input validation vulnerabilities to execute arbitrary code in the Fargate container.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-94",
+      "recommendation: Implement strict input validation",
+      "recommendation: Harden container and Lambda environments"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.cognitouserpool",
+    "description": "Insecure Authentication Flow Weaknesses in authentication implementation could allow attackers to bypass authentication or hijack sessions. An attacker intercepts authorization codes or exploits missing PKCE implementation to gain unauthorized access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement secure authentication flows",
+      "recommendation: Configure WAF rules"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.cognitouserpool",
+    "description": "Insecure Authentication Flow Weaknesses in authentication implementation could allow attackers to bypass authentication or hijack sessions. An attacker intercepts authorization codes or exploits missing PKCE implementation to gain unauthorized access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement secure authentication flows",
+      "recommendation: Configure WAF rules"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.opensearchserverless",
+    "description": "Vector Database Query Injection Attackers could craft malicious inputs that exploit vector database query vulnerabilities to access or manipulate data. An attacker injects malicious parameters into vector similarity search queries to extract unauthorized data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-943",
+      "recommendation: Implement secure vector database access",
+      "recommendation: Monitor vector database access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.opensearchserverless",
+    "description": "Vector Database Query Injection Attackers could craft malicious inputs that exploit vector database query vulnerabilities to access or manipulate data. An attacker injects malicious parameters into vector similarity search queries to extract unauthorized data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-943",
+      "recommendation: Implement secure vector database access",
+      "recommendation: Monitor vector database access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc",
+    "description": "Insecure Network Configuration Overly permissive security groups or improperly configured VPC endpoints could allow unauthorized network access. An attacker exploits overly permissive security group rules to access internal services directly.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-668",
+      "recommendation: Implement secure network configuration",
+      "recommendation: Monitor network activity"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Tampering",
+    "component": "aws_vpc.vpc",
+    "description": "Insecure Network Configuration Overly permissive security groups or improperly configured VPC endpoints could allow unauthorized network access. An attacker exploits overly permissive security group rules to access internal services directly.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-668",
+      "recommendation: Implement secure network configuration",
+      "recommendation: Monitor network activity"
+    ]
+  },
+  {
+    "threat_id": "THREAT-008",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.all_aws_services",
+    "description": "Insufficient Logging and Monitoring Without proper logging and monitoring, attackers could perform malicious activities without detection. An attacker gains access to the system and exfiltrates data, but the activity goes unnoticed due to insufficient logging.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement comprehensive logging",
+      "recommendation: Implement security monitoring"
+    ]
+  }
+]

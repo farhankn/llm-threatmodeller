@@ -1,0 +1,73 @@
+[
+  {
+    "threat_id": "T-001",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.aws_codestar",
+    "description": "An attacker could spoof GitHub webhook payloads or compromise the CodeStar connection to trigger unauthorized builds, injecting malicious code into the CI/CD pipeline.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.aws_codestar",
+      "aws_resource.github_source_repo"
+    ]
+  },
+  {
+    "threat_id": "T-002",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "Without image tag immutability enforced on the ECR repository, an attacker with push access could overwrite existing production container images, leading to the deployment of tampered code to App Runner.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr"
+    ]
+  },
+  {
+    "threat_id": "T-003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "Secrets intended to be securely stored and encrypted are at risk of exposure because the underlying resource was incorrectly provisioned as an ECR repository instead of a Secrets Manager vault, lacking proper secret-level encryption and access controls.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Name Drift: The design explicitly specifies 'SecretsManager' in [chunk_004] and [chunk_009], but the IaC provisions 'aws_ecr_repository.secrets_manager', creating an ECR repository instead of a Secrets Manager resource.",
+    "severity": "Critical",
+    "references": [
+      "aws_ecr_repository.secrets_manager"
+    ]
+  },
+  {
+    "threat_id": "T-004",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.network_load_balancer",
+    "description": "The Network Load Balancer is exposed to inbound client traffic and could be targeted by volumetric DDoS attacks, exhausting connection limits and preventing legitimate requests from reaching the backend Fargate tasks.",
+    "discrepancy_flag": false,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.network_load_balancer",
+      "aws_route53_zone.route_53"
+    ]
+  },
+  {
+    "threat_id": "T-005",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_roles",
+    "description": "If the IAM roles assigned to the Fargate tasks or App Runner service are overly permissive, an attacker who compromises a running container could escalate privileges to access KMS keys, Parameter Store, or other sensitive AWS resources.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_iam_role.iam_roles",
+      "aws_resource.fargate_tasks",
+      "aws_resource.app_runner_service"
+    ]
+  },
+  {
+    "threat_id": "T-006",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch_logs",
+    "description": "If CloudWatch log groups lack strict IAM resource policies or retention locks, an attacker who gains access to the environment could delete or tamper with application and access logs to hide their malicious activities.",
+    "discrepancy_flag": false,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.cloudwatch_logs"
+    ]
+  }
+]

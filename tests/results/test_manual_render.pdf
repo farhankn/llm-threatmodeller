@@ -1,0 +1,201 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R /F2 8 0 R /F3 9 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 830 >>
+stream
+BT
+/F2 18 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 760 Tm
+(Test Threat Report) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 744 Tm
+() Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 728 Tm
+(Generated: 2026-05-09T12:00:00Z) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 712 Tm
+(Tool Version: 0.1.0) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 696 Tm
+(Provider/Model: gemini / gemini-3.1-pro-preview) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 680 Tm
+() Tj
+/F2 12 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 664 Tm
+(IaC Inputs) Tj
+/F3 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 648 Tm
+(- tests/fixtures/acse/acse_001/main.tf) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 632 Tm
+() Tj
+/F2 12 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 616 Tm
+(Design Documents) Tj
+/F3 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 600 Tm
+(- tests/fixtures/acse/acse_001/design.md) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R /F2 8 0 R /F3 9 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 2396 >>
+stream
+BT
+/F2 16 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 760 Tm
+(Executive Summary) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 744 Tm
+() Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 728 Tm
+(Total Threats: 6) Tj
+/F1 11 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 712 Tm
+(Discrepancies Flagged: 1) Tj
+/F2 12 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 696 Tm
+(Severity Breakdown) Tj
+/F1 11 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 680 Tm
+(- Critical: 1) Tj
+/F1 11 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 664 Tm
+(- High: 2) Tj
+/F1 11 Tf
+0.600 0.350 0.000 rg
+1 0 0 1 54 648 Tm
+(- Medium: 3) Tj
+/F1 11 Tf
+0.000 0.450 0.000 rg
+1 0 0 1 54 632 Tm
+(- Low: 0) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 616 Tm
+(- Unspecified: 0) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 600 Tm
+() Tj
+/F2 16 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 584 Tm
+(Threat Table) Tj
+/F3 10 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 568 Tm
+(ID | STRIDE | Component | Severity | Discrepancy) Tj
+/F3 10 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 552 Tm
+(-----------------------------------------------------------------------------------------------) Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 536 Tm
+(T-01 | Tampering | aws_ecr_repository.secrets_manager | [Critical] | Yes) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 520 Tm
+(T-02 | Elevation of Privilege | aws_iam_role.iam_roles | [High] | No) Tj
+/F3 10 Tf
+0.600 0.350 0.000 rg
+1 0 0 1 54 504 Tm
+(T-03 | Spoofing | aws_resource.aws_codestar | [Medium] | No) Tj
+/F3 10 Tf
+0.600 0.350 0.000 rg
+1 0 0 1 54 488 Tm
+(T-04 | Denial of Service | aws_resource.network_load_balancer | [Medium] | No) Tj
+/F3 10 Tf
+0.600 0.350 0.000 rg
+1 0 0 1 54 472 Tm
+(T-05 | Information Disclosure | aws_security_group.security_groups | [Medium] | No) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 456 Tm
+(T-06 | Tampering | aws_ecr_repository.app_runner_ecr | [High] | No) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 440 Tm
+() Tj
+/F2 16 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 424 Tm
+(Discrepancy Details) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 408 Tm
+() Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 392 Tm
+(T-01 | Tampering | aws_ecr_repository.secrets_manager) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 376 Tm
+(Design [chunk_004] and [chunk_009] explicitly require `SecretsManager\("Secrets\\nManager"\)`,) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 360 Tm
+(but the IaC summary defines this component as `aws_ecr_repository.secrets_manager`.) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+8 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+9 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000267 00000 n 
+0000001147 00000 n 
+0000001293 00000 n 
+0000003740 00000 n 
+0000003810 00000 n 
+0000003885 00000 n 
+trailer
+<< /Size 10 /Root 1 0 R >>
+startxref
+3953
+%%EOF

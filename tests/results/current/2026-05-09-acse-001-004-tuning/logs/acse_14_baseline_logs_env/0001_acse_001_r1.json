@@ -1,0 +1,135 @@
+{
+  "run_id": "run_20260509_095646",
+  "timestamp": "2026-05-09T09:57:19.251706+00:00",
+  "scenario_number": 1,
+  "scenario_id": "ACSE_001_R1",
+  "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001",
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.0,
+  "include_docs": true,
+  "exit_code": 0,
+  "latency_seconds": 32.835,
+  "error": null,
+  "threat_count": 7,
+  "threats": [
+    {
+      "threat_id": "T001",
+      "stride_category": "Spoofing",
+      "component": "aws_codestar",
+      "description": "An attacker could spoof the GitHub source repository by sending forged webhooks or payloads to the CodeStar connection if it lacks strict webhook signature validation or uses weak authentication, triggering unauthorized builds in CodeBuild.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_codestar",
+        "github_source_repo",
+        "aws_codebuild"
+      ]
+    },
+    {
+      "threat_id": "T002",
+      "stride_category": "Tampering",
+      "component": "app_runner_ecr",
+      "description": "An attacker with compromised IAM credentials could push a malicious container image to the app_runner_ecr or customer_ecr repositories, replacing legitimate images. When App Runner deploys the latest image, the malicious code would execute within the Fargate tasks.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "app_runner_ecr",
+        "customer_ecr",
+        "app_runner_service",
+        "fargate_tasks"
+      ]
+    },
+    {
+      "threat_id": "T003",
+      "stride_category": "Repudiation",
+      "component": "cloudwatch_logs",
+      "description": "An attacker who gains access to the App Runner service or its underlying Fargate tasks could delete or tamper with log streams in cloudwatch_logs if the attached IAM roles lack restrictive policies (e.g., allowing logs:DeleteLogGroup or logs:DeleteLogStream), hindering incident response and forensic analysis.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "cloudwatch_logs",
+        "iam_roles",
+        "app_runner_service"
+      ]
+    },
+    {
+      "threat_id": "T004",
+      "stride_category": "Information Disclosure",
+      "component": "secrets_manager",
+      "description": "Sensitive application secrets intended to be stored securely could be exposed or improperly managed because the infrastructure provisions the secrets manager as an ECR repository rather than a dedicated AWS Secrets Manager resource, lacking the intended secret encryption, rotation, and access controls.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "The design document explicitly requires 'SecretsManager' for security services (chunk_004, chunk_009), but the IaC summary provisions 'secrets_manager' as an 'aws_ecr_repository' instead of an 'aws_secretsmanager_secret'.",
+      "severity": "High",
+      "references": [
+        "secrets_manager"
+      ]
+    },
+    {
+      "threat_id": "T005",
+      "stride_category": "Information Disclosure",
+      "component": "security_groups",
+      "description": "Overly permissive egress rules in the security_groups attached to the customer_vpc could allow an attacker who compromises a Fargate task to exfiltrate sensitive data to the internet via the nat_gateway and internet_gateway.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "security_groups",
+        "customer_vpc",
+        "nat_gateway",
+        "internet_gateway",
+        "fargate_tasks"
+      ]
+    },
+    {
+      "threat_id": "T006",
+      "stride_category": "Denial of Service",
+      "component": "network_load_balancer",
+      "description": "The network_load_balancer and downstream app_runner_service could be targeted by a volumetric Distributed Denial of Service (DDoS) attack, exhausting connection limits or compute resources in the Fargate tasks, rendering the application unavailable to legitimate clients.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "network_load_balancer",
+        "app_runner_service",
+        "fargate_tasks"
+      ]
+    },
+    {
+      "threat_id": "T007",
+      "stride_category": "Elevation of Privilege",
+      "component": "iam_roles",
+      "description": "If the iam_roles assigned to the fargate_tasks or app_runner_service are overly permissive (e.g., containing wildcard permissions), an attacker exploiting an application vulnerability could escalate privileges to access kms keys, parameter_store values, or modify other AWS infrastructure.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "iam_roles",
+        "fargate_tasks",
+        "kms",
+        "parameter_store"
+      ]
+    }
+  ],
+  "metrics": {
+    "tp": 1,
+    "fp": 6,
+    "fn": 10,
+    "precision": 0.14285714285714285,
+    "recall": 0.09090909090909091,
+    "jaccard_index": 0.0,
+    "ddr": 0.0,
+    "hallucination_rate": 0.0,
+    "matched_discrepancies": 0,
+    "planted_discrepancies": 0,
+    "stride_tfc_tp": 6,
+    "stride_tfc_total": 11,
+    "stride_tfc_recall": 0.5454545454545454,
+    "mitre_tfc_tp": 0,
+    "mitre_tfc_total": 13,
+    "mitre_tfc_recall": 0.0
+  }
+}

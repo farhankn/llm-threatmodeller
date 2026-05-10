@@ -1,0 +1,85 @@
+[
+  {
+    "threat_id": "T-01",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "The design specifies AWS Secrets Manager for secret storage, but the IaC provisions it as an ECR repository. This misconfiguration could lead to secrets being stored improperly as container images or failing to provide the required encryption and access controls, allowing unauthorized tampering or exposure of sensitive configuration data.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Design [chunk_004] and [chunk_009] explicitly require `SecretsManager(\"Secrets\\nManager\")`, but the IaC summary defines this component as `aws_ecr_repository.secrets_manager`.",
+    "severity": "Critical",
+    "references": [
+      "aws_ecr_repository.secrets_manager"
+    ]
+  },
+  {
+    "threat_id": "T-02",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_roles",
+    "description": "If the IAM roles assumed by CodeBuild or the App Runner Fargate tasks lack strict least-privilege boundaries, an attacker who compromises the build pipeline or the running container could escalate privileges to access sensitive KMS keys or Parameter Store values.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_iam_role.iam_roles",
+      "aws_resource.aws_codebuild",
+      "aws_resource.fargate_tasks",
+      "aws_resource.kms",
+      "aws_resource.parameter_store"
+    ]
+  },
+  {
+    "threat_id": "T-03",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.aws_codestar",
+    "description": "Without strict webhook validation and authentication controls on the CodeStar connection to the GitHub Source Repo, an attacker could spoof commit events to trigger malicious builds in CodeBuild, injecting unauthorized code into the App Runner ECR.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.aws_codestar",
+      "aws_resource.github_source_repo",
+      "aws_resource.aws_codebuild"
+    ]
+  },
+  {
+    "threat_id": "T-04",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.network_load_balancer",
+    "description": "The Network Load Balancer routes external client traffic directly to the App Runner service. Without explicit rate limiting, AWS Shield Advanced, or WAF integration (which are absent from the IaC), the service is vulnerable to Layer 4 volumetric denial of service attacks.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.network_load_balancer",
+      "aws_resource.app_runner_service"
+    ]
+  },
+  {
+    "threat_id": "T-05",
+    "stride_category": "Information Disclosure",
+    "component": "aws_security_group.security_groups",
+    "description": "Misconfigured security groups on the Customer VPC or Fargate tasks could allow overly broad egress or ingress. This could expose sensitive data in transit to unauthorized network segments or the internet via the NAT Gateway.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_security_group.security_groups",
+      "aws_vpc.customer_vpc",
+      "aws_resource.fargate_tasks",
+      "aws_resource.nat_gateway"
+    ]
+  },
+  {
+    "threat_id": "T-06",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "If the App Runner ECR repository does not enforce immutable image tags, an attacker with push access could overwrite existing production image tags with malicious images, leading to compromised deployments in the App Runner service.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr",
+      "aws_resource.app_runner_service"
+    ]
+  }
+]

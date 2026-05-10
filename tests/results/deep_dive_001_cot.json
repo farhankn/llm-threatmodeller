@@ -1,0 +1,83 @@
+[
+  {
+    "threat_id": "T-SPOOF-01",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.github_source_repo",
+    "description": "An attacker could spoof the GitHub source repository or intercept the webhook payload to AWS CodeStar. If payload signatures and authentication are not strictly validated, this could trigger unauthorized builds in CodeBuild, injecting malicious code into the pipeline.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.github_source_repo",
+      "aws_resource.aws_codestar",
+      "aws_resource.aws_codebuild"
+    ]
+  },
+  {
+    "threat_id": "T-TAMP-01",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "An attacker with write access to the App Runner ECR repository could tamper with container images. If image scanning and tag immutability are not enforced on the repository, malicious or vulnerable images could be deployed directly to the App Runner service.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr",
+      "aws_resource.app_runner_service"
+    ]
+  },
+  {
+    "threat_id": "T-INFO-01",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "Secrets intended to be stored securely are at risk of exposure because the secrets manager is provisioned as an ECR repository instead of a dedicated secrets management service. This could lead to sensitive credentials being stored improperly as image layers or plaintext artifacts, exposing them to anyone with ECR read access.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design document explicitly requires 'SecretsManager' from 'diagrams.aws.security' (chunk_004, chunk_009), but the IaC summary provisions 'secrets_manager' as an 'aws_ecr_repository'.",
+    "severity": "Critical",
+    "references": [
+      "aws_ecr_repository.secrets_manager"
+    ]
+  },
+  {
+    "threat_id": "T-DOS-01",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.network_load_balancer",
+    "description": "The Network Load Balancer routing inbound client traffic to Fargate tasks could be targeted by volumetric DDoS attacks. Without explicit edge protection (like AWS WAF or Shield Advanced) or rate limiting, the underlying Fargate tasks could be overwhelmed, leading to service exhaustion.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.network_load_balancer",
+      "aws_resource.fargate_tasks"
+    ]
+  },
+  {
+    "threat_id": "T-EOP-01",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_roles",
+    "description": "If the IAM roles assigned to the App Runner service or Fargate tasks are overly permissive, a compromised container could escalate privileges. This would allow unauthorized access to sensitive AWS resources like KMS keys or Parameter Store values not intended for that specific workload.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_iam_role.iam_roles",
+      "aws_resource.app_runner_service",
+      "aws_resource.kms",
+      "aws_resource.parameter_store"
+    ]
+  },
+  {
+    "threat_id": "T-REP-01",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch_logs",
+    "description": "If CloudWatch Logs are not configured to capture comprehensive access, execution, and error logs for the App Runner service and Fargate tasks, malicious activities or unauthorized access may go undetected, preventing non-repudiation and hindering incident response.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.cloudwatch_logs",
+      "aws_resource.app_runner_service",
+      "aws_resource.fargate_tasks"
+    ]
+  }
+]

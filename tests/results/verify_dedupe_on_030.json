@@ -1,0 +1,98 @@
+[
+  {
+    "threat_id": "T001",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.aws-sqs-emailqueue",
+    "description": "The design specifies a Dead Letter Queue (DLQ) for handling failed email processing, but it is missing in the IaC. Without a DLQ, poison pill messages (malformed emails) can cause infinite processing loops in the Lambda function, leading to queue blockage and denial of service for legitimate email processing.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design document in [chunk_011] explicitly defines `dlq = SQS(\"Dead Letter Queue\")` and a routing rule `queue >> Edge(label=\"Failed processing\") >> dlq`. However, the IaC summary only contains `aws_resource.aws-sqs-emailqueue` and lacks any DLQ resource or redrive policy configuration.",
+    "severity": "High",
+    "references": [
+      "aws_resource.aws-sqs-emailqueue"
+    ]
+  },
+  {
+    "threat_id": "T002",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.aws-ses",
+    "description": "The architecture requires a Kinesis stream to capture email events from SES for auditing and analytics. This stream is missing in the IaC, meaning critical email events (deliveries, bounces, complaints) may not be reliably logged, leading to repudiation risks where the system cannot prove whether an email was sent or failed.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design in [chunk_011] specifies `stream = Kinesis(\"Email Events Stream\")` and `ses >> Edge(label=\"Email events\") >> stream`. The IaC summary lacks any `aws_kinesis_stream` resource to fulfill this auditing requirement.",
+    "severity": "Medium",
+    "references": [
+      "aws_resource.aws-ses"
+    ]
+  },
+  {
+    "threat_id": "T003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.aws-s3-emailarchivebucket",
+    "description": "The S3 bucket used for archiving successful email deliveries lacks explicit access controls, public access blocks, and encryption configurations in the IaC. This could allow unauthenticated or unauthorized access to sensitive archived email content.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": [
+      "aws_s3_bucket.aws-s3-emailarchivebucket"
+    ]
+  },
+  {
+    "threat_id": "T004",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.aws-ses",
+    "description": "The SES configuration lacks explicit domain identity, DKIM, and SPF configurations in the IaC. Without these email authentication mechanisms enforced, malicious actors could spoof the sender address, damaging domain reputation and facilitating phishing attacks.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": [
+      "aws_resource.aws-ses"
+    ]
+  },
+  {
+    "threat_id": "T005",
+    "stride_category": "Denial of Service",
+    "component": "aws_route53_zone.aws-route53",
+    "description": "The architecture design dictates that Route53 routes traffic to a Load Balancer, which then forwards requests to SES. The Load Balancer is missing in the IaC, potentially exposing backend services directly to traffic without load distribution, rate limiting, or edge protection.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design in [chunk_011] specifies `lb = ELB(\"Load Balancer\")` and `dns >> Edge(label=\"Route email traffic\") >> lb`. No load balancer resource (e.g., `aws_lb` or `aws_elb`) is present in the IaC summary.",
+    "severity": "Medium",
+    "references": [
+      "aws_route53_zone.aws-route53"
+    ]
+  },
+  {
+    "threat_id": "T006",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.aws-lambda-emailprocessor",
+    "description": "The Email Processor Lambda function lacks explicit IAM role definitions and least-privilege execution policies in the IaC. If the function is compromised via malicious email payloads (e.g., template injection), an attacker could leverage overly permissive default roles to access unauthorized AWS resources like the metrics database or S3 archives.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": [
+      "aws_lambda_function.aws-lambda-emailprocessor"
+    ]
+  },
+  {
+    "threat_id": "T007",
+    "stride_category": "Tampering",
+    "component": "aws_resource.aws-elasticbeanstalk-adminpanel",
+    "description": "The Elastic Beanstalk Admin Panel lacks explicit security group restrictions, WAF integration, or authentication mechanisms in the IaC. Attackers could exploit this to tamper with system configurations and notification settings, potentially redirecting alerts or altering processing logic.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "Critical",
+    "references": [
+      "aws_resource.aws-elasticbeanstalk-adminpanel"
+    ]
+  },
+  {
+    "threat_id": "T008",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.aws-lambda-notificationmanager",
+    "description": "The design specifies an SNS topic for notifications regarding failed deliveries and system alerts, which is missing in the IaC. Without this secure notification channel, the Notification Manager Lambda might fail to alert administrators of critical issues, or might fall back to insecure logging mechanisms that expose sensitive failure details.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design in [chunk_011] specifies `notifications = SNS(\"Notifications\")` and `notification_config >> Edge(label=\"Update Settings\") >> notifications`. The IaC summary lacks any `aws_sns_topic` resource.",
+    "severity": "Low",
+    "references": [
+      "aws_lambda_function.aws-lambda-notificationmanager"
+    ]
+  }
+]

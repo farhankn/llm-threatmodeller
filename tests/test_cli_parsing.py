@@ -1,6 +1,11 @@
 import pytest
 
-from threatcli.cli import ThreatSchemaError, parse_threats
+from threatcli.cli import (
+    ThreatSchemaError,
+    _align_components_to_resource_map,
+    _deduplicate_threats,
+    parse_threats,
+)
 
 
 def test_parse_threats_accepts_raw_json_array() -> None:
@@ -139,3 +144,67 @@ def test_parse_threats_normalizes_resource_grouped_items_without_explicit_catego
     assert threats[0]["component"] == "aws_security_group.bastion"
     assert threats[0]["references"] == []
     assert threats[0]["discrepancy_flag"] is True
+
+
+def test_align_components_to_resource_map_maps_bare_and_display_components() -> None:
+    threats = [
+        {
+            "threat_id": "T-1",
+            "stride_category": "Spoofing",
+            "component": "iam_roles",
+            "description": "x",
+            "discrepancy_flag": False,
+            "references": [],
+        },
+        {
+            "threat_id": "T-2",
+            "stride_category": "Information Disclosure",
+            "component": "AWS Directory Service",
+            "description": "x",
+            "discrepancy_flag": False,
+            "references": [],
+        },
+    ]
+    resource_map = {
+        "resources": [
+            {"type": "aws_iam_role", "name": "iam_roles", "attributes": {}},
+            {
+                "type": "aws_resource",
+                "name": "aws_directory_service",
+                "attributes": {"tags": {"acse_component": "AWS Directory Service"}},
+            },
+        ],
+        "providers": [],
+        "variables": [],
+        "data_sources": [],
+        "modules": [],
+    }
+
+    aligned = _align_components_to_resource_map(threats, resource_map)
+    assert aligned[0]["component"] == "aws_iam_role.iam_roles"
+    assert aligned[1]["component"] == "aws_resource.aws_directory_service"
+
+
+def test_deduplicate_threats_prefers_discrepancy_variant() -> None:
+    threats = [
+        {
+            "threat_id": "T-1",
+            "stride_category": "Tampering",
+            "component": "aws_s3_bucket.logs",
+            "description": "short",
+            "discrepancy_flag": False,
+            "references": [],
+        },
+        {
+            "threat_id": "T-2",
+            "stride_category": "Tampering",
+            "component": "aws_s3_bucket.logs",
+            "description": "longer and flagged",
+            "discrepancy_flag": True,
+            "references": [],
+        },
+    ]
+
+    deduped = _deduplicate_threats(threats)
+    assert len(deduped) == 1
+    assert deduped[0]["threat_id"] == "T-2"

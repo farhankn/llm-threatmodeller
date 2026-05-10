@@ -1,0 +1,475 @@
+{
+  "name": "connected-vehicle-system",
+  "architecture": "connected-vehicle-system/architecture.png",
+  "architecture_description": "connected-vehicle-system/diagram.py",
+  "threat_model": "connected-vehicle-system/threat-model.json",
+  "infra_as_code": "connected-vehicle-system/cdk/",
+  "ground_truth": [
+    {
+      "threatID": "THREAT-001",
+      "threatName": "Unauthorized Vehicle Certificate Issuance",
+      "affectedComponents": [
+        "Private CA",
+        "Registration Lambda",
+        "IoT Core",
+        "Connected Vehicle"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control"
+        ],
+        "mitreATT&CK": [
+          "T1552 - Unsecured Credentials",
+          "T1552.004 - Private Keys"
+        ]
+      },
+      "cwe": "CWE-295",
+      "vulnerabilityDetails": {
+        "howItWorks": "The system uses AWS Private CA for certificate issuance. If the registration process or PCA permissions are not properly secured, an attacker could potentially issue unauthorized certificates or steal private keys.",
+        "exploitationScenario": "An attacker compromises the Registration Lambda function and uses its PCA permissions to issue unauthorized certificates for rogue vehicles."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "Critical",
+        "availability": "High"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-001-A",
+          "description": "Implement strict access controls and monitoring for certificate operations",
+          "implementationDetails": "1. Use AWS KMS for private key protection\n2. Implement certificate transparency logging\n3. Add additional validation steps in the registration process\n4. Enable AWS CloudTrail logging for all PCA operations\n5. Configure AWS Config rules to monitor PCA configuration changes",
+          "awsServiceContext": [
+            "ACM Private CA",
+            "KMS",
+            "CloudTrail",
+            "Config"
+          ]
+        },
+        {
+          "recommendationID": "REC-001-B",
+          "description": "Enhance Lambda security for registration process",
+          "implementationDetails": "1. Implement strict IAM roles with minimum required permissions\n2. Add additional validation checks before certificate issuance\n3. Implement request signing and validation\n4. Enable Lambda function URL with IAM authentication",
+          "awsServiceContext": [
+            "Lambda",
+            "IAM",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code shows PCA integration but could be strengthened by adding KMS encryption, implementing strict IAM policies, and adding validation steps in the registration Lambda function."
+    },
+    {
+      "threatID": "THREAT-002",
+      "threatName": "Insecure Vehicle-to-Mobile App Communication",
+      "affectedComponents": [
+        "API Gateway",
+        "IoT Core",
+        "Connected Vehicle",
+        "Mobile App",
+        "Amplify Frontend"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Information Disclosure",
+          "Tampering"
+        ],
+        "owaspTop10": [
+          "A02:2021-Cryptographic Failures",
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1040 - Network Sniffing",
+          "T1557 - Man-in-the-Middle"
+        ]
+      },
+      "cwe": "CWE-306",
+      "vulnerabilityDetails": {
+        "howItWorks": "The system uses API Gateway for mobile app communication and IoT Core for vehicle communication. Without proper authentication and authorization mechanisms, an attacker could intercept or manipulate communication between these components.",
+        "exploitationScenario": "An attacker performs a man-in-the-middle attack between the mobile app and API Gateway, intercepting authentication tokens to gain unauthorized access to vehicle controls."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "Critical",
+        "availability": "High"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-002-A",
+          "description": "Implement robust authentication and authorization",
+          "implementationDetails": "1. Add Cognito User Pool authentication for API Gateway\n2. Implement mutual TLS authentication for vehicle-to-cloud communication\n3. Use short-lived JWT tokens with appropriate scopes\n4. Implement rate limiting and throttling\n5. Add request signing for API calls",
+          "awsServiceContext": [
+            "Cognito",
+            "API Gateway",
+            "IoT Core"
+          ]
+        },
+        {
+          "recommendationID": "REC-002-B",
+          "description": "Enhance communication security",
+          "implementationDetails": "1. Enable AWS WAF for API Gateway\n2. Implement strict CORS policies\n3. Use AWS PrivateLink for internal service communication\n4. Enable encryption in transit for all communication channels\n5. Implement API Gateway resource policies",
+          "awsServiceContext": [
+            "WAF",
+            "API Gateway",
+            "PrivateLink"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code shows basic API Gateway setup but lacks Cognito integration and WAF protection. IoT Core configuration should be enhanced with stricter authentication policies."
+    },
+    {
+      "threatID": "THREAT-003",
+      "threatName": "Insufficient Role-Based Access Control",
+      "affectedComponents": [
+        "API Gateway",
+        "DynamoDB",
+        "Lambda Functions",
+        "IoT Core",
+        "Amplify Frontend"
+      ],
+      "frameworks": {
+        "stride": [
+          "Elevation of Privilege",
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control"
+        ],
+        "mitreATT&CK": [
+          "T1078 - Valid Accounts",
+          "T1550 - Use Alternate Authentication Material"
+        ]
+      },
+      "cwe": "CWE-285",
+      "vulnerabilityDetails": {
+        "howItWorks": "The system needs to support multiple user roles with different access levels. Improper RBAC implementation could allow users to access resources beyond their authorized scope.",
+        "exploitationScenario": "A service technician exploits a misconfigured IAM role to gain fleet manager privileges, accessing sensitive fleet-wide data and controls."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-003-A",
+          "description": "Implement comprehensive RBAC system",
+          "implementationDetails": "1. Define clear role hierarchies and permissions\n2. Implement attribute-based access control (ABAC) using IAM policies\n3. Use Cognito groups for role management\n4. Implement fine-grained access controls in DynamoDB\n5. Add permission boundaries to IAM roles",
+          "awsServiceContext": [
+            "IAM",
+            "Cognito",
+            "DynamoDB"
+          ]
+        },
+        {
+          "recommendationID": "REC-003-B",
+          "description": "Enhance access control monitoring",
+          "implementationDetails": "1. Enable CloudTrail logging for all IAM changes\n2. Implement AWS Config rules for IAM policy compliance\n3. Use Amazon GuardDuty for detecting suspicious IAM activity\n4. Set up alerts for unauthorized access attempts\n5. Implement regular access reviews",
+          "awsServiceContext": [
+            "CloudTrail",
+            "Config",
+            "GuardDuty",
+            "EventBridge"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code shows basic IAM role setup but needs enhancement for fine-grained RBAC implementation using Cognito groups and ABAC policies."
+    },
+    {
+      "threatID": "THREAT-004",
+      "threatName": "Insecure Over-the-Air (OTA) Updates",
+      "affectedComponents": [
+        "S3 Bucket",
+        "IoT Core",
+        "Connected Vehicle",
+        "Lambda Functions"
+      ],
+      "frameworks": {
+        "stride": [
+          "Tampering",
+          "Repudiation"
+        ],
+        "owaspTop10": [
+          "A05:2021-Security Misconfiguration",
+          "A08:2021-Software and Data Integrity Failures"
+        ],
+        "mitreATT&CK": [
+          "T1195 - Supply Chain Compromise",
+          "T1195.001 - Compromise Software Dependencies and Development Tools"
+        ]
+      },
+      "cwe": "CWE-494",
+      "vulnerabilityDetails": {
+        "howItWorks": "The system uses S3 for storing vehicle software updates and IoT Core for deployment. If the update process is not properly secured, attackers could potentially inject malicious updates.",
+        "exploitationScenario": "An attacker compromises the S3 bucket storing updates and replaces legitimate firmware with malicious versions containing backdoors."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "Critical",
+        "availability": "Critical"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-004-A",
+          "description": "Implement secure OTA update process",
+          "implementationDetails": "1. Implement code signing for all updates\n2. Use AWS Signer for signing code packages\n3. Implement version control and integrity checking\n4. Add rollback capabilities\n5. Implement staged deployments",
+          "awsServiceContext": [
+            "S3",
+            "KMS",
+            "Signer",
+            "IoT Core"
+          ]
+        },
+        {
+          "recommendationID": "REC-004-B",
+          "description": "Enhance update delivery security",
+          "implementationDetails": "1. Enable S3 versioning and encryption\n2. Implement S3 Object Lock for immutability\n3. Use VPC endpoints for S3 access\n4. Implement update verification on vehicles\n5. Add monitoring for update failures",
+          "awsServiceContext": [
+            "S3",
+            "CloudWatch",
+            "VPC",
+            "IoT Core"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code shows S3 bucket configuration but needs enhancement for secure OTA updates using AWS Signer and proper version control."
+    },
+    {
+      "threatID": "THREAT-005",
+      "threatName": "Session Token Mismanagement",
+      "affectedComponents": [
+        "API Gateway",
+        "Amplify Frontend",
+        "Lambda Functions",
+        "IoT Core"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1539 - Steal Web Session Cookie",
+          "T1550.004 - Web Session Cookie"
+        ]
+      },
+      "cwe": "CWE-384",
+      "vulnerabilityDetails": {
+        "howItWorks": "The system uses session tokens for maintaining user authentication state. Improper token handling could allow session hijacking attacks.",
+        "exploitationScenario": "An attacker steals a valid session token from a user's browser and uses it to gain unauthorized access to vehicle controls."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-005-A",
+          "description": "Implement secure session management",
+          "implementationDetails": "1. Use Cognito for session management\n2. Implement short session timeouts\n3. Rotate session tokens regularly\n4. Implement secure token storage\n5. Add session invalidation on logout",
+          "awsServiceContext": [
+            "Cognito",
+            "API Gateway"
+          ]
+        },
+        {
+          "recommendationID": "REC-005-B",
+          "description": "Enhance session security measures",
+          "implementationDetails": "1. Implement IP-based session validation\n2. Add device fingerprinting\n3. Enable multi-factor authentication\n4. Implement concurrent session controls\n5. Add anomaly detection for session usage",
+          "awsServiceContext": [
+            "Cognito",
+            "WAF",
+            "GuardDuty"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code needs to be enhanced with proper Cognito integration and session management configuration."
+    },
+    {
+      "threatID": "THREAT-006",
+      "threatName": "Multi-Tenant Isolation Failure",
+      "affectedComponents": [
+        "DynamoDB",
+        "S3 Bucket",
+        "Lambda Functions",
+        "API Gateway",
+        "IoT Core"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "mitreATT&CK": [
+          "T1522 - Cloud Instance Metadata API"
+        ]
+      },
+      "cwe": "CWE-269",
+      "vulnerabilityDetails": {
+        "howItWorks": "The system stores data for multiple vehicles and users. Without proper isolation, vulnerabilities could allow access across tenant boundaries.",
+        "exploitationScenario": "An attacker exploits a misconfigured DynamoDB query to access vehicle data belonging to other tenants."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-006-A",
+          "description": "Implement strong tenant isolation",
+          "implementationDetails": "1. Use tenant IDs in all data structures\n2. Implement row-level security in DynamoDB\n3. Use separate S3 prefixes per tenant\n4. Implement tenant context validation\n5. Add tenant isolation in Lambda functions",
+          "awsServiceContext": [
+            "DynamoDB",
+            "S3",
+            "Lambda"
+          ]
+        },
+        {
+          "recommendationID": "REC-006-B",
+          "description": "Enhance multi-tenant security",
+          "implementationDetails": "1. Implement tenant-specific encryption keys\n2. Use separate IoT Core policies per tenant\n3. Add tenant validation in API Gateway\n4. Implement tenant activity monitoring\n5. Consider single-tenant deployment option",
+          "awsServiceContext": [
+            "KMS",
+            "IoT Core",
+            "API Gateway",
+            "CloudWatch"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code needs to be enhanced with proper tenant isolation mechanisms across all AWS services."
+    },
+    {
+      "threatID": "THREAT-007",
+      "threatName": "Side-Channel Attack Vulnerability",
+      "affectedComponents": [
+        "Connected Vehicle",
+        "IoT Core",
+        "Lambda Functions",
+        "ECS Cluster"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure"
+        ],
+        "owaspTop10": [
+          "A02:2021-Cryptographic Failures"
+        ],
+        "mitreATT&CK": [
+          "T1040 - Network Sniffing",
+          "T1557 - Man-in-the-Middle"
+        ]
+      },
+      "cwe": "CWE-208",
+      "vulnerabilityDetails": {
+        "howItWorks": "Timing analysis and other side-channel techniques could reveal patterns in system behavior, potentially exposing sensitive information about vehicle operations.",
+        "exploitationScenario": "An attacker analyzes API response times to infer vehicle states or operations, potentially identifying vulnerabilities or patterns in vehicle behavior."
+      },
+      "impact": {
+        "confidentiality": "Medium",
+        "integrity": "Low",
+        "availability": "Low"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-007-A",
+          "description": "Implement side-channel attack mitigations",
+          "implementationDetails": "1. Add random delays to operations\n2. Implement constant-time operations\n3. Use padding in communications\n4. Standardize error responses\n5. Monitor for unusual timing patterns",
+          "awsServiceContext": [
+            "Lambda",
+            "API Gateway",
+            "IoT Core"
+          ]
+        },
+        {
+          "recommendationID": "REC-007-B",
+          "description": "Enhance monitoring for side-channel attempts",
+          "implementationDetails": "1. Implement timing analysis monitoring\n2. Add anomaly detection for API usage\n3. Monitor resource utilization patterns\n4. Implement rate limiting\n5. Add behavioral analysis",
+          "awsServiceContext": [
+            "CloudWatch",
+            "GuardDuty",
+            "WAF"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code should be enhanced with timing attack mitigations and monitoring capabilities."
+    },
+    {
+      "threatID": "THREAT-008",
+      "threatName": "Service Component Failure Impact",
+      "affectedComponents": [
+        "API Gateway",
+        "Lambda Functions",
+        "IoT Core",
+        "ECS Cluster",
+        "Connected Vehicle"
+      ],
+      "frameworks": {
+        "stride": [
+          "Denial of Service"
+        ],
+        "owaspTop10": [
+          "A04:2021-Insecure Design"
+        ],
+        "mitreATT&CK": [
+          "T1499 - Endpoint Denial of Service"
+        ]
+      },
+      "cwe": "CWE-1051",
+      "vulnerabilityDetails": {
+        "howItWorks": "Service failures or malformed responses could potentially impact vehicle operations if not properly handled.",
+        "exploitationScenario": "An attacker causes a service to return malformed responses, potentially affecting vehicle behavior if not properly handled by onboard systems."
+      },
+      "impact": {
+        "confidentiality": "Low",
+        "integrity": "High",
+        "availability": "Critical"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-008-A",
+          "description": "Implement robust error handling",
+          "implementationDetails": "1. Implement circuit breakers\n2. Add retry mechanisms with exponential backoff\n3. Implement fallback mechanisms\n4. Add response validation\n5. Implement graceful degradation",
+          "awsServiceContext": [
+            "Lambda",
+            "API Gateway",
+            "IoT Core"
+          ]
+        },
+        {
+          "recommendationID": "REC-008-B",
+          "description": "Enhance service reliability",
+          "implementationDetails": "1. Implement multi-AZ deployment\n2. Add service health monitoring\n3. Implement automated failover\n4. Add disaster recovery procedures\n5. Implement chaos engineering testing",
+          "awsServiceContext": [
+            "Route53",
+            "CloudWatch",
+            "Auto Scaling"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "The CDK code should be enhanced with proper error handling, retry mechanisms, and multi-AZ deployment configurations."
+    }
+  ],
+  "design_doc": "#!/usr/bin/env python3\n\n\"\"\"\nAWS Connected Vehicle Reference Architecture Diagram\nThis script generates a detailed architecture diagram showing the AWS IoT-based\nconnected vehicle solution with security, messaging, and certificate management.\n\"\"\"\n\n# Network and IoT related imports\nfrom diagrams.aws.compute import EC2\nfrom diagrams.aws.security import Shield\nfrom diagrams.aws.integration import ApplicationIntegration\nfrom diagrams.aws.network import APIGateway, VPC\n\n# Compute related imports\nfrom diagrams.aws.compute import (\n    ECS, Lambda, LambdaFunction\n)\n\n# Storage related imports\nfrom diagrams.aws.storage import S3\n\n# Database related imports\nfrom diagrams.aws.database import Dynamodb\n\n# Security related imports\nfrom diagrams.aws.security import (\n    ACM, CertificateManager, SecretsManager,\n    SecurityHub\n)\n\n# Application Integration imports\nfrom diagrams.aws.integration import (\n    ApplicationIntegration as EventBridge,\n    StepFunctions\n)\n\n# Mobile and Web imports\nfrom diagrams.aws.mobile import Amplify\n\n# Generic imports for diagram creation\nfrom diagrams import Diagram, Cluster, Edge\nfrom diagrams.generic.device import Mobile\nfrom diagrams.generic.place import Datacenter\n\n# Styling attributes\ngraph_attr = {\n    \"splines\": \"ortho\",  # Use orthogonal lines for connections\n    \"nodesep\": \"0.8\",    # Spacing between nodes\n    \"ranksep\": \"1.0\",    # Spacing between ranks\n    \"pad\": \"2.0\"         # Padding around the diagram\n}\n\n# Create the diagram\nwith Diagram(\n    \"AWS Connected Vehicle Reference Architecture\",\n    filename=\"aws_connected_vehicle_architecture\",\n    direction=\"LR\",      # Left to right layout\n    graph_attr=graph_attr,\n    outformat=\"png\",\n    show=False\n) as diag:\n    \n    # Vehicle Owner\n    owner = Datacenter(\"Vehicle Owner\")\n\n    # AWS Account boundary\n    with Cluster(\"AWS Account\"):\n\n        # Define edge styles\n        mqtt_edge = Edge(color=\"darkgreen\", style=\"bold\")\n        secure_edge = Edge(color=\"darkblue\", style=\"dashed\")\n        event_edge = Edge(color=\"red\", style=\"dotted\")\n        user_edge = Edge(color=\"purple\", style=\"bold\")\n\n            # Vehicle and Device Layer\n        with Cluster(\"Vehicle Layer\"):\n            vehicle = Mobile(\"Connected Vehicle\")\n            ecu = EC2(\"ECU\")\n\n        # IoT Core and Messaging Layer\n        with Cluster(\"IoT & Messaging Layer\"):\n            iot_core = ApplicationIntegration(\"AWS IoT Core\")\n            private_link = VPC(\"AWS PrivateLink\")\n            device_defender = Shield(\"IoT Device Defender\")\n\n        # Security and Certificate Management\n        with Cluster(\"Security & Certificates\"):\n            private_ca = SecretsManager(\"Private CA\")\n            security_hub = SecurityHub(\"Security Hub\")\n            cert_manager = CertificateManager(\"Certificate Manager\")\n\n        # Data Processing Layer\n        with Cluster(\"Processing Layer\"):\n            ecs_cluster = ECS(\"ECS Cluster\")\n            lambda_reg = LambdaFunction(\"Registration Lambda\")\n            step_functions = StepFunctions(\"Certificate Rotation\")\n\n        # Storage and Database Layer\n        with Cluster(\"Storage & Database\"):\n            s3_bucket = S3(\"Descriptor Files\")\n            dynamodb = Dynamodb(\"Device Registry\")\n\n        # API and Frontend Layer\n        with Cluster(\"API & Frontend\"):\n            api_gateway = APIGateway(\"API Gateway\")\n            amplify = Amplify(\"Web Interface\")\n\n        # Event Processing\n        event_bridge = EventBridge(\"EventBridge\")\n\n        # Define connections\n\n        # Vehicle to IoT Core connections\n        vehicle >> mqtt_edge >> ecu\n        ecu >> secure_edge >> private_link\n        private_link >> iot_core\n\n        # IoT Core integrations\n        iot_core >> Edge(label=\"telemetry\") >> ecs_cluster\n        iot_core >> Edge(label=\"rules\") >> lambda_reg\n        iot_core << Edge(label=\"certificate validation\") << private_ca\n\n        # Security monitoring flow\n        device_defender >> security_hub\n        security_hub >> event_bridge\n        event_bridge >> step_functions\n\n        # Certificate management flow\n        step_functions >> lambda_reg\n        lambda_reg >> dynamodb\n        lambda_reg >> private_ca\n\n        # Frontend and API flow\n        owner >> user_edge >> amplify\n        owner >> user_edge >> api_gateway\n        amplify >> api_gateway\n        api_gateway >> Edge(label=\"commands\") >> iot_core\n\n        # Storage connections\n        iot_core >> s3_bucket\n        lambda_reg >> s3_bucket\n\n        # Database connections\n        iot_core >> dynamodb\n        api_gateway >> dynamodb\n\n# Note: The diagram will be saved as 'aws_connected_vehicle_architecture.png'\n",
+  "terraform": "# ACSE-Eval IaC source path (dataset-relative):\n# connected-vehicle-system/cdk/\n# Terraform source files were not available under this path.\n# Synthetic resource stubs generated from affected components:\n\nresource \"aws_api_gateway_rest_api\" \"api_gateway\" {\n  tags = {\n    acse_component = \"API Gateway\"\n  }\n}\n\nresource \"aws_resource\" \"amplify_frontend\" {\n  tags = {\n    acse_component = \"Amplify Frontend\"\n  }\n}\n\nresource \"aws_resource\" \"connected_vehicle\" {\n  tags = {\n    acse_component = \"Connected Vehicle\"\n  }\n}\n\nresource \"aws_db_instance\" \"dynamodb\" {\n  tags = {\n    acse_component = \"DynamoDB\"\n  }\n}\n\nresource \"aws_resource\" \"ecs_cluster\" {\n  tags = {\n    acse_component = \"ECS Cluster\"\n  }\n}\n\nresource \"aws_resource\" \"iot_core\" {\n  tags = {\n    acse_component = \"IoT Core\"\n  }\n}\n\nresource \"aws_lambda_function\" \"lambda_functions\" {\n  tags = {\n    acse_component = \"Lambda Functions\"\n  }\n}\n\nresource \"aws_resource\" \"mobile_app\" {\n  tags = {\n    acse_component = \"Mobile App\"\n  }\n}\n\nresource \"aws_resource\" \"private_ca\" {\n  tags = {\n    acse_component = \"Private CA\"\n  }\n}\n\nresource \"aws_lambda_function\" \"registration_lambda\" {\n  tags = {\n    acse_component = \"Registration Lambda\"\n  }\n}\n\nresource \"aws_s3_bucket\" \"s3_bucket\" {\n  tags = {\n    acse_component = \"S3 Bucket\"\n  }\n}\n"
+}

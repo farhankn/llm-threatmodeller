@@ -73,6 +73,7 @@ def test_compare_computes_metrics() -> None:
     assert result["fn"] == 0
     assert result["precision"] == 0.5
     assert result["recall"] == 1.0
+    assert result["jaccard_index"] == 0.5
     assert result["ddr"] == 1.0
     assert result["hallucination_rate"] == 0.5
     assert result["stride_tfc_tp"] == 1

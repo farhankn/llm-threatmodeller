@@ -1,0 +1,206 @@
+[
+  {
+    "threat_id": "T-API-01",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "If the API Gateway does not enforce robust authentication (e.g., AWS IAM, Cognito, or Lambda Authorizers), malicious actors can spoof legitimate users and access backend SageMaker endpoints or other APIs.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_api_gateway_rest_api.api_gateway.policy",
+      "aws_api_gateway_authorizer"
+    ]
+  },
+  {
+    "threat_id": "T-API-02",
+    "stride_category": "Denial of Service",
+    "component": "aws_api_gateway_rest_api.api_gateway",
+    "description": "Without proper usage plans, rate limiting, or AWS WAF integration, the API Gateway is vulnerable to volumetric Denial of Service attacks, potentially exhausting backend Lambda or SageMaker resources.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_api_gateway_rest_api.api_gateway.endpoint_configuration",
+      "aws_api_gateway_usage_plan"
+    ]
+  },
+  {
+    "threat_id": "T-S3-01",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_data_lake",
+    "description": "If the S3 Data Lake bucket lacks strict bucket policies blocking public access or fails to enforce encryption at rest (SSE-S3/SSE-KMS), sensitive analytics data could be exposed to unauthorized parties.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Critical",
+    "references": [
+      "aws_s3_bucket.s3_data_lake.server_side_encryption_configuration",
+      "aws_s3_bucket_public_access_block"
+    ]
+  },
+  {
+    "threat_id": "T-DISC-02",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.s3_data_lake",
+    "description": "The design document outlines complex data flows involving Firehose, Glue, EMR, and Step Functions interacting with the S3 Data Lake. The absence of these resources in Terraform suggests the IaC is incomplete, potentially leading to manual, unreviewed, and insecure deployments of these critical data processing components.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Design document specifies Kinesis Firehose, Glue Crawlers/ETL, EMR, and Step Functions, but none are present in the Terraform summary.",
+    "severity": "Medium",
+    "references": [
+      "aws_s3_bucket.s3_data_lake.arn"
+    ]
+  },
+  {
+    "threat_id": "T-IAM-01",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_roles",
+    "description": "Overly permissive IAM roles assigned to Lambda, EMR, or SageMaker could allow an attacker who compromises a compute resource to escalate privileges and access unauthorized AWS services or data.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Critical",
+    "references": [
+      "aws_iam_role.iam_roles.assume_role_policy",
+      "aws_iam_role_policy"
+    ]
+  },
+  {
+    "threat_id": "T-LMD-01",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "If Lambda deployment packages are not signed and verified (e.g., using AWS Signer), an attacker with access to the deployment pipeline or S3 could inject malicious code into the function.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_lambda_function.lambda_functions.source_code_hash",
+      "aws_lambda_function.lambda_functions.image_uri"
+    ]
+  },
+  {
+    "threat_id": "T-LMD-02",
+    "stride_category": "Denial of Service",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "If Lambda functions lack reserved concurrency limits, a flood of events from MSK or API Gateway could exhaust account-level concurrency, causing a denial of service for other critical functions in the AWS account.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_lambda_function.lambda_functions.reserved_concurrent_executions"
+    ]
+  },
+  {
+    "threat_id": "T-KIN-01",
+    "stride_category": "Tampering",
+    "component": "aws_resource.kinesis_data_streams",
+    "description": "If IAM policies allowing 'kinesis:PutRecord' are too broad, unauthorized entities could inject malformed or malicious data into the stream, poisoning downstream analytics and ML models.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.kinesis_data_streams.encryption_type",
+      "aws_iam_policy"
+    ]
+  },
+  {
+    "threat_id": "T-MSK-01",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.msk",
+    "description": "If Amazon MSK does not enforce TLS encryption in transit and at rest, or lacks strict IAM/SASL authentication, sensitive event data flowing to Lambda could be intercepted.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.msk.encryption_info",
+      "aws_resource.msk.client_authentication"
+    ]
+  },
+  {
+    "threat_id": "T-RED-01",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.redshift",
+    "description": "If the Redshift cluster is deployed in a public subnet or lacks encryption at rest, sensitive aggregated data could be exposed to the internet or unauthorized users.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.redshift.encrypted",
+      "aws_resource.redshift.publicly_accessible"
+    ]
+  },
+  {
+    "threat_id": "T-OPS-01",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.opensearch",
+    "description": "If OpenSearch domain access policies are overly permissive or lack fine-grained access control, unauthorized users could query and extract sensitive analytics data.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.opensearch.domain_endpoint_options",
+      "aws_resource.opensearch.advanced_security_options"
+    ]
+  },
+  {
+    "threat_id": "T-SGM-01",
+    "stride_category": "Tampering",
+    "component": "aws_resource.sagemaker_endpoints",
+    "description": "If SageMaker endpoints are exposed without proper IAM authentication, attackers could send crafted inference requests to manipulate model behavior or extract model parameters (model inversion/extraction).",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.sagemaker_endpoints.kms_key_arn",
+      "aws_iam_policy"
+    ]
+  },
+  {
+    "threat_id": "T-LKF-01",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.lake_formation",
+    "description": "If Lake Formation data lake administrators are not strictly controlled, or if cross-account access is misconfigured, users could elevate their privileges to access restricted databases and tables in the S3 Data Lake.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.lake_formation.data_lake_settings",
+      "aws_resource.lake_formation.permissions"
+    ]
+  },
+  {
+    "threat_id": "T-QKS-01",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.quicksight",
+    "description": "If QuickSight dashboards are shared publicly or with overly broad groups, sensitive business intelligence derived from Redshift and OpenSearch could be leaked.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.quicksight.permissions"
+    ]
+  },
+  {
+    "threat_id": "T-CWT-01",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "If CloudWatch log groups lack retention policies or if IAM roles allow unauthorized deletion of log streams, malicious actors could delete their tracks, leading to repudiation of actions across the platform.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.cloudwatch.retention_in_days",
+      "aws_resource.cloudwatch.kms_key_id"
+    ]
+  },
+  {
+    "threat_id": "T-DISC-01",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.lambda_functions",
+    "description": "The design document specifies Lambda writing to DynamoDB, but DynamoDB is missing from the Terraform infrastructure summary. This discrepancy means data might be stored in an unintended or insecure location, or the architecture is incomplete.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Design document includes DynamoDB in the Storage & Database Layer, but no aws_dynamodb_table resource exists in the Terraform summary.",
+    "severity": "Medium",
+    "references": [
+      "aws_lambda_function.lambda_functions.environment"
+    ]
+  }
+]

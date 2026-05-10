@@ -1,0 +1,290 @@
+{
+  "name": "datazone-arch",
+  "architecture": "datazone-arch/architecture.png",
+  "architecture_description": "datazone-arch/diagram.py",
+  "threat_model": "datazone-arch/threat-model.json",
+  "infra_as_code": "datazone-arch/cdk/",
+  "ground_truth": [
+    {
+      "threatID": "THREAT-001",
+      "threatName": "Insecure Secrets Management in Database Configurations",
+      "affectedComponents": [
+        "RedshiftCluster",
+        "AuroraCluster",
+        "aws-redshift",
+        "aws-rds"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1552 - Unsecured Credentials",
+          "T1078 - Valid Accounts"
+        ]
+      },
+      "cwe": "CWE-798",
+      "vulnerabilityDetails": {
+        "howItWorks": "Database credentials are either hardcoded (Redshift) or not automatically rotated (Aurora), making them vulnerable to compromise. If an attacker gains access to the CDK code or the credentials remain unchanged for extended periods, they could gain unauthorized database access.",
+        "exploitationScenario": "An attacker with access to the version control system could extract the hardcoded Redshift credentials. Similarly, compromised but unrotated Aurora credentials could provide prolonged unauthorized access."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-001-A",
+          "description": "Move Redshift credentials to AWS Secrets Manager",
+          "implementationDetails": "Replace hardcoded Redshift credentials with Secrets Manager integration:\n```typescript\nconst redshiftCreds = secretsmanager.Secret.fromSecretNameV2(this, 'RedshiftCredentials', 'redshift/credentials');\nconst redshiftCluster = new redshift.CfnCluster(this, 'RedshiftCluster', {\n  masterUsername: redshiftCreds.secretValueFromJson('username').toString(),\n  masterUserPassword: redshiftCreds.secretValueFromJson('password').toString(),\n  // ... other configurations\n});```",
+          "awsServiceContext": [
+            "SecretsManager",
+            "Redshift"
+          ]
+        },
+        {
+          "recommendationID": "REC-001-B",
+          "description": "Enable automatic credential rotation for Aurora",
+          "implementationDetails": "Configure automatic rotation for Aurora credentials in Secrets Manager:\n```typescript\nconst auroraCredentials = new secretsmanager.Secret(this, 'AuroraCredentials', {\n  generateSecretString: {\n    secretStringTemplate: JSON.stringify({ username: 'admin' }),\n    generateStringKey: 'password',\n    excludeCharacters: '\"@/\\\\'\n  },\n  rotation: secretsmanager.SecretRotation.autoRotate('schedule', {\n    schedule: secretsmanager.RotationSchedule.EVERY_30_DAYS,\n    target: auroraCluster\n  })\n});```",
+          "awsServiceContext": [
+            "SecretsManager",
+            "RDS"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "AWS Secrets Manager provides built-in integration with both Redshift and Aurora, supporting automatic credential rotation and secure retrieval through IAM-based access control."
+    },
+    {
+      "threatID": "THREAT-002",
+      "threatName": "Insufficient Network Isolation and Access Controls",
+      "affectedComponents": [
+        "DataZoneVpc",
+        "DefaultSG",
+        "RedshiftCluster",
+        "AuroraCluster",
+        "GlueJob",
+        "DMSReplicationInstance"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Information Disclosure",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "mitreATT&CK": [
+          "T1190 - Exploit Public-Facing Application",
+          "T1133 - External Remote Services"
+        ]
+      },
+      "cwe": "CWE-284",
+      "vulnerabilityDetails": {
+        "howItWorks": "Services within the VPC may communicate with AWS services over the public internet instead of using VPC endpoints, increasing the attack surface and potential for man-in-the-middle attacks.",
+        "exploitationScenario": "An attacker could potentially intercept traffic between services and AWS APIs by exploiting the lack of VPC endpoints, or leverage public endpoints to attempt unauthorized access."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "Medium",
+      "recommendations": [
+        {
+          "recommendationID": "REC-002-A",
+          "description": "Implement VPC Endpoints for all AWS services",
+          "implementationDetails": "Add VPC endpoints for required AWS services:\n```typescript\nnew ec2.InterfaceVpcEndpoint(this, 'DataZoneVpcEndpoint', {\n  vpc,\n  service: ec2.InterfaceVpcEndpointAwsService.DATAZONE,\n  subnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },\n  securityGroups: [defaultSecurityGroup]\n});\n\n// Add endpoints for other services\nconst requiredEndpoints = [\n  ec2.InterfaceVpcEndpointAwsService.GLUE,\n  ec2.InterfaceVpcEndpointAwsService.SECRETS_MANAGER,\n  ec2.InterfaceVpcEndpointAwsService.S3,\n  ec2.InterfaceVpcEndpointAwsService.KINESIS_STREAMS,\n  ec2.InterfaceVpcEndpointAwsService.REDSHIFT\n];\n\nrequiredEndpoints.forEach(service => {\n  new ec2.InterfaceVpcEndpoint(this, `${service.name}Endpoint`, {\n    vpc,\n    service,\n    subnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },\n    securityGroups: [defaultSecurityGroup]\n  });\n});```",
+          "awsServiceContext": [
+            "VPC",
+            "EC2"
+          ]
+        },
+        {
+          "recommendationID": "REC-002-B",
+          "description": "Restrict Security Group rules",
+          "implementationDetails": "Tighten security group rules to minimum required access:\n```typescript\nconst defaultSecurityGroup = new ec2.SecurityGroup(this, 'DefaultSG', {\n  vpc,\n  description: 'Default security group for DataZone resources',\n  allowAllOutbound: false  // Disable allow all outbound\n});\n\n// Add specific rules\ndefaultSecurityGroup.addIngressRule(\n  ec2.Peer.ipv4(vpc.vpcCidrBlock),\n  ec2.Port.tcp(443),\n  'HTTPS within VPC'\n);```",
+          "awsServiceContext": [
+            "VPC",
+            "EC2"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "AWS PrivateLink and VPC endpoints provide secure communication channels between VPC resources and AWS services without traversing the public internet."
+    },
+    {
+      "threatID": "THREAT-003",
+      "threatName": "Inadequate IAM Controls and Authentication",
+      "affectedComponents": [
+        "DataZoneServiceRole",
+        "GlueJobRole",
+        "GlueCrawlerRole",
+        "FirehoseToS3Role"
+      ],
+      "frameworks": {
+        "stride": [
+          "Spoofing",
+          "Elevation of Privilege"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control",
+          "A07:2021-Identification and Authentication Failures"
+        ],
+        "mitreATT&CK": [
+          "T1078 - Valid Accounts",
+          "T1550 - Use Alternate Authentication Material"
+        ]
+      },
+      "cwe": "CWE-287",
+      "vulnerabilityDetails": {
+        "howItWorks": "While basic IAM roles exist, they often use managed policies with broad permissions instead of principle of least privilege. Some components lack proper IAM configurations entirely.",
+        "exploitationScenario": "An attacker who compromises a service role could potentially access multiple resources due to overly permissive IAM policies."
+      },
+      "impact": {
+        "confidentiality": "Critical",
+        "integrity": "Critical",
+        "availability": "High"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-003-A",
+          "description": "Implement fine-grained IAM policies",
+          "implementationDetails": "Replace managed policies with specific inline policies:\n```typescript\nconst glueJobRole = new iam.Role(this, 'GlueJobRole', {\n  assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')\n});\n\nglueJobRole.addToPolicy(new iam.PolicyStatement({\n  effect: iam.Effect.ALLOW,\n  actions: [\n    'glue:GetTable',\n    'glue:GetTables',\n    'glue:GetDatabase',\n    'glue:GetDatabases'\n  ],\n  resources: [\n    `arn:aws:glue:${this.region}:${this.account}:catalog`,\n    `arn:aws:glue:${this.region}:${this.account}:database/${glueDatabase.databaseInput.name}`,\n    `arn:aws:glue:${this.region}:${this.account}:table/${glueDatabase.databaseInput.name}/*`\n  ]\n}));```",
+          "awsServiceContext": [
+            "IAM",
+            "Glue"
+          ]
+        },
+        {
+          "recommendationID": "REC-003-B",
+          "description": "Implement resource-based policies",
+          "implementationDetails": "Add resource policies to restrict access:\n```typescript\nconst bucketPolicy = new iam.PolicyStatement({\n  effect: iam.Effect.DENY,\n  principals: [new iam.AnyPrincipal()],\n  actions: ['s3:*'],\n  resources: [dataLakeBucket.bucketArn, `${dataLakeBucket.bucketArn}/*`],\n  conditions: {\n    'Bool': {\n      'aws:SecureTransport': 'false'\n    },\n    'StringNotEquals': {\n      'aws:PrincipalOrgID': [cdk.Aws.ORGANIZATION_ID]\n    }\n  }\n});\n\ndataLakeBucket.addToResourcePolicy(bucketPolicy);```",
+          "awsServiceContext": [
+            "IAM",
+            "S3"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "AWS IAM provides fine-grained access control capabilities. Use AWS IAM Access Analyzer to identify unintended access and AWS Organizations for centralized policy management."
+    },
+    {
+      "threatID": "THREAT-004",
+      "threatName": "Uncontrolled Data Access through Glue Crawlers",
+      "affectedComponents": [
+        "S3DataLakeCrawler",
+        "GlueCrawlerRole",
+        "GlueDatabase"
+      ],
+      "frameworks": {
+        "stride": [
+          "Information Disclosure",
+          "Tampering"
+        ],
+        "owaspTop10": [
+          "A01:2021-Broken Access Control",
+          "A05:2021-Security Misconfiguration"
+        ],
+        "mitreATT&CK": [
+          "T1213 - Data from Information Repositories"
+        ]
+      },
+      "cwe": "CWE-732",
+      "vulnerabilityDetails": {
+        "howItWorks": "Glue crawlers are configured to scan entire S3 buckets without path exclusions or proper access controls, potentially exposing sensitive data through the Glue Data Catalog.",
+        "exploitationScenario": "An attacker with access to the Glue Data Catalog could discover and access sensitive data that should not have been cataloged."
+      },
+      "impact": {
+        "confidentiality": "High",
+        "integrity": "Medium",
+        "availability": "Low"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-004-A",
+          "description": "Implement crawler restrictions and exclusions",
+          "implementationDetails": "Configure crawler with specific paths and exclusions:\n```typescript\nconst s3Crawler = new glue.CfnCrawler(this, 'S3DataLakeCrawler', {\n  name: 'datazone-s3-datalake-crawler',\n  role: glueCrawlerRole.roleArn,\n  databaseName: glueDatabase.databaseInput.name,\n  targets: {\n    s3Targets: [{ \n      path: `s3://${dataLakeBucket.bucketName}/approved-data/`,\n      exclusions: [\n        '**.tmp',\n        '**/sensitive/**',\n        '**/internal/**'\n      ]\n    }]\n  },\n  configuration: JSON.stringify({\n    Version: 1.0,\n    CrawlerOutput: {\n      Tables: { AddOrUpdateBehavior: 'MergeNewColumns' }\n    },\n    RecordIdentifier: { DataLakeFormat: { EnableBasicStatistics: true } }\n  })\n});```",
+          "awsServiceContext": [
+            "Glue"
+          ]
+        },
+        {
+          "recommendationID": "REC-004-B",
+          "description": "Implement Lake Formation permissions",
+          "implementationDetails": "Use AWS Lake Formation to control Data Catalog access:\n```typescript\nconst lakeFormationAdmin = new iam.Role(this, 'LakeFormationAdmin', {\n  assumedBy: new iam.ServicePrincipal('lakeformation.amazonaws.com')\n});\n\nnew lakeformation.CfnResource(this, 'LFResource', {\n  resourceArn: dataLakeBucket.bucketArn,\n  useServiceLinkedRole: true\n});\n\nnew lakeformation.CfnPermissions(this, 'LFPermissions', {\n  dataLakePrincipal: {\n    dataLakePrincipalIdentifier: glueCrawlerRole.roleArn\n  },\n  resource: {\n    databaseResource: {\n      name: glueDatabase.databaseInput.name\n    }\n  },\n  permissions: ['CREATE_TABLE', 'ALTER', 'DROP']\n});```",
+          "awsServiceContext": [
+            "LakeFormation",
+            "Glue"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "AWS Lake Formation provides fine-grained access control for data lakes and the Glue Data Catalog. Use Lake Formation tags for attribute-based access control."
+    },
+    {
+      "threatID": "THREAT-005",
+      "threatName": "Insufficient Monitoring and Audit Trail",
+      "affectedComponents": [
+        "DataZoneVpc",
+        "RedshiftCluster",
+        "AuroraCluster",
+        "GlueJob",
+        "S3DataLakeCrawler"
+      ],
+      "frameworks": {
+        "stride": [
+          "Repudiation"
+        ],
+        "owaspTop10": [
+          "A09:2021-Security Logging and Monitoring Failures"
+        ],
+        "mitreATT&CK": [
+          "T1562 - Impair Defenses",
+          "T1552 - Unsecured Credentials"
+        ]
+      },
+      "cwe": "CWE-778",
+      "vulnerabilityDetails": {
+        "howItWorks": "The architecture lacks proper audit trails and monitoring mechanisms, making it difficult to detect and respond to security incidents.",
+        "exploitationScenario": "An attacker could perform malicious activities without detection due to insufficient logging and monitoring."
+      },
+      "impact": {
+        "confidentiality": "Medium",
+        "integrity": "High",
+        "availability": "Medium"
+      },
+      "likelihood": "High",
+      "recommendations": [
+        {
+          "recommendationID": "REC-005-A",
+          "description": "Implement CloudTrail with CloudWatch integration",
+          "implementationDetails": "Configure CloudTrail with enhanced monitoring:\n```typescript\nconst trail = new cloudtrail.Trail(this, 'DataZoneCloudTrail', {\n  sendToCloudWatchLogs: true,\n  enableFileValidation: true,\n  includeGlobalServiceEvents: true,\n  isMultiRegionTrail: true,\n  cloudWatchLogsRetention: logs.RetentionDays.ONE_YEAR\n});\n\n// Add data events for S3 and Lambda\ntrail.addEventSelector(cloudtrail.DataResourceType.S3_OBJECT, [\n  `arn:aws:s3:::${dataLakeBucket.bucketName}/`\n]);\n\n// Create CloudWatch metric filters and alarms\nnew logs.MetricFilter(this, 'UnauthorizedAPICallsMetric', {\n  logGroup: trail.logGroup!,\n  filterPattern: logs.FilterPattern.literal('{ $.errorCode = \"*UnauthorizedOperation\" || $.errorCode = \"AccessDenied*\" }'),\n  metricNamespace: 'DataZoneSecurityMetrics',\n  metricName: 'UnauthorizedAPICalls',\n  metricValue: '1'\n});```",
+          "awsServiceContext": [
+            "CloudTrail",
+            "CloudWatch",
+            "SNS"
+          ]
+        },
+        {
+          "recommendationID": "REC-005-B",
+          "description": "Implement CloudWatch Synthetics canaries",
+          "implementationDetails": "Create monitoring canaries:\n```typescript\nconst canary = new synthetics.Canary(this, 'DataZoneAPICanary', {\n  schedule: synthetics.Schedule.rate(Duration.minutes(5)),\n  test: synthetics.Test.custom({\n    code: synthetics.Code.fromInline(`\n      const synthetics = require('Synthetics');\n      const log = require('SyntheticsLogger');\n\n      exports.handler = async () => {\n        // Add API endpoint checks\n        const urls = [\n          'https://your-datazone-api.example.com/health',\n          'https://your-glue-endpoint.example.com/status'\n        ];\n\n        for (const url of urls) {\n          const page = await synthetics.getPage();\n          const response = await page.goto(url, { waitUntil: 'networkidle0' });\n          \n          // Verify response\n          if (response.status() !== 200) {\n            throw new Error(`Failed to load ${url}: ${response.status()}`);\n          }\n        }\n      };\n    `),\n    handler: 'index.handler'\n  }),\n  runtime: synthetics.Runtime.SYNTHETICS_NODEJS_PUPPETEER_3_1\n});```",
+          "awsServiceContext": [
+            "CloudWatch",
+            "Synthetics"
+          ]
+        }
+      ],
+      "awsSpecificConsiderations": "Use AWS Security Hub for centralized security monitoring and AWS Config for configuration monitoring. Enable VPC Flow Logs for network traffic analysis."
+    }
+  ],
+  "design_doc": "#!/usr/bin/env python3\n\n\"\"\"\nAWS DataZone Architecture Diagram Generator\nThis script generates a comprehensive AWS architecture diagram showing the unified catalog\nwith Amazon DataZone and related data processing components.\n\"\"\"\n\n# Standard Library imports\nfrom typing import Any\n\n# Diagram basic imports\nfrom diagrams import Diagram, Cluster, Edge\n\n# AWS Analytics Services\nfrom diagrams.aws.analytics import (\n    Glue,\n    GlueCrawlers,\n    GlueDataCatalog,\n    Kinesis,\n    ManagedStreamingForKafka,\n    Redshift,\n)\n\n# AWS Integration Services\nfrom diagrams.aws.integration import (\n    Appsync,  # Using AppSync icon as AppFlow isn't available\n)\n\n# AWS Database Services\nfrom diagrams.aws.database import (\n    Aurora,\n    DatabaseMigrationService,\n    Dynamodb,\n)\n\n\n# AWS Storage Services\nfrom diagrams.aws.storage import S3\n\n# AWS Management Services\nfrom diagrams.aws.management import (\n    SystemsManagerParameterStore as DataZone,  # Using Parameter Store icon as DataZone isn't available\n)\n\n# Graph attributes for better visualization\ngraph_attr = {\n    \"splines\": \"ortho\",  # Use orthogonal lines\n    \"nodesep\": \"0.8\",    # Node separation\n    \"ranksep\": \"1.0\",    # Rank separation\n    \"pad\": \"2.0\",        # Padding\n}\n\n# Create the diagram\nwith Diagram(\n    \"AWS DataZone Unified Catalog Architecture\",\n    filename=\"aws_datazone_architecture\",\n    direction=\"LR\",\n    graph_attr=graph_attr,\n    outformat=\"png\",\n    show=True,\n) as diag:\n\n    # Data Sources Cluster\n    with Cluster(\"Data Sources\"):\n        data_sources = [\n            Appsync(\"Amazon AppFlow\"),\n            Kinesis(\"Amazon Kinesis\"),\n            ManagedStreamingForKafka(\"Amazon MSK\"),\n            DatabaseMigrationService(\"AWS DMS\")\n        ]\n\n    # Data Ingestion Layer Cluster\n    with Cluster(\"Data Ingestion Layer\"):\n        ingestion_glue = Glue(\"AWS Glue ETL\")\n        ingestion_kinesis = Kinesis(\"Kinesis Data\\nFirehose\")\n\n    # Storage Layer Cluster\n    with Cluster(\"Storage Layer\"):\n        s3 = S3(\"Amazon S3\\nData Lake\")\n        redshift = Redshift(\"Amazon Redshift\")\n        aurora = Aurora(\"Amazon Aurora\")\n        dynamodb = Dynamodb(\"Amazon DynamoDB\")\n\n    # Data Processing Layer Cluster\n    with Cluster(\"Data Processing & Cataloging\"):\n        glue = Glue(\"AWS Glue\")\n        glue_crawler = GlueCrawlers(\"AWS Glue\\nCrawler\")\n        glue_catalog = GlueDataCatalog(\"AWS Glue\\nData Catalog\")\n        glue_quality = Glue(\"AWS Glue\\nData Quality\")\n\n    # DataZone Layer Cluster\n    with Cluster(\"Amazon DataZone\"):\n        datazone_domain = DataZone(\"DataZone Domain\")\n        datazone_portal = DataZone(\"DataZone Portal\")\n        datazone_projects = DataZone(\"DataZone Projects\")\n        datazone_inventory = DataZone(\"DataZone Inventory\")\n\n    # Connect Data Sources to Ingestion\n    for source in data_sources:\n        source >> Edge(color=\"blue\") >> ingestion_glue\n        source >> Edge(color=\"blue\") >> ingestion_kinesis\n\n    # Connect Ingestion to Storage\n    ingestion_glue >> Edge(color=\"darkblue\", label=\"transform\") >> s3\n    ingestion_glue >> Edge(color=\"darkblue\", label=\"transform\") >> redshift\n    ingestion_kinesis >> Edge(color=\"darkblue\", label=\"stream\") >> s3\n    ingestion_kinesis >> Edge(color=\"darkblue\", label=\"stream\") >> redshift\n\n    # Connect Storage to Processing\n    s3 >> Edge(color=\"green\", label=\"crawl\") >> glue_crawler\n    redshift >> Edge(color=\"green\", label=\"metadata\") >> glue_catalog\n    aurora >> Edge(color=\"green\", label=\"metadata\") >> glue_catalog\n    dynamodb >> Edge(color=\"green\", label=\"metadata\") >> glue_catalog\n\n    # Connect Processing to Glue Components\n    glue_crawler >> Edge(color=\"orange\") >> glue_catalog\n    glue_catalog >> Edge(color=\"red\") >> glue_quality\n\n    # Connect to DataZone\n    glue_catalog >> Edge(color=\"purple\", style=\"dashed\") >> datazone_domain\n    datazone_domain >> datazone_portal\n    datazone_domain >> datazone_projects\n    datazone_domain >> datazone_inventory\n\n    # Add self-referential connection for DataZone components\n    datazone_inventory >> Edge(\n        color=\"darkgreen\",\n        style=\"dotted\",\n        label=\"enrich\"\n    ) >> datazone_domain\n",
+  "terraform": "# ACSE-Eval IaC source path (dataset-relative):\n# datazone-arch/cdk/\n# Terraform source files were not available under this path.\n# Synthetic resource stubs generated from affected components:\n\nresource \"aws_resource\" \"auroracluster\" {\n  tags = {\n    acse_component = \"AuroraCluster\"\n  }\n}\n\nresource \"aws_instance\" \"dmsreplicationinstance\" {\n  tags = {\n    acse_component = \"DMSReplicationInstance\"\n  }\n}\n\nresource \"aws_iam_role\" \"datazoneservicerole\" {\n  tags = {\n    acse_component = \"DataZoneServiceRole\"\n  }\n}\n\nresource \"aws_vpc\" \"datazonevpc\" {\n  tags = {\n    acse_component = \"DataZoneVpc\"\n  }\n}\n\nresource \"aws_resource\" \"defaultsg\" {\n  tags = {\n    acse_component = \"DefaultSG\"\n  }\n}\n\nresource \"aws_s3_bucket\" \"firehosetos3role\" {\n  tags = {\n    acse_component = \"FirehoseToS3Role\"\n  }\n}\n\nresource \"aws_iam_role\" \"gluecrawlerrole\" {\n  tags = {\n    acse_component = \"GlueCrawlerRole\"\n  }\n}\n\nresource \"aws_db_instance\" \"gluedatabase\" {\n  tags = {\n    acse_component = \"GlueDatabase\"\n  }\n}\n\nresource \"aws_resource\" \"gluejob\" {\n  tags = {\n    acse_component = \"GlueJob\"\n  }\n}\n\nresource \"aws_iam_role\" \"gluejobrole\" {\n  tags = {\n    acse_component = \"GlueJobRole\"\n  }\n}\n\nresource \"aws_resource\" \"redshiftcluster\" {\n  tags = {\n    acse_component = \"RedshiftCluster\"\n  }\n}\n\nresource \"aws_s3_bucket\" \"s3datalakecrawler\" {\n  tags = {\n    acse_component = \"S3DataLakeCrawler\"\n  }\n}\n\nresource \"aws_db_instance\" \"aws-rds\" {\n  tags = {\n    acse_component = \"aws-rds\"\n  }\n}\n\nresource \"aws_resource\" \"aws-redshift\" {\n  tags = {\n    acse_component = \"aws-redshift\"\n  }\n}\n"
+}

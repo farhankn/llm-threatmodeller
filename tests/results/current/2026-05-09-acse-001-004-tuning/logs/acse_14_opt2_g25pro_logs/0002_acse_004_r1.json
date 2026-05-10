@@ -1,0 +1,139 @@
+{
+  "run_id": "run_20260509_112541",
+  "timestamp": "2026-05-09T11:27:32.101786+00:00",
+  "scenario_number": 2,
+  "scenario_id": "ACSE_004_R1",
+  "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_004",
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "temperature": 0.0,
+  "include_docs": true,
+  "exit_code": 0,
+  "latency_seconds": 51.867,
+  "error": null,
+  "threat_count": 8,
+  "threats": [
+    {
+      "threat_id": "ACSE-VDI-T001",
+      "stride_category": "Elevation of Privilege",
+      "component": "aws_iam_role.iam_roles",
+      "description": "An attacker compromising a VDI session could leverage overly permissive IAM roles attached to the WorkSpace or AppStream instance profile to gain unauthorized access to other AWS services, potentially leading to a full account takeover. The generic nature of the 'iam_roles' resource suggests a lack of granular, least-privilege policies.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Critical",
+      "references": [
+        "aws_iam_role.iam_roles.attributes",
+        "aws_resource.amazon_workspaces",
+        "aws_resource.appstream_2_0"
+      ]
+    },
+    {
+      "threat_id": "ACSE-VDI-T002",
+      "stride_category": "Information Disclosure",
+      "component": "aws_s3_bucket.s3_buckets",
+      "description": "The S3 bucket resource lacks explicit 'block_public_access' configurations. If misconfigured, buckets containing sensitive user data, application settings, or session information could be publicly exposed, leading to a major data breach.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Critical",
+      "references": [
+        "aws_s3_bucket.s3_buckets.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-VDI-T003",
+      "stride_category": "Elevation of Privilege",
+      "component": "aws_resource.amazon_workspaces",
+      "description": "The design document specifies AWS Systems Manager (SSM) for management, but it is absent from the IaC. This implies that systems may be unpatched or managed via less secure, un-audited methods, creating a high risk of exploitation of known vulnerabilities for privilege escalation.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design document [chunk_005] specifies 'SystemsManager(\"AWS Systems\\nManager\")' for management, but no 'aws_ssm_*' resources are defined in the Infrastructure Summary.",
+      "severity": "Critical",
+      "references": [
+        "aws_resource.amazon_workspaces",
+        "aws_resource.appstream_2_0"
+      ]
+    },
+    {
+      "threat_id": "ACSE-VDI-T004",
+      "stride_category": "Information Disclosure",
+      "component": "aws_resource.amazon_efs",
+      "description": "Enterprise storage resources lack explicit configuration for at-rest encryption. Sensitive user profiles, home directories, or application data stored on EFS or FSx could be read by an unauthorized party with access to the underlying storage.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_resource.amazon_efs.attributes",
+        "aws_resource.amazon_fsx.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-VDI-T005",
+      "stride_category": "Denial of Service",
+      "component": "aws_resource.internet_gateway",
+      "description": "The architecture relies on an Internet Gateway for connectivity, creating an entry point for volumetric DDoS attacks. The design specifies Network ACLs as a control, but they are not implemented in the IaC, leaving the VDI environment vulnerable to network-based DoS attacks.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design document [chunk_005] includes 'Nacl(\"Network ACLs\")' as a network control, but no 'aws_network_acl' resource is present in the Infrastructure Summary.",
+      "severity": "High",
+      "references": [
+        "aws_resource.internet_gateway.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-VDI-T006",
+      "stride_category": "Information Disclosure",
+      "component": "aws_security_group.security_groups",
+      "description": "The security group resource lacks any defined ingress or egress rules. If configured with overly permissive rules (e.g., allowing RDP or PCoIP traffic from 0.0.0.0/0), the WorkSpaces instances would be exposed to the public internet for scanning and brute-force attacks.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_security_group.security_groups.attributes"
+      ]
+    },
+    {
+      "threat_id": "ACSE-VDI-T007",
+      "stride_category": "Tampering",
+      "component": "aws_resource.amazon_fsx",
+      "description": "The data flows between compute (WorkSpaces/AppStream) and storage (FSx/EFS) do not specify the use of in-transit encryption. An attacker with network visibility could potentially intercept and modify sensitive file share traffic, such as SMB or NFS, compromising data integrity.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "Design Document Context [chunk_005] Data Access flows",
+        "aws_resource.amazon_fsx",
+        "aws_resource.amazon_efs"
+      ]
+    },
+    {
+      "threat_id": "ACSE-VDI-T008",
+      "stride_category": "Repudiation",
+      "component": "aws_resource.aws_directory_service",
+      "description": "The infrastructure summary lacks any resources for centralized logging and monitoring, such as AWS CloudTrail or CloudWatch Logs. Without comprehensive logging of API calls, user authentication events, and file access, malicious activities cannot be reliably attributed to a specific identity, allowing an attacker to deny their actions.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design document [chunk_005] shows 'ssm >> monitor_req >> nacl', implying a monitoring capability that is absent from the IaC, along with any other logging resources like CloudTrail.",
+      "severity": "Medium",
+      "references": [
+        "aws_resource.aws_directory_service",
+        "aws_resource.amazon_workspaces",
+        "aws_s3_bucket.s3_buckets"
+      ]
+    }
+  ],
+  "metrics": {
+    "tp": 5,
+    "fp": 3,
+    "fn": 10,
+    "precision": 0.625,
+    "recall": 0.3333333333333333,
+    "jaccard_index": 0.1,
+    "ddr": 0.0,
+    "hallucination_rate": 0.0,
+    "matched_discrepancies": 0,
+    "planted_discrepancies": 0,
+    "stride_tfc_tp": 8,
+    "stride_tfc_total": 15,
+    "stride_tfc_recall": 0.5333333333333333,
+    "mitre_tfc_tp": 0,
+    "mitre_tfc_total": 24,
+    "mitre_tfc_recall": 0.0
+  }
+}

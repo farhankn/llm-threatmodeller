@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import math
+import re
 import warnings
 from pathlib import Path
 from typing import Any
@@ -98,7 +99,11 @@ def build_multisource_prompt(
     summary_tokens = _estimate_tokens(summary)
     remaining_budget = max(0, token_budget - summary_tokens)
 
-    selected_chunks = _select_chunks(document_chunks, token_budget=remaining_budget)
+    selected_chunks = _select_chunks(
+        document_chunks,
+        token_budget=remaining_budget,
+        resource_map=resource_map,
+    )
     chunk_block = "\n\n".join(
         (
             f"[{chunk.chunk_id}] Heading: {chunk.heading} (H{chunk.heading_level})\n"
@@ -122,24 +127,76 @@ def build_multisource_prompt(
 def _extract_resource_keywords(resource_map: dict[str, Any]) -> set[str]:
     keywords = set()
     for res in resource_map.get("resources", []):
-        if isinstance(res, dict):
-            if res.get("name"):
-                keywords.add(str(res["name"]).lower())
-            if res.get("type"):
-                keywords.add(str(res["type"]).lower())
+        if not isinstance(res, dict):
+            continue
+
+        r_name = str(res.get("name", "")).strip()
+        r_type = str(res.get("type", "")).strip()
+
+        for candidate in _keyword_candidates(r_name):
+            keywords.add(candidate)
+        for candidate in _keyword_candidates(r_type):
+            keywords.add(candidate)
+        if r_type and r_name:
+            for candidate in _keyword_candidates(f"{r_type}.{r_name}"):
+                keywords.add(candidate)
+
+        attributes = res.get("attributes")
+        if isinstance(attributes, dict):
+            tags = attributes.get("tags")
+            if isinstance(tags, dict):
+                for tag_key in ("acse_component", "component", "name", "Name"):
+                    value = tags.get(tag_key)
+                    if isinstance(value, str):
+                        for candidate in _keyword_candidates(value):
+                            keywords.add(candidate)
     return keywords
 
 
 def _score_chunk(chunk: DocumentChunk, resource_keywords: set[str], total_chunks: int) -> float:
     text_lower = chunk.text.lower()
     heading_lower = chunk.heading.lower()
+    normalized_text = _normalize_keyword(f"{chunk.heading} {chunk.text}")
     
     # 1. Keyword overlap (0.40): presence of Terraform resource names
-    overlap_count = sum(1 for kw in resource_keywords if kw in text_lower)
+    overlap_count = 0
+    for keyword in resource_keywords:
+        normalized_keyword = _normalize_keyword(keyword)
+        if not normalized_keyword:
+            continue
+        if keyword in text_lower or normalized_keyword in normalized_text:
+            overlap_count += 1
     overlap_score = min(1.0, overlap_count / 5.0)  # cap at 5 matches
     
     # 2. Security keyword density (0.30)
-    security_terms = {"security", "encrypt", "auth", "iam", "policy", "vpc", "tls", "ssl", "secret", "password", "key", "stride", "threat", "risk", "access", "public", "private", "firewall", "sg", "waf"}
+    security_terms = {
+        "security",
+        "encrypt",
+        "auth",
+        "iam",
+        "policy",
+        "vpc",
+        "tls",
+        "ssl",
+        "secret",
+        "password",
+        "key",
+        "stride",
+        "threat",
+        "risk",
+        "access",
+        "public",
+        "private",
+        "firewall",
+        "sg",
+        "waf",
+        "spoofing",
+        "tampering",
+        "repudiation",
+        "disclosure",
+        "denial",
+        "privilege",
+    }
     sec_count = sum(1 for term in security_terms if term in text_lower)
     sec_score = min(1.0, sec_count / 5.0)
     
@@ -174,6 +231,25 @@ def _select_chunks(chunks: list[DocumentChunk], *, token_budget: int, resource_m
             continue # Skip and try to fit smaller chunks if any
         selected.append(chunk)
         consumed += chunk.token_estimate
+
+    # If nothing fits inside a very small budget, keep the top-ranked chunk.
+    if not selected and scored_chunks:
+        selected = [scored_chunks[0][0]]
         
     selected.sort(key=lambda item: (item.section_index, item.chunk_id))
     return selected
+
+
+def _normalize_keyword(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", value.strip().lower())
+
+
+def _keyword_candidates(value: str) -> set[str]:
+    text = value.strip().lower()
+    if not text:
+        return set()
+    normalized = _normalize_keyword(text)
+    candidates = {text}
+    if normalized:
+        candidates.add(normalized)
+    return candidates

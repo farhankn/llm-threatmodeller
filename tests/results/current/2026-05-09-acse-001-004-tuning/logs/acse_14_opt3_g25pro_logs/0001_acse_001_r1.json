@@ -1,0 +1,141 @@
+{
+  "run_id": "run_20260509_113514",
+  "timestamp": "2026-05-09T11:36:03.385306+00:00",
+  "scenario_number": 1,
+  "scenario_id": "ACSE_001_R1",
+  "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001",
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "temperature": 0.0,
+  "include_docs": true,
+  "exit_code": 0,
+  "latency_seconds": 48.914,
+  "error": null,
+  "threat_count": 8,
+  "threats": [
+    {
+      "threat_id": "ACSE-TH-001",
+      "stride_category": "Information Disclosure",
+      "component": "aws_ecr_repository.secrets_manager",
+      "description": "Secrets are not managed by AWS Secrets Manager as intended by the design. The Terraform summary defines a resource named `secrets_manager` with type `aws_ecr_repository`, indicating a critical implementation error. This likely forces developers to use insecure alternatives like environment variables or hardcoded secrets in the `aws_resource.app_runner_service`, leading to potential secret leakage.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "Design document chunk_009 specifies using 'secrets = SecretsManager(\"Secrets\\nManager\")' for secrets, but the IaC summary implements a resource named 'secrets_manager' with the incorrect type 'aws_ecr_repository'.",
+      "severity": "Critical",
+      "references": [
+        "aws_ecr_repository.secrets_manager",
+        "aws_resource.app_runner_service"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-002",
+      "stride_category": "Elevation of Privilege",
+      "component": "aws_iam_role.iam_roles",
+      "description": "The IAM role used by compute services like AWS CodeBuild or the AWS App Runner service may have overly permissive policies. A compromise of a single service, such as through a vulnerable application on `aws_resource.fargate_tasks` or a malicious build script in `aws_resource.aws_codebuild`, could be exploited to gain unauthorized access to other AWS resources, leading to privilege escalation.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_iam_role.iam_roles",
+        "aws_resource.aws_codebuild",
+        "aws_resource.app_runner_service"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-003",
+      "stride_category": "Tampering",
+      "component": "aws_ecr_repository.app_runner_ecr",
+      "description": "The ECR repository may allow image tags to be overwritten because `image_tag_mutability` is not specified and defaults to `MUTABLE`. An attacker or a misconfigured CI/CD process could push a malicious image with an existing tag (e.g., 'latest'), causing the App Runner service to deploy compromised code without any change in deployment configuration.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_ecr_repository.app_runner_ecr",
+        "aws_resource.app_runner_service"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-005",
+      "stride_category": "Denial of Service",
+      "component": "aws_resource.network_load_balancer",
+      "description": "The Network Load Balancer, exposed to the internet via `aws_resource.internet_gateway`, is a potential target for DDoS attacks. The infrastructure summary does not include AWS Shield Advanced or AWS WAF, leaving the application vulnerable to volumetric attacks that could exhaust resources on the backend `aws_resource.fargate_tasks` and cause a service outage.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_resource.network_load_balancer",
+        "aws_resource.internet_gateway",
+        "aws_route53_zone.route_53"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-006",
+      "stride_category": "Information Disclosure",
+      "component": "aws_ecr_repository.app_runner_ecr",
+      "description": "The ECR repository may not be configured for encryption at rest. The Terraform summary for `aws_ecr_repository.app_runner_ecr` does not specify an `encryption_configuration` block. This could allow an attacker with access to the underlying storage to read sensitive data, proprietary code, or embedded secrets within the container images.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_ecr_repository.app_runner_ecr",
+        "aws_ecr_repository.customer_ecr"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-007",
+      "stride_category": "Repudiation",
+      "component": "aws_resource.network_load_balancer",
+      "description": "The Network Load Balancer is not configured with access logs. The absence of these logs makes it difficult to trace the source of malicious traffic, investigate security incidents, or audit access patterns for inbound requests targeting the `aws_resource.fargate_tasks`, hindering forensic analysis.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_resource.network_load_balancer",
+        "aws_resource.cloudwatch_logs"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-008",
+      "stride_category": "Information Disclosure",
+      "component": "aws_resource.network_load_balancer",
+      "description": "The architecture uses a Network Load Balancer which operates at Layer 4 and does not terminate TLS. If the traffic between the NLB and the backend Fargate tasks is not encrypted (i.e., the Fargate listener is not configured for TLS), sensitive data could be transmitted in cleartext within the VPC, making it vulnerable to interception.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_resource.network_load_balancer",
+        "aws_resource.fargate_tasks"
+      ]
+    },
+    {
+      "threat_id": "ACSE-TH-009",
+      "stride_category": "Spoofing",
+      "component": "aws_iam_role.iam_roles",
+      "description": "The trust policy for the IAM role used for cross-account ECR access may be overly permissive. If the principal in the assume role policy is not restricted to the specific AWS account or service, an unauthorized actor could assume the role, granting them spoofed access to pull images from `aws_ecr_repository.customer_ecr`.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_iam_role.iam_roles",
+        "aws_ecr_repository.customer_ecr"
+      ]
+    }
+  ],
+  "metrics": {
+    "tp": 5,
+    "fp": 3,
+    "fn": 6,
+    "precision": 0.625,
+    "recall": 0.45454545454545453,
+    "jaccard_index": 0.05555555555555555,
+    "ddr": 0.0,
+    "hallucination_rate": 0.0,
+    "matched_discrepancies": 0,
+    "planted_discrepancies": 0,
+    "stride_tfc_tp": 7,
+    "stride_tfc_total": 11,
+    "stride_tfc_recall": 0.6363636363636364,
+    "mitre_tfc_tp": 0,
+    "mitre_tfc_total": 13,
+    "mitre_tfc_recall": 0.0
+  }
+}

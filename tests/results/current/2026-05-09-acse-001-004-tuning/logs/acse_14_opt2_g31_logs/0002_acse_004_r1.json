@@ -1,0 +1,114 @@
+{
+  "run_id": "run_20260509_112046",
+  "timestamp": "2026-05-09T11:21:50.695907+00:00",
+  "scenario_number": 2,
+  "scenario_id": "ACSE_004_R1",
+  "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_004",
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.0,
+  "include_docs": true,
+  "exit_code": 0,
+  "latency_seconds": 32.613,
+  "error": null,
+  "threat_count": 6,
+  "threats": [
+    {
+      "threat_id": "T-SPOOF-01",
+      "stride_category": "Spoofing",
+      "component": "aws_resource.workspaces",
+      "description": "Without the designed AWS Systems Manager (SSM) for secure, authenticated management sessions, administrators might rely on less secure, spoofable management interfaces (e.g., direct RDP/SSH via the management network interface) to access WorkSpaces, increasing the risk of credential theft or session hijacking.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "The design document explicitly requires Systems Manager for management ('ssm = SystemsManager(\"AWS Systems\\nManager\")' and 'ssm >> mgmt_req >> workspaces'), but no SSM resources or VPC endpoints are present in the IaC summary.",
+      "severity": "Medium",
+      "references": [
+        "aws_resource.management_network_interface"
+      ]
+    },
+    {
+      "threat_id": "T-TAMP-01",
+      "stride_category": "Tampering",
+      "component": "aws_resource.fsx",
+      "description": "Malicious actors gaining access to the VPC could tamper with enterprise storage data on Amazon FSx if security groups do not strictly limit inbound data requests to authorized WorkSpaces and AppStream instances.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "High",
+      "references": [
+        "aws_security_group.security_groups",
+        "aws_resource.workspaces",
+        "aws_resource.appstream_2_0"
+      ]
+    },
+    {
+      "threat_id": "T-REP-01",
+      "stride_category": "Repudiation",
+      "component": "aws_resource.directory_service",
+      "description": "Authentication requests from WorkSpaces and AppStream to the Directory Service may lack sufficient audit logging at the network or directory level, allowing malicious authentication attempts or directory modifications to occur without a traceable record.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Medium",
+      "references": [
+        "aws_resource.workspaces",
+        "aws_resource.appstream_2_0"
+      ]
+    },
+    {
+      "threat_id": "T-INFO-01",
+      "stride_category": "Information Disclosure",
+      "component": "aws_s3_bucket.s3_buckets",
+      "description": "S3 buckets provisioned in the infrastructure could expose sensitive VDI data, user profiles, or backups to unauthorized users, especially since their purpose, access patterns, and security controls are undefined in the architecture.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "The IaC summary provisions 'aws_s3_bucket.s3_buckets', but the design document completely omits S3 from the 'Enterprise Storage' or 'Backup' flows, meaning it lacks documented security constraints.",
+      "severity": "High",
+      "references": [
+        "aws_iam_role.iam_roles"
+      ]
+    },
+    {
+      "threat_id": "T-DOS-01",
+      "stride_category": "Denial of Service",
+      "component": "aws_resource.internet_gateway",
+      "description": "Volumetric network attacks entering through the Internet Gateway can directly impact WorkSpaces and AppStream availability because the designed stateless Network ACLs are missing from the infrastructure, leaving only stateful security groups to handle the load.",
+      "discrepancy_flag": true,
+      "discrepancy_detail": "The design explicitly routes traffic 'igw >> network_req >> nacl' using 'nacl = Nacl(\"Network ACLs\")', but no 'aws_network_acl' resource exists in the IaC summary.",
+      "severity": "High",
+      "references": [
+        "aws_resource.workspaces",
+        "aws_resource.appstream_2_0",
+        "aws_vpc.vpc"
+      ]
+    },
+    {
+      "threat_id": "T-EOP-01",
+      "stride_category": "Elevation of Privilege",
+      "component": "aws_iam_role.iam_roles",
+      "description": "If IAM roles attached to WorkSpaces or AppStream instances are overly permissive, a compromised VDI session could allow an attacker to elevate privileges and manipulate the Directory Service, S3 buckets, or underlying VPC configurations.",
+      "discrepancy_flag": false,
+      "discrepancy_detail": null,
+      "severity": "Critical",
+      "references": [
+        "aws_resource.workspaces",
+        "aws_resource.appstream_2_0",
+        "aws_resource.directory_service"
+      ]
+    }
+  ],
+  "metrics": {
+    "tp": 4,
+    "fp": 2,
+    "fn": 11,
+    "precision": 0.6666666666666666,
+    "recall": 0.26666666666666666,
+    "jaccard_index": 0.05263157894736842,
+    "ddr": 0.0,
+    "hallucination_rate": 0.0,
+    "matched_discrepancies": 0,
+    "planted_discrepancies": 0,
+    "stride_tfc_tp": 6,
+    "stride_tfc_total": 15,
+    "stride_tfc_recall": 0.4,
+    "mitre_tfc_tp": 0,
+    "mitre_tfc_total": 24,
+    "mitre_tfc_recall": 0.0
+  }
+}

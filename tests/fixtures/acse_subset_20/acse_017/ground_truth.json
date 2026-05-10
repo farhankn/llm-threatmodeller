@@ -1,0 +1,210 @@
+[
+  {
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Spoofing",
+    "component": "aws_ecr_repository.secretsmanager",
+    "description": "Unauthorized Access to Cloud Credentials An attacker could exploit overly permissive IAM roles or misconfigured secrets access policies to retrieve cloud credentials stored in Secrets Manager. A compromised Lambda function with excessive permissions could access Secrets Manager and retrieve credentials for all cloud providers, leading to unauthorized access across multiple cloud environments.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Implement strict IAM policies following the principle of least privilege",
+      "recommendation: Implement AWS Organizations SCPs as recommended by security engineer"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secretsmanager",
+    "description": "Unauthorized Access to Cloud Credentials An attacker could exploit overly permissive IAM roles or misconfigured secrets access policies to retrieve cloud credentials stored in Secrets Manager. A compromised Lambda function with excessive permissions could access Secrets Manager and retrieve credentials for all cloud providers, leading to unauthorized access across multiple cloud environments.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Implement strict IAM policies following the principle of least privilege",
+      "recommendation: Implement AWS Organizations SCPs as recommended by security engineer"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_ecr_repository.secretsmanager",
+    "description": "Unauthorized Access to Cloud Credentials An attacker could exploit overly permissive IAM roles or misconfigured secrets access policies to retrieve cloud credentials stored in Secrets Manager. A compromised Lambda function with excessive permissions could access Secrets Manager and retrieve credentials for all cloud providers, leading to unauthorized access across multiple cloud environments.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Implement strict IAM policies following the principle of least privilege",
+      "recommendation: Implement AWS Organizations SCPs as recommended by security engineer"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3-rawcostdata",
+    "description": "Sensitive Cost Data Exposure via S3 Misconfigured S3 bucket policies or inadequate access controls could allow unauthorized access to sensitive cost data stored in the buckets. An attacker could exploit overly permissive bucket policies to access or modify cost data, potentially leading to data leakage or manipulation of cost reports.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Implement comprehensive S3 bucket security controls",
+      "recommendation: Implement data classification and handling controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.s3-rawcostdata",
+    "description": "Sensitive Cost Data Exposure via S3 Misconfigured S3 bucket policies or inadequate access controls could allow unauthorized access to sensitive cost data stored in the buckets. An attacker could exploit overly permissive bucket policies to access or modify cost data, potentially leading to data leakage or manipulation of cost reports.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Implement comprehensive S3 bucket security controls",
+      "recommendation: Implement data classification and handling controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "API Gateway Authentication Bypass Insufficient API Gateway authentication configuration or vulnerabilities in the authentication mechanism could allow unauthorized access to the API endpoints. An attacker could forge or manipulate authentication tokens to gain unauthorized access to cost management APIs.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement robust API Gateway authentication",
+      "recommendation: Implement API request throttling and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_api_gateway_rest_api.apigateway",
+    "description": "API Gateway Authentication Bypass Insufficient API Gateway authentication configuration or vulnerabilities in the authentication mechanism could allow unauthorized access to the API endpoints. An attacker could forge or manipulate authentication tokens to gain unauthorized access to cost management APIs.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement robust API Gateway authentication",
+      "recommendation: Implement API request throttling and monitoring"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_db_instance.dynamodb-costdatabase",
+    "description": "DynamoDB Data Manipulation Overly permissive IAM policies or compromised Lambda functions could allow unauthorized modification of cost data in DynamoDB. An attacker with access to a compromised Lambda function could modify cost data to hide resource usage or manipulate billing information.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Repudiation",
+      "cwe: CWE-922",
+      "recommendation: Implement strict DynamoDB access controls",
+      "recommendation: Implement data integrity controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb-costdatabase",
+    "description": "DynamoDB Data Manipulation Overly permissive IAM policies or compromised Lambda functions could allow unauthorized modification of cost data in DynamoDB. An attacker with access to a compromised Lambda function could modify cost data to hide resource usage or manipulate billing information.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Repudiation",
+      "cwe: CWE-922",
+      "recommendation: Implement strict DynamoDB access controls",
+      "recommendation: Implement data integrity controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-3",
+    "stride_category": "Repudiation",
+    "component": "aws_db_instance.dynamodb-costdatabase",
+    "description": "DynamoDB Data Manipulation Overly permissive IAM policies or compromised Lambda functions could allow unauthorized modification of cost data in DynamoDB. An attacker with access to a compromised Lambda function could modify cost data to hide resource usage or manipulate billing information.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1565 - Data Manipulation",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Repudiation",
+      "cwe: CWE-922",
+      "recommendation: Implement strict DynamoDB access controls",
+      "recommendation: Implement data integrity controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.eventbridge-scheduler",
+    "description": "EventBridge Rule Manipulation Attackers with IAM permissions could modify EventBridge rules to disrupt cost data collection timing or frequency. An attacker could modify scheduling rules to prevent cost data collection or overwhelm the system with too frequent collections.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1526 - Cloud Service Discovery",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-284",
+      "recommendation: Implement strict EventBridge permissions",
+      "recommendation: Implement monitoring and alerting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.eventbridge-scheduler",
+    "description": "EventBridge Rule Manipulation Attackers with IAM permissions could modify EventBridge rules to disrupt cost data collection timing or frequency. An attacker could modify scheduling rules to prevent cost data collection or overwhelm the system with too frequent collections.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1526 - Cloud Service Discovery",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-284",
+      "recommendation: Implement strict EventBridge permissions",
+      "recommendation: Implement monitoring and alerting"
+    ]
+  }
+]

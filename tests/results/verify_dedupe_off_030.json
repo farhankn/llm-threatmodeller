@@ -1,0 +1,76 @@
+[
+  {
+    "threat_id": "T001",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.aws-sqs-emailqueue",
+    "description": "The SQS email queue lacks a configured Dead Letter Queue (DLQ). Malformed or malicious email messages ('poison pills') that fail processing will be continuously retried by the Lambda processor, potentially exhausting concurrency limits and causing a denial of service for legitimate email processing.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design explicitly requires a DLQ in [chunk_011] with `dlq = SQS(\"Dead Letter Queue\")` and `queue >> Edge(label=\"Failed processing\") >> dlq`, but no corresponding DLQ resource is present in the IaC summary.",
+    "severity": "High",
+    "references": [
+      "aws_resource.aws-sqs-emailqueue.tags.acse_component",
+      "aws_lambda_function.aws-lambda-emailprocessor.tags.acse_component"
+    ]
+  },
+  {
+    "threat_id": "T002",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.aws-ses",
+    "description": "Email delivery events (bounces, complaints, deliveries) are not being securely streamed to an immutable audit log. Without this event stream, administrators cannot cryptographically prove or trace the lifecycle of an email, leading to repudiation risks if users deny receiving critical notifications.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design specifies `stream = Kinesis(\"Email Events Stream\")` in [chunk_011] to capture events via `ses >> Edge(label=\"Email events\") >> stream`, but no Kinesis stream resource exists in the IaC summary.",
+    "severity": "Medium",
+    "references": [
+      "aws_resource.aws-ses.tags.acse_component"
+    ]
+  },
+  {
+    "threat_id": "T003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.aws-dynamodb-metricsstore",
+    "description": "The metrics store is provisioned as a relational database instance (RDS) rather than a NoSQL DynamoDB table. RDS instances have different network exposure profiles, VPC requirements, and default encryption behaviors compared to DynamoDB. If placed in a public subnet or misconfigured due to this architectural mismatch, sensitive email metrics could be exposed to unauthorized network access.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design specifies `metrics_db = Dynamodb(\"Metrics Store\")` in [chunk_011], but the IaC provisions an `aws_db_instance` (RDS) named `aws-dynamodb-metricsstore` instead of an `aws_dynamodb_table`.",
+    "severity": "High",
+    "references": [
+      "aws_db_instance.aws-dynamodb-metricsstore.tags.acse_component"
+    ]
+  },
+  {
+    "threat_id": "T004",
+    "stride_category": "Denial of Service",
+    "component": "aws_route53_zone.aws-route53",
+    "description": "The architecture lacks the intended Elastic Load Balancer (ELB) layer. Routing DNS traffic directly to backend services without an ELB removes a critical layer of DDoS protection, connection multiplexing, and potential WAF integration, leaving the backend vulnerable to volumetric attacks.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design specifies `lb = ELB(\"Load Balancer\")` in [chunk_011] and routes traffic via `dns >> Edge(label=\"Route email traffic\") >> lb`, but no ELB resource is defined in the IaC summary.",
+    "severity": "High",
+    "references": [
+      "aws_route53_zone.aws-route53.tags.acse_component"
+    ]
+  },
+  {
+    "threat_id": "T005",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.aws-s3-emailarchivebucket",
+    "description": "The S3 bucket used for archiving successful email deliveries may be subject to tampering or unauthorized modification. If strict IAM resource policies, Object Lock, or versioning are not explicitly enforced, an attacker with compromised credentials could alter or delete historical email records.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_s3_bucket.aws-s3-emailarchivebucket.tags.acse_component"
+    ]
+  },
+  {
+    "threat_id": "T006",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_lambda_function.aws-lambda-emailprocessor",
+    "description": "The Email Processor Lambda function handles untrusted data from the SQS queue. If the function is assigned an overly permissive IAM execution role (e.g., wildcard access to S3, SES, and databases), a vulnerability in the email parsing logic could be exploited to elevate privileges and access or modify unintended AWS resources.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_lambda_function.aws-lambda-emailprocessor.tags.acse_component",
+      "aws_resource.aws-sqs-emailqueue.tags.acse_component"
+    ]
+  }
+]

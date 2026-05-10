@@ -1,0 +1,207 @@
+[
+  {
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.securityhub",
+    "description": "Lambda Code Injection via Security Hub Findings Attackers could craft Security Hub findings containing malicious code or injection payloads that might be executed when processed by Lambda functions, particularly in the remediation function where dynamic execution might occur. An attacker compromises a member account and creates a custom Security Hub finding containing malicious code in its fields. When processed by the Lambda functions, this code gets executed in the context of the Lambda's IAM role.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562.001 - Impair Defenses: Disable or Modify Tools",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-94",
+      "recommendation: Implement strict input validation and sanitization for all Security Hub finding fields",
+      "recommendation: Implement Lambda function isolation using separate VPCs and restrictive security groups"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.securityhub",
+    "description": "Lambda Code Injection via Security Hub Findings Attackers could craft Security Hub findings containing malicious code or injection payloads that might be executed when processed by Lambda functions, particularly in the remediation function where dynamic execution might occur. An attacker compromises a member account and creates a custom Security Hub finding containing malicious code in its fields. When processed by the Lambda functions, this code gets executed in the context of the Lambda's IAM role.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562.001 - Impair Defenses: Disable or Modify Tools",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-94",
+      "recommendation: Implement strict input validation and sanitization for all Security Hub finding fields",
+      "recommendation: Implement Lambda function isolation using separate VPCs and restrictive security groups"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.remediationrole",
+    "description": "Excessive IAM Permissions in Remediation Role The remediation role uses AWS managed policies that provide broad permissions across multiple services. If compromised, an attacker could use these permissions to access or modify resources beyond the intended scope. An attacker who compromises the remediation process could leverage the broad permissions to access EC2 instances across the account or make AWS Support API calls beyond the intended remediation scope.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-269",
+      "recommendation: Replace AWS managed policies with custom inline policies specific to remediation tasks",
+      "recommendation: Implement temporary credentials using AWS STS for remediation actions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cloudwatch",
+    "description": "Sensitive Data Exposure in CloudWatch Logs Lambda functions and Step Functions are configured to log all execution data, which might include sensitive information from Security Hub findings or remediation processes. This data is then forwarded to S3 via Kinesis Firehose. An attacker with access to CloudWatch Logs or the metrics S3 bucket could extract sensitive information about security findings, system vulnerabilities, or AWS resource configurations.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-532",
+      "recommendation: Implement log sanitization in Lambda functions",
+      "recommendation: Enable encryption for all log storage and transmission"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.stepfunctions",
+    "description": "Unauthorized Step Functions Execution The Step Functions state machine is triggered by EventBridge rules based on Security Hub findings. Without proper validation and authorization checks, an attacker might be able to trigger or manipulate the execution. An attacker gains access to EventBridge and creates a rule that triggers the Step Functions state machine with crafted input data, potentially causing unauthorized remediation actions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1199 - Trusted Relationship",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement strict EventBridge rule patterns",
+      "recommendation: Add input validation in Step Functions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.stepfunctions",
+    "description": "Unauthorized Step Functions Execution The Step Functions state machine is triggered by EventBridge rules based on Security Hub findings. Without proper validation and authorization checks, an attacker might be able to trigger or manipulate the execution. An attacker gains access to EventBridge and creates a rule that triggers the Step Functions state machine with crafted input data, potentially causing unauthorized remediation actions.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1199 - Trusted Relationship",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Tampering",
+      "cwe: CWE-306",
+      "recommendation: Implement strict EventBridge rule patterns",
+      "recommendation: Add input validation in Step Functions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.remediationrole",
+    "description": "Insecure Cross-Account Remediation The system uses cross-account roles for remediation, which could be exploited if proper security controls and monitoring are not in place. Long-lived credentials increase the risk of compromise. An attacker compromises the remediation process and uses the cross-account access to pivot between accounts, potentially gaining unauthorized access to multiple AWS accounts.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Repudiation",
+      "cwe: CWE-284",
+      "recommendation: Implement short-lived credentials for cross-account access",
+      "recommendation: Enhance monitoring and alerting for cross-account activities"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Repudiation",
+    "component": "aws_iam_role.remediationrole",
+    "description": "Insecure Cross-Account Remediation The system uses cross-account roles for remediation, which could be exploited if proper security controls and monitoring are not in place. Long-lived credentials increase the risk of compromise. An attacker compromises the remediation process and uses the cross-account access to pivot between accounts, potentially gaining unauthorized access to multiple AWS accounts.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Elevation of Privilege",
+      "stride: Repudiation",
+      "cwe: CWE-284",
+      "recommendation: Implement short-lived credentials for cross-account access",
+      "recommendation: Enhance monitoring and alerting for cross-account activities"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.sns",
+    "description": "Denial of Service via Notification Flooding The system sends notifications for security findings without proper rate limiting or throttling, potentially leading to notification flooding and system resource exhaustion. An attacker generates a large number of security findings in a short time period, causing the system to send excessive notifications and potentially exhausting Lambda concurrency limits or SNS quotas.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement notification rate limiting and aggregation",
+      "recommendation: Add finding prioritization and filtering"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.kinesisfirehose",
+    "description": "Insecure Data Storage in Firehose and S3 Security findings and remediation data are stored in S3 via Kinesis Firehose without proper encryption configuration, potentially exposing sensitive security information. An attacker gains access to the S3 bucket or Kinesis Firehose and extracts sensitive security findings and system configuration data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Enable encryption for Kinesis Firehose and S3",
+      "recommendation: Implement disaster recovery for Firehose"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.kinesisfirehose",
+    "description": "Insecure Data Storage in Firehose and S3 Security findings and remediation data are stored in S3 via Kinesis Firehose without proper encryption configuration, potentially exposing sensitive security information. An attacker gains access to the S3 bucket or Kinesis Firehose and extracts sensitive security findings and system configuration data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-311",
+      "recommendation: Enable encryption for Kinesis Firehose and S3",
+      "recommendation: Implement disaster recovery for Firehose"
+    ]
+  },
+  {
+    "threat_id": "THREAT-008-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.kinesisfirehose",
+    "description": "Network Exposure of Internal Services Lambda functions and other services might be configured to access AWS services over the internet instead of using VPC endpoints, potentially exposing traffic to interception. An attacker monitors or intercepts traffic between Lambda functions and AWS services that is flowing through the internet instead of staying within the AWS network.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-300",
+      "recommendation: Implement VPC endpoints for AWS services",
+      "recommendation: Place Lambda functions in VPC with proper network controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-008-2",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.kinesisfirehose",
+    "description": "Network Exposure of Internal Services Lambda functions and other services might be configured to access AWS services over the internet instead of using VPC endpoints, potentially exposing traffic to interception. An attacker monitors or intercepts traffic between Lambda functions and AWS services that is flowing through the internet instead of staying within the AWS network.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-300",
+      "recommendation: Implement VPC endpoints for AWS services",
+      "recommendation: Place Lambda functions in VPC with proper network controls"
+    ]
+  }
+]

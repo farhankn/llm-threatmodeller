@@ -1,0 +1,209 @@
+[
+  {
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3_document_bucket",
+    "description": "Attackers may attempt to bypass access controls to directly access documents stored in S3 buckets, potentially leading to data breaches.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies and ensure all public access is blocked",
+      "recommendation: Implement VPC endpoints for S3 access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_s3_bucket.s3_document_bucket",
+    "description": "Attackers may attempt to bypass access controls to directly access documents stored in S3 buckets, potentially leading to data breaches.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement strict S3 bucket policies and ensure all public access is blocked",
+      "recommendation: Implement VPC endpoints for S3 access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Tampering",
+    "component": "aws_db_instance.rds_postgresql_database",
+    "description": "Attackers may attempt to inject malicious SQL code through document metadata fields that are stored in the RDS database.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-89",
+      "recommendation: Implement comprehensive input validation and sanitization",
+      "recommendation: Implement least privilege database access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.rds_postgresql_database",
+    "description": "Attackers may attempt to inject malicious SQL code through document metadata fields that are stored in the RDS database.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "owaspTop10: A03:2021-Injection",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-89",
+      "recommendation: Implement comprehensive input validation and sanitization",
+      "recommendation: Implement least privilege database access"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.cloudwatch_logs",
+    "description": "Document contents or PII might be inadvertently logged to CloudWatch Logs through application logging or Lambda function execution logs.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-532",
+      "recommendation: Implement log sanitization",
+      "recommendation: Enhance CloudWatch Logs security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.kms_keys",
+    "description": "Insufficient key rotation and management practices could lead to prolonged exposure if encryption keys are compromised.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.004 - Private Keys",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-320",
+      "recommendation: Implement automated key rotation",
+      "recommendation: Enhance secrets management"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.kms_keys",
+    "description": "Insufficient key rotation and management practices could lead to prolonged exposure if encryption keys are compromised.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.004 - Private Keys",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-320",
+      "recommendation: Implement automated key rotation",
+      "recommendation: Enhance secrets management"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Spoofing",
+    "component": "aws_db_instance.dynamodb_sessions_table",
+    "description": "Inadequate session management could allow attackers to hijack user sessions or perform replay attacks.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-384",
+      "recommendation: Implement secure session management",
+      "recommendation: Enhance session storage security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.dynamodb_sessions_table",
+    "description": "Inadequate session management could allow attackers to hijack user sessions or perform replay attacks.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "cwe: CWE-384",
+      "recommendation: Implement secure session management",
+      "recommendation: Enhance session storage security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.sqs_queue",
+    "description": "Race conditions in the document processing pipeline could lead to data corruption or processing errors.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A10:2021-Server-Side Request Forgery",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement proper concurrency controls",
+      "recommendation: Enhance processing pipeline reliability"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.sqs_queue",
+    "description": "Race conditions in the document processing pipeline could lead to data corruption or processing errors.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A10:2021-Server-Side Request Forgery",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-362",
+      "recommendation: Implement proper concurrency controls",
+      "recommendation: Enhance processing pipeline reliability"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.application_code",
+    "description": "Improper access controls on document references could allow unauthorized access to documents through URL manipulation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.001 - Credentials In Files",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-639",
+      "recommendation: Implement proper access control checks",
+      "recommendation: Enhance document reference security"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.application_code",
+    "description": "Improper access controls on document references could allow unauthorized access to documents through URL manipulation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.001 - Credentials In Files",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-639",
+      "recommendation: Implement proper access control checks",
+      "recommendation: Enhance document reference security"
+    ]
+  }
+]

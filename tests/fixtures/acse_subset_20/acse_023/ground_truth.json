@@ -1,0 +1,175 @@
+[
+  {
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.transitgateway",
+    "description": "Unauthorized Access to Cache Data via Transit Gateway Transit Gateway misconfiguration or compromise could allow attackers to intercept or modify cache data flowing between regions, potentially leading to data leakage or tampering. An attacker who gains access to the Transit Gateway's route tables could potentially redirect traffic to malicious endpoints or intercept cross-region cache synchronization data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict Transit Gateway route table controls",
+      "recommendation: Implement backup communication paths"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.transitgateway",
+    "description": "Unauthorized Access to Cache Data via Transit Gateway Transit Gateway misconfiguration or compromise could allow attackers to intercept or modify cache data flowing between regions, potentially leading to data leakage or tampering. An attacker who gains access to the Transit Gateway's route tables could potentially redirect traffic to malicious endpoints or intercept cross-region cache synchronization data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1210 - Exploitation of Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-284",
+      "recommendation: Implement strict Transit Gateway route table controls",
+      "recommendation: Implement backup communication paths"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.elasticache-primary",
+    "description": "Cache Data Leakage Through Misconfigured ElastiCache Security Groups Overly permissive security group rules could allow unauthorized EC2 instances or external actors to connect to ElastiCache clusters. An attacker who compromises an EC2 instance in one VPC might be able to access ElastiCache clusters in another VPC or region if security groups are not properly configured.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "cwe: CWE-732",
+      "recommendation: Implement strict security group rules",
+      "recommendation: Regular security group audit"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Tampering",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Cache Poisoning via CloudFront Attackers could potentially inject malicious content into the CloudFront cache by exploiting cache key manipulation or response header manipulation. An attacker could manipulate cache keys or headers to cause CloudFront to cache and serve malicious content to subsequent users requesting the same resource.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-444",
+      "recommendation: Implement CloudFront signed cookies",
+      "recommendation: Configure proper cache behaviors"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Denial of Service",
+    "component": "aws_cloudfront_distribution.cloudfront",
+    "description": "Cache Poisoning via CloudFront Attackers could potentially inject malicious content into the CloudFront cache by exploiting cache key manipulation or response header manipulation. An attacker could manipulate cache keys or headers to cause CloudFront to cache and serve malicious content to subsequent users requesting the same resource.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Tampering",
+      "stride: Denial of Service",
+      "cwe: CWE-444",
+      "recommendation: Implement CloudFront signed cookies",
+      "recommendation: Configure proper cache behaviors"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Tampering",
+    "component": "aws_lambda_function.rollbackhandlerlambda",
+    "description": "Race Conditions in Cache Rollback Operations Concurrent rollback operations across regions could lead to inconsistent cache states if proper synchronization mechanisms are not in place. During a rollback operation, simultaneous updates to cache clusters in different regions could result in data inconsistency or loss.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-362",
+      "recommendation: Implement distributed locking",
+      "recommendation: Region-specific rollback coordination"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_lambda_function.rollbackhandlerlambda",
+    "description": "Race Conditions in Cache Rollback Operations Concurrent rollback operations across regions could lead to inconsistent cache states if proper synchronization mechanisms are not in place. During a rollback operation, simultaneous updates to cache clusters in different regions could result in data inconsistency or loss.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "cwe: CWE-362",
+      "recommendation: Implement distributed locking",
+      "recommendation: Region-specific rollback coordination"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_route53_zone.route53",
+    "description": "DNS-Based Cache Overload Attackers could exploit DNS misconfigurations to direct excessive traffic to cache clusters, potentially overwhelming them. An attacker could manipulate DNS queries to flood cache clusters with requests, causing service degradation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1498.001 - Direct Network Flood",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Denial of Service",
+      "cwe: CWE-400",
+      "recommendation: Implement Route 53 DNS Firewall",
+      "recommendation: Configure DNS query rate limiting"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006",
+    "stride_category": "Information Disclosure",
+    "component": "aws_db_instance.applicationloadbalancer",
+    "description": "Insecure TLS Configuration in Load Balancers Weak TLS configurations or outdated protocols could allow attackers to intercept or modify traffic between clients and application servers. An attacker performing a man-in-the-middle attack could exploit weak TLS configurations to intercept sensitive data.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1040 - Network Sniffing",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Information Disclosure",
+      "cwe: CWE-326",
+      "recommendation: Enforce strong TLS configuration",
+      "recommendation: Regular TLS configuration audit"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.elasticache-primary",
+    "description": "Cross-Region Data Leakage Insufficient isolation between regions could allow data to leak across regional boundaries or enable unauthorized access to cache data from different regions. An attacker who compromises one region's resources could potentially access or modify cache data in other regions due to improper isolation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Implement strict regional isolation",
+      "recommendation: Regional data access controls"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007-2",
+    "stride_category": "Tampering",
+    "component": "aws_resource.elasticache-primary",
+    "description": "Cross-Region Data Leakage Insufficient isolation between regions could allow data to leak across regional boundaries or enable unauthorized access to cache data from different regions. An attacker who compromises one region's resources could potentially access or modify cache data in other regions due to improper isolation.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-200",
+      "recommendation: Implement strict regional isolation",
+      "recommendation: Regional data access controls"
+    ]
+  }
+]

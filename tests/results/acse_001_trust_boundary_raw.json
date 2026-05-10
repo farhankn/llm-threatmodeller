@@ -1,0 +1,94 @@
+[
+  {
+    "threat_id": "T-SPOOF-01",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.github_source_repo",
+    "description": "An attacker could spoof the GitHub source repository or intercept the webhook connection to AWS CodeStar, allowing them to inject malicious code into the CI/CD pipeline that ultimately deploys to App Runner.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": [
+      "aws_resource.aws_codestar",
+      "aws_resource.aws_codebuild"
+    ]
+  },
+  {
+    "threat_id": "T-TAMP-01",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "An attacker with compromised credentials or overly permissive IAM access could tamper with container images stored in the App Runner ECR repository, leading to the deployment of malicious containers to the App Runner service.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": [
+      "aws_resource.app_runner_service",
+      "aws_iam_role.iam_roles"
+    ]
+  },
+  {
+    "threat_id": "T-INFO-01",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "Secrets intended to be stored securely are at critical risk of exposure because the Secrets Manager resource is incorrectly provisioned as an ECR repository. This lacks the encryption, rotation, and fine-grained access controls inherent to AWS Secrets Manager.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Name Drift: The design document explicitly requires 'SecretsManager(\"Secrets\\nManager\")' under Security Services, but the IaC summary defines it as 'aws_ecr_repository.secrets_manager', indicating a severe resource type mismatch.",
+    "severity": "Critical",
+    "references": [
+      "aws_resource.app_runner_service"
+    ]
+  },
+  {
+    "threat_id": "T-DOS-01",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.network_load_balancer",
+    "description": "The Network Load Balancer, exposed to the public internet via Route 53, could be targeted by a volumetric DDoS attack or TCP SYN flood, exhausting the underlying Fargate tasks and causing a denial of service for legitimate clients.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "Medium",
+    "references": [
+      "aws_route53_zone.route_53",
+      "aws_resource.fargate_tasks"
+    ]
+  },
+  {
+    "threat_id": "T-EOP-01",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.fargate_tasks",
+    "description": "If a Fargate task is compromised via an application-layer vulnerability, an attacker could leverage overly permissive IAM roles attached to the task execution environment to elevate privileges and access KMS keys, Parameter Store values, or other AWS resources.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "High",
+    "references": [
+      "aws_iam_role.iam_roles",
+      "aws_resource.kms",
+      "aws_resource.parameter_store"
+    ]
+  },
+  {
+    "threat_id": "T-REP-01",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch_logs",
+    "description": "If CloudWatch Logs lack strict resource policies or integrity validation, an attacker who compromises the App Runner service could tamper with or delete application logs to cover their tracks, leading to repudiation of malicious actions.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": "",
+    "severity": "Medium",
+    "references": [
+      "aws_resource.app_runner_service",
+      "aws_iam_role.iam_roles"
+    ]
+  },
+  {
+    "threat_id": "T-INFO-02",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.customer_vpc",
+    "description": "Egress traffic from Fargate tasks routed through the Customer VPC could be intercepted or exfiltrated if VPC flow logs are disabled, or if the NAT Gateway and Internet Gateway are misconfigured to allow unauthorized outbound connections.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design document specifies 'Customer NAT Gateway' and 'Customer Internet Gateway' within the Customer VPC, but the IaC summary only contains generic 'aws_resource.nat_gateway' and 'aws_resource.internet_gateway' resources, making it unclear if the customer-specific egress path is properly isolated from the default App Runner networking.",
+    "severity": "Medium",
+    "references": [
+      "aws_resource.nat_gateway",
+      "aws_resource.internet_gateway",
+      "aws_resource.fargate_tasks"
+    ]
+  }
+]

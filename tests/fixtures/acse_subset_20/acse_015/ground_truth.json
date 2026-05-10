@@ -1,0 +1,230 @@
+[
+  {
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.ecr",
+    "description": "Container Image Vulnerabilities Attackers could exploit known vulnerabilities in container base images or dependencies to compromise the container runtime or escape container isolation. An attacker identifies a critical vulnerability in a base image used by one of the services. They exploit this to escape container isolation and gain access to the host or other containers.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1525 - Implant Internal Image",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1104",
+      "recommendation: Implement automated vulnerability scanning gates in CI/CD pipeline",
+      "recommendation: Implement automated container image updates"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.ecr",
+    "description": "Container Image Vulnerabilities Attackers could exploit known vulnerabilities in container base images or dependencies to compromise the container runtime or escape container isolation. An attacker identifies a critical vulnerability in a base image used by one of the services. They exploit this to escape container isolation and gain access to the host or other containers.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1525 - Implant Internal Image",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1104",
+      "recommendation: Implement automated vulnerability scanning gates in CI/CD pipeline",
+      "recommendation: Implement automated container image updates"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_ecr_repository.ecr",
+    "description": "Container Image Vulnerabilities Attackers could exploit known vulnerabilities in container base images or dependencies to compromise the container runtime or escape container isolation. An attacker identifies a critical vulnerability in a base image used by one of the services. They exploit this to escape container isolation and gain access to the host or other containers.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1525 - Implant Internal Image",
+      "owaspTop10: A06:2021-Vulnerable and Outdated Components",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-1104",
+      "recommendation: Implement automated vulnerability scanning gates in CI/CD pipeline",
+      "recommendation: Implement automated container image updates"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.ecs",
+    "description": "Insecure Container Identity Management ECS task roles provide coarse-grained permissions at the task level, which may not align with the principle of least privilege for individual containers. A compromised container could use its task role credentials to access resources beyond what it strictly needs, increasing the blast radius of the compromise.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-266",
+      "recommendation: Migrate to EKS with pod identity",
+      "recommendation: Implement strict IAM permissions boundaries"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.ecs",
+    "description": "Insecure Container Identity Management ECS task roles provide coarse-grained permissions at the task level, which may not align with the principle of least privilege for individual containers. A compromised container could use its task role credentials to access resources beyond what it strictly needs, increasing the blast radius of the compromise.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078.004 - Valid Accounts: Cloud Accounts",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-266",
+      "recommendation: Migrate to EKS with pod identity",
+      "recommendation: Implement strict IAM permissions boundaries"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Tampering",
+    "component": "aws_resource.alb",
+    "description": "Insecure Internal Communication Internal service communication is using HTTP without TLS encryption, making it vulnerable to interception and manipulation within the VPC. An attacker who gains access to the VPC network could intercept or modify traffic between services, potentially compromising sensitive data or injecting malicious payloads.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Enable TLS for ALB listeners",
+      "recommendation: Implement service mesh"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.alb",
+    "description": "Insecure Internal Communication Internal service communication is using HTTP without TLS encryption, making it vulnerable to interception and manipulation within the VPC. An attacker who gains access to the VPC network could intercept or modify traffic between services, potentially compromising sensitive data or injecting malicious payloads.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Enable TLS for ALB listeners",
+      "recommendation: Implement service mesh"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-3",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.alb",
+    "description": "Insecure Internal Communication Internal service communication is using HTTP without TLS encryption, making it vulnerable to interception and manipulation within the VPC. An attacker who gains access to the VPC network could intercept or modify traffic between services, potentially compromising sensitive data or injecting malicious payloads.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1557 - Man-in-the-Middle",
+      "owaspTop10: A02:2021-Cryptographic Failures",
+      "stride: Tampering",
+      "stride: Information Disclosure",
+      "stride: Spoofing",
+      "cwe: CWE-319",
+      "recommendation: Enable TLS for ALB listeners",
+      "recommendation: Implement service mesh"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.ecs",
+    "description": "Limited Service Scalability Services are deployed with fixed task counts and lack proper auto-scaling configurations, making them vulnerable to resource exhaustion. An attacker could overwhelm services with high traffic volume, causing degraded performance or complete service unavailability.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1499 - Endpoint Denial of Service",
+      "owaspTop10: A04:2021-Insecure Design",
+      "stride: Denial of Service",
+      "cwe: CWE-404",
+      "recommendation: Migrate to EKS with HPA",
+      "recommendation: Implement DoS protection"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "Insufficient Secrets Management Current implementation uses Secrets Manager but lacks automated rotation and may expose secrets longer than necessary. An attacker who gains access to a service could potentially access long-lived credentials that haven't been rotated.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.005 - Unsecured Credentials: Cloud Instance Metadata API",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Enable automatic secret rotation",
+      "recommendation: Implement dynamic secrets"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "Insufficient Secrets Management Current implementation uses Secrets Manager but lacks automated rotation and may expose secrets longer than necessary. An attacker who gains access to a service could potentially access long-lived credentials that haven't been rotated.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552.005 - Unsecured Credentials: Cloud Instance Metadata API",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-522",
+      "recommendation: Enable automatic secret rotation",
+      "recommendation: Implement dynamic secrets"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.vpc",
+    "description": "Inadequate Network Segmentation Current network segmentation might allow more communication between services than necessary, increasing the potential blast radius of a compromise. A compromised service could potentially communicate with other services or resources that it shouldn't have access to.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-1008",
+      "recommendation: Implement stricter security groups",
+      "recommendation: Implement network firewall"
+    ]
+  },
+  {
+    "threat_id": "THREAT-006-2",
+    "stride_category": "Tampering",
+    "component": "aws_vpc.vpc",
+    "description": "Inadequate Network Segmentation Current network segmentation might allow more communication between services than necessary, increasing the potential blast radius of a compromise. A compromised service could potentially communicate with other services or resources that it shouldn't have access to.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1046 - Network Service Discovery",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-1008",
+      "recommendation: Implement stricter security groups",
+      "recommendation: Implement network firewall"
+    ]
+  },
+  {
+    "threat_id": "THREAT-007",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch",
+    "description": "Insufficient Monitoring and Detection Current monitoring focuses on operational metrics but may miss security-relevant events and patterns. An attacker could perform malicious activities without detection due to gaps in security monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-223",
+      "recommendation: Enable AWS security services",
+      "recommendation: Implement centralized logging"
+    ]
+  }
+]

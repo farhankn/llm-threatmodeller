@@ -1,0 +1,179 @@
+[
+  {
+    "threat_id": "THREAT-001-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.redshiftcluster",
+    "description": "Insecure Secrets Management in Database Configurations Database credentials are either hardcoded (Redshift) or not automatically rotated (Aurora), making them vulnerable to compromise. If an attacker gains access to the CDK code or the credentials remain unchanged for extended periods, they could gain unauthorized database access. An attacker with access to the version control system could extract the hardcoded Redshift credentials. Similarly, compromised but unrotated Aurora credentials could provide prolonged unauthorized access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-798",
+      "recommendation: Move Redshift credentials to AWS Secrets Manager",
+      "recommendation: Enable automatic credential rotation for Aurora"
+    ]
+  },
+  {
+    "threat_id": "THREAT-001-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.redshiftcluster",
+    "description": "Insecure Secrets Management in Database Configurations Database credentials are either hardcoded (Redshift) or not automatically rotated (Aurora), making them vulnerable to compromise. If an attacker gains access to the CDK code or the credentials remain unchanged for extended periods, they could gain unauthorized database access. An attacker with access to the version control system could extract the hardcoded Redshift credentials. Similarly, compromised but unrotated Aurora credentials could provide prolonged unauthorized access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-798",
+      "recommendation: Move Redshift credentials to AWS Secrets Manager",
+      "recommendation: Enable automatic credential rotation for Aurora"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-1",
+    "stride_category": "Spoofing",
+    "component": "aws_vpc.datazonevpc",
+    "description": "Insufficient Network Isolation and Access Controls Services within the VPC may communicate with AWS services over the public internet instead of using VPC endpoints, increasing the attack surface and potential for man-in-the-middle attacks. An attacker could potentially intercept traffic between services and AWS APIs by exploiting the lack of VPC endpoints, or leverage public endpoints to attempt unauthorized access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement VPC Endpoints for all AWS services",
+      "recommendation: Restrict Security Group rules"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-2",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.datazonevpc",
+    "description": "Insufficient Network Isolation and Access Controls Services within the VPC may communicate with AWS services over the public internet instead of using VPC endpoints, increasing the attack surface and potential for man-in-the-middle attacks. An attacker could potentially intercept traffic between services and AWS APIs by exploiting the lack of VPC endpoints, or leverage public endpoints to attempt unauthorized access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement VPC Endpoints for all AWS services",
+      "recommendation: Restrict Security Group rules"
+    ]
+  },
+  {
+    "threat_id": "THREAT-002-3",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_vpc.datazonevpc",
+    "description": "Insufficient Network Isolation and Access Controls Services within the VPC may communicate with AWS services over the public internet instead of using VPC endpoints, increasing the attack surface and potential for man-in-the-middle attacks. An attacker could potentially intercept traffic between services and AWS APIs by exploiting the lack of VPC endpoints, or leverage public endpoints to attempt unauthorized access.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "mitreATT&CK: T1133 - External Remote Services",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Spoofing",
+      "stride: Information Disclosure",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-284",
+      "recommendation: Implement VPC Endpoints for all AWS services",
+      "recommendation: Restrict Security Group rules"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-1",
+    "stride_category": "Spoofing",
+    "component": "aws_iam_role.datazoneservicerole",
+    "description": "Inadequate IAM Controls and Authentication While basic IAM roles exist, they often use managed policies with broad permissions instead of principle of least privilege. Some components lack proper IAM configurations entirely. An attacker who compromises a service role could potentially access multiple resources due to overly permissive IAM policies.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement fine-grained IAM policies",
+      "recommendation: Implement resource-based policies"
+    ]
+  },
+  {
+    "threat_id": "THREAT-003-2",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.datazoneservicerole",
+    "description": "Inadequate IAM Controls and Authentication While basic IAM roles exist, they often use managed policies with broad permissions instead of principle of least privilege. Some components lack proper IAM configurations entirely. An attacker who compromises a service role could potentially access multiple resources due to overly permissive IAM policies.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1078 - Valid Accounts",
+      "mitreATT&CK: T1550 - Use Alternate Authentication Material",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A07:2021-Identification and Authentication Failures",
+      "stride: Spoofing",
+      "stride: Elevation of Privilege",
+      "cwe: CWE-287",
+      "recommendation: Implement fine-grained IAM policies",
+      "recommendation: Implement resource-based policies"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-1",
+    "stride_category": "Information Disclosure",
+    "component": "aws_s3_bucket.s3datalakecrawler",
+    "description": "Uncontrolled Data Access through Glue Crawlers Glue crawlers are configured to scan entire S3 buckets without path exclusions or proper access controls, potentially exposing sensitive data through the Glue Data Catalog. An attacker with access to the Glue Data Catalog could discover and access sensitive data that should not have been cataloged.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-732",
+      "recommendation: Implement crawler restrictions and exclusions",
+      "recommendation: Implement Lake Formation permissions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-004-2",
+    "stride_category": "Tampering",
+    "component": "aws_s3_bucket.s3datalakecrawler",
+    "description": "Uncontrolled Data Access through Glue Crawlers Glue crawlers are configured to scan entire S3 buckets without path exclusions or proper access controls, potentially exposing sensitive data through the Glue Data Catalog. An attacker with access to the Glue Data Catalog could discover and access sensitive data that should not have been cataloged.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1213 - Data from Information Repositories",
+      "owaspTop10: A01:2021-Broken Access Control",
+      "owaspTop10: A05:2021-Security Misconfiguration",
+      "stride: Information Disclosure",
+      "stride: Tampering",
+      "cwe: CWE-732",
+      "recommendation: Implement crawler restrictions and exclusions",
+      "recommendation: Implement Lake Formation permissions"
+    ]
+  },
+  {
+    "threat_id": "THREAT-005",
+    "stride_category": "Repudiation",
+    "component": "aws_vpc.datazonevpc",
+    "description": "Insufficient Monitoring and Audit Trail The architecture lacks proper audit trails and monitoring mechanisms, making it difficult to detect and respond to security incidents. An attacker could perform malicious activities without detection due to insufficient logging and monitoring.",
+    "discrepancy_flag": false,
+    "references": [
+      "mitreATT&CK: T1562 - Impair Defenses",
+      "mitreATT&CK: T1552 - Unsecured Credentials",
+      "owaspTop10: A09:2021-Security Logging and Monitoring Failures",
+      "stride: Repudiation",
+      "cwe: CWE-778",
+      "recommendation: Implement CloudTrail with CloudWatch integration",
+      "recommendation: Implement CloudWatch Synthetics canaries"
+    ]
+  }
+]

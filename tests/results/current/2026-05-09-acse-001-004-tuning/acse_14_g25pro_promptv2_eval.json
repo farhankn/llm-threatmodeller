@@ -1,0 +1,76 @@
+{
+  "run_id": "run_20260509_101303",
+  "timestamp": "2026-05-09T10:15:00.322079+00:00",
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "temperature": 0.0,
+  "include_docs": true,
+  "repeats": 1,
+  "scenario_results": [
+    {
+      "scenario_id": "ACSE_001_R1",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001",
+      "threats_generated": 8,
+      "ground_truth_threats": 11,
+      "tp": 6,
+      "fp": 2,
+      "fn": 5,
+      "precision": 0.75,
+      "recall": 0.5454545454545454,
+      "jaccard_index": 0.05555555555555555,
+      "ddr": 0.0,
+      "hallucination_rate": 0.0,
+      "stride_tfc_tp": 7,
+      "stride_tfc_total": 11,
+      "stride_tfc_recall": 0.6363636363636364,
+      "mitre_tfc_tp": 0,
+      "mitre_tfc_total": 13,
+      "mitre_tfc_recall": 0.0,
+      "matched_discrepancies": 0,
+      "planted_discrepancies": 0,
+      "exit_code": 0,
+      "latency_seconds": 56.254
+    },
+    {
+      "scenario_id": "ACSE_004_R1",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_004",
+      "exit_code": 1,
+      "error": "Error: LLM request failed after 3 attempts: Gemini request failed: HTTPSConnectionPool(host='aiplatform.googleapis.com', port=443): Read timed out. (read timeout=60.0)",
+      "latency_seconds": 60.319
+    }
+  ],
+  "pairwise_jaccard_by_fixture": {
+    "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "n_pairs": 0,
+      "matrix": [
+        [
+          1.0
+        ]
+      ]
+    }
+  },
+  "aggregate": {
+    "mean_precision": 0.75,
+    "mean_recall": 0.5454545454545454,
+    "mean_jaccard_index": 0.05555555555555555,
+    "mean_ddr": 0.0,
+    "mean_hallucination_rate": 0.0,
+    "mean_stride_tfc_recall": 0.6363636363636364,
+    "mean_mitre_tfc_recall": 0.0,
+    "micro_stride_tfc_recall": 0.6363636363636364,
+    "micro_mitre_tfc_recall": 0.0,
+    "mean_pairwise_jaccard": 0.0,
+    "min_pairwise_jaccard": 0.0,
+    "max_pairwise_jaccard": 0.0,
+    "pairwise_jaccard_pairs": 0,
+    "total_scenarios": 2,
+    "successful_scenarios": 1,
+    "failed_scenarios": 1,
+    "total_threats_generated": 8,
+    "total_ground_truth_threats": 11
+  }
+}
