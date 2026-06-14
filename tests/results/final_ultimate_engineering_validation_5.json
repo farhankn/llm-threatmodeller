@@ -1,0 +1,213 @@
+{
+  "run_id": "run_20260518_005236",
+  "timestamp": "2026-05-18T00:55:23.209298+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "temperature": 0.0,
+  "include_docs": true,
+  "repeats": 1,
+  "scenario_results": [
+    {
+      "scenario_id": "ACSE_001_R1",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001",
+      "threats_generated": 4,
+      "ground_truth_threats": 11,
+      "tp": 0,
+      "fp": 4,
+      "fn": 11,
+      "precision": 0.0,
+      "recall": 0.0,
+      "jaccard_index": 0.0,
+      "ddr": 0.0,
+      "hallucination_rate": 0.0,
+      "stride_tfc_tp": 4,
+      "stride_tfc_total": 11,
+      "stride_tfc_recall": 0.36363636363636365,
+      "mitre_tfc_tp": 2,
+      "mitre_tfc_total": 13,
+      "mitre_tfc_recall": 0.15384615384615385,
+      "matched_discrepancies": 0,
+      "planted_discrepancies": 0,
+      "exit_code": 0,
+      "latency_seconds": 33.33
+    },
+    {
+      "scenario_id": "ACSE_002_R1",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_002",
+      "threats_generated": 0,
+      "ground_truth_threats": 13,
+      "tp": 0,
+      "fp": 0,
+      "fn": 13,
+      "precision": 0.0,
+      "recall": 0.0,
+      "jaccard_index": 0.0,
+      "ddr": 0.0,
+      "hallucination_rate": 0.0,
+      "stride_tfc_tp": 0,
+      "stride_tfc_total": 13,
+      "stride_tfc_recall": 0.0,
+      "mitre_tfc_tp": 0,
+      "mitre_tfc_total": 13,
+      "mitre_tfc_recall": 0.0,
+      "matched_discrepancies": 0,
+      "planted_discrepancies": 0,
+      "exit_code": 0,
+      "latency_seconds": 23.166
+    },
+    {
+      "scenario_id": "ACSE_003_R1",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_003",
+      "threats_generated": 2,
+      "ground_truth_threats": 14,
+      "tp": 0,
+      "fp": 2,
+      "fn": 14,
+      "precision": 0.0,
+      "recall": 0.0,
+      "jaccard_index": 0.0,
+      "ddr": 0.0,
+      "hallucination_rate": 0.0,
+      "stride_tfc_tp": 0,
+      "stride_tfc_total": 14,
+      "stride_tfc_recall": 0.0,
+      "mitre_tfc_tp": 0,
+      "mitre_tfc_total": 14,
+      "mitre_tfc_recall": 0.0,
+      "matched_discrepancies": 0,
+      "planted_discrepancies": 0,
+      "exit_code": 0,
+      "latency_seconds": 44.904
+    },
+    {
+      "scenario_id": "ACSE_004_R1",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_004",
+      "threats_generated": 2,
+      "ground_truth_threats": 15,
+      "tp": 0,
+      "fp": 2,
+      "fn": 15,
+      "precision": 0.0,
+      "recall": 0.0,
+      "jaccard_index": 0.0,
+      "ddr": 0.0,
+      "hallucination_rate": 0.0,
+      "stride_tfc_tp": 2,
+      "stride_tfc_total": 15,
+      "stride_tfc_recall": 0.13333333333333333,
+      "mitre_tfc_tp": 1,
+      "mitre_tfc_total": 24,
+      "mitre_tfc_recall": 0.041666666666666664,
+      "matched_discrepancies": 0,
+      "planted_discrepancies": 0,
+      "exit_code": 0,
+      "latency_seconds": 39.642
+    },
+    {
+      "scenario_id": "ACSE_005_R1",
+      "fixture_path": "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_005",
+      "threats_generated": 0,
+      "ground_truth_threats": 11,
+      "tp": 0,
+      "fp": 0,
+      "fn": 11,
+      "precision": 0.0,
+      "recall": 0.0,
+      "jaccard_index": 0.0,
+      "ddr": 0.0,
+      "hallucination_rate": 0.0,
+      "stride_tfc_tp": 0,
+      "stride_tfc_total": 11,
+      "stride_tfc_recall": 0.0,
+      "mitre_tfc_tp": 0,
+      "mitre_tfc_total": 19,
+      "mitre_tfc_recall": 0.0,
+      "matched_discrepancies": 0,
+      "planted_discrepancies": 0,
+      "exit_code": 0,
+      "latency_seconds": 26.042
+    }
+  ],
+  "pairwise_jaccard_by_fixture": {
+    "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_001": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "n_pairs": 0,
+      "matrix": [
+        [
+          1.0
+        ]
+      ]
+    },
+    "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_002": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "n_pairs": 0,
+      "matrix": [
+        [
+          1.0
+        ]
+      ]
+    },
+    "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_003": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "n_pairs": 0,
+      "matrix": [
+        [
+          1.0
+        ]
+      ]
+    },
+    "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_004": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "n_pairs": 0,
+      "matrix": [
+        [
+          1.0
+        ]
+      ]
+    },
+    "/Users/farhan/Mainproject/code/llm-threatmodeller/tests/fixtures/acse/acse_005": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "n_pairs": 0,
+      "matrix": [
+        [
+          1.0
+        ]
+      ]
+    }
+  },
+  "aggregate": {
+    "mean_precision": 0.0,
+    "mean_recall": 0.0,
+    "mean_jaccard_index": 0.0,
+    "mean_ddr": 0.0,
+    "mean_hallucination_rate": 0.0,
+    "mean_stride_tfc_recall": 0.0993939393939394,
+    "mean_mitre_tfc_recall": 0.0391025641025641,
+    "micro_stride_tfc_recall": 0.09375,
+    "micro_mitre_tfc_recall": 0.03614457831325301,
+    "mean_pairwise_jaccard": 0.0,
+    "min_pairwise_jaccard": 0.0,
+    "max_pairwise_jaccard": 0.0,
+    "pairwise_jaccard_pairs": 0,
+    "total_scenarios": 5,
+    "successful_scenarios": 5,
+    "failed_scenarios": 0,
+    "total_threats_generated": 8,
+    "total_ground_truth_threats": 64
+  }
+}

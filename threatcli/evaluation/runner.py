@@ -61,6 +61,9 @@ def run_experiment(
     progress_file: Path | None = None,
     threat_log_dir: Path | None = None,
     dedupe_threats: bool = True,
+    strict_grounding: bool = False,
+    mode: str = "balanced",
+    timeout: float = 120.0,
 ) -> dict[str, Any]:
     run_id = f"run_{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}"
     scenario_results: list[dict[str, Any]] = []
@@ -121,6 +124,10 @@ def run_experiment(
             ]
             if not dedupe_threats:
                 command.append("--no-dedupe-threats")
+            if strict_grounding:
+                command.append("--strict-grounding")
+            command.extend(["--mode", mode])
+            command.extend(["--timeout", str(timeout)])
             if model:
                 command.extend(["--model", model])
             if include_docs:
@@ -297,6 +304,8 @@ def run_experiment(
         "mean_mitre_tfc_recall": _mean_or_zero([item["mitre_tfc_recall"] for item in successful]),
         "micro_stride_tfc_recall": (total_stride_tp / total_stride) if total_stride else 0.0,
         "micro_mitre_tfc_recall": (total_mitre_tp / total_mitre) if total_mitre else 0.0,
+        "mean_latency_seconds": _mean_or_zero([item.get("latency_seconds", 0.0) for item in successful]),
+        "total_latency_seconds": sum(item.get("latency_seconds", 0.0) for item in successful),
         "mean_pairwise_jaccard": _mean_or_zero(all_pairwise_scores),
         "min_pairwise_jaccard": min(all_pairwise_scores) if all_pairwise_scores else 0.0,
         "max_pairwise_jaccard": max(all_pairwise_scores) if all_pairwise_scores else 0.0,

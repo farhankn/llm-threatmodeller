@@ -1,0 +1,81 @@
+[
+  {
+    "threat_id": "T-001",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "The ECR repository lacks image scanning configuration. Malicious or vulnerable container images could be pushed and deployed to App Runner, leading to container compromise.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr (image_scanning_configuration missing)",
+      "mitreATT&CK: T1204.003 - User Execution: Malicious Image",
+      "cwe: CWE-693 - Protection Mechanism Failure",
+      "owaspTop10: A06:2021 - Vulnerable and Outdated Components"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-003",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "The infrastructure code provisions an ECR repository named 'secrets_manager' instead of an actual AWS Secrets Manager resource. Storing secrets in a container registry instead of a dedicated secrets management service exposes sensitive credentials.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design document specifies AWS Secrets Manager for secret storage, but the Terraform summary provisions an aws_ecr_repository named 'secrets_manager'.",
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.secrets_manager (type mismatch)",
+      "mitreATT&CK: T1552 - Forged Web Credentials",
+      "cwe: CWE-522 - Insufficiently Protected Credentials",
+      "owaspTop10: A02:2021 - Cryptographic Failures"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-004",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_security_group.security_groups",
+    "description": "The security group lacks explicit ingress and egress rule definitions in the IaC, which may default to overly permissive rules (e.g., 0.0.0.0/0), allowing unauthorized network access to the Fargate tasks or App Runner service.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_security_group.security_groups (ingress/egress rules missing)",
+      "mitreATT&CK: T1190 - Exploit Public-Facing Application",
+      "cwe: CWE-284 - Improper Access Control",
+      "owaspTop10: A05:2021 - Security Misconfiguration"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-002",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.customer_ecr",
+    "description": "The ECR repository does not have KMS encryption configured. Container images are stored using default encryption rather than customer-managed keys, increasing the risk of data exposure if the registry is compromised.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_ecr_repository.customer_ecr (encryption_configuration missing)",
+      "mitreATT&CK: T1530 - Data from Cloud Storage Object",
+      "cwe: CWE-311 - Missing Encryption of Sensitive Data",
+      "owaspTop10: A02:2021 - Cryptographic Failures"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-005",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.network_load_balancer",
+    "description": "The Network Load Balancer does not have AWS WAF or Shield Advanced associated, leaving the application vulnerable to volumetric DDoS attacks or application-layer exploits.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.network_load_balancer (WAF/Shield missing)",
+      "mitreATT&CK: T1498 - Network Denial of Service",
+      "cwe: CWE-400 - Uncontrolled Resource Consumption"
+    ],
+    "_confidence_score": 0.9
+  }
+]

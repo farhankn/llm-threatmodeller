@@ -1,0 +1,353 @@
+[
+  {
+    "threat_id": "THR-001",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "The App Runner ECR repository does not have image tag mutability set to IMMUTABLE. This allows attackers with push access to overwrite existing image tags with malicious images, compromising the deployment pipeline.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr.image_tag_mutability (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-002",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "The ECR repository lacks explicit KMS encryption configuration. Images are encrypted with default AWS managed keys instead of customer-managed keys, reducing control over data access.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr.encryption_configuration (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-003",
+    "stride_category": "Spoofing",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "Image scanning on push is not enabled for the ECR repository. This allows spoofed or vulnerable images to be pushed and subsequently deployed without automated detection.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr.image_scanning_configuration (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-004",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.customer_ecr",
+    "description": "The Customer ECR repository lacks image tag mutability controls, risking unauthorized image replacement by malicious actors.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.customer_ecr.image_tag_mutability (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-005",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.customer_ecr",
+    "description": "The Customer ECR repository lacks explicit encryption configuration, potentially exposing proprietary container images if default encryption is bypassed.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_ecr_repository.customer_ecr.encryption_configuration (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-006",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_roles",
+    "description": "IAM roles may have overly permissive assume role policies (e.g., allowing '*' or broad AWS services) without external ID or condition keys, leading to privilege escalation.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Critical",
+    "references": [
+      "aws_iam_role.iam_roles.assume_role_policy (missing strict conditions)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-007",
+    "stride_category": "Spoofing",
+    "component": "aws_iam_role.iam_roles",
+    "description": "IAM roles lack MFA requirements in their assume role policies, allowing compromised credentials to easily spoof identities and assume roles.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_iam_role.iam_roles.assume_role_policy (missing MFA condition)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-008",
+    "stride_category": "Information Disclosure",
+    "component": "aws_security_group.security_groups",
+    "description": "Security groups may contain overly broad ingress rules (e.g., '0.0.0.0/0') on sensitive ports, exposing internal services to the internet.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Critical",
+    "references": [
+      "aws_security_group.security_groups.ingress (missing strict CIDR)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-009",
+    "stride_category": "Denial of Service",
+    "component": "aws_security_group.security_groups",
+    "description": "Broad ingress rules allow volumetric network attacks against the App Runner or Fargate tasks, potentially causing resource exhaustion.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_security_group.security_groups.ingress (0.0.0.0/0)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-010",
+    "stride_category": "Spoofing",
+    "component": "aws_security_group.security_groups",
+    "description": "Lack of strict egress rules allows compromised instances to spoof outbound traffic or communicate with external Command and Control (C2) servers.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_security_group.security_groups.egress (missing strict CIDR)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-011",
+    "stride_category": "Repudiation",
+    "component": "aws_vpc.customer_vpc",
+    "description": "VPC Flow Logs are not explicitly enabled, preventing network traffic auditing and leading to repudiation of network-based attacks.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_vpc.customer_vpc.enable_flow_logs (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-012",
+    "stride_category": "Tampering",
+    "component": "aws_vpc.customer_vpc",
+    "description": "The default security group of the VPC is not explicitly restricted, allowing unintended traffic if resources are accidentally attached to it.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_vpc.customer_vpc.default_security_group_id (unrestricted)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-013",
+    "stride_category": "Spoofing",
+    "component": "aws_route53_zone.route_53",
+    "description": "DNSSEC is not enabled on the Route 53 hosted zone, allowing DNS spoofing or cache poisoning attacks against the application's domain.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_route53_zone.route_53.dnssec_config (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-014",
+    "stride_category": "Tampering",
+    "component": "aws_route53_zone.route_53",
+    "description": "Lack of query logging on Route 53 prevents detection of unauthorized DNS modifications or anomalous queries.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Low",
+    "references": [
+      "aws_route53_zone.route_53.query_logging_config (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-015",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "The design document specifies AWS Secrets Manager for secret storage, but the IaC provisions an ECR repository named 'secrets_manager'. This discrepancy means secrets might be stored improperly as container images or lack proper KMS encryption and rotation capabilities.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Design specifies 'SecretsManager(\"Secrets\\nManager\")' but IaC provisions 'aws_ecr_repository.secrets_manager'.",
+    "severity": "Critical",
+    "references": [
+      "aws_ecr_repository.secrets_manager.encryption_configuration (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-016",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.app_runner_service",
+    "description": "App Runner service lacks explicit auto-scaling configuration limits, potentially leading to resource exhaustion or cost DoS during traffic spikes.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.app_runner_service.auto_scaling_configuration_arn (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-017",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.app_runner_service",
+    "description": "App Runner service might be publicly accessible without a Web Application Firewall (WAF) to filter malicious requests, exposing application vulnerabilities.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.app_runner_service.network_configuration (missing WAF)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-018",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.fargate_tasks",
+    "description": "Fargate tasks may be running with an overly permissive execution role, allowing container breakouts to access broader AWS resources.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Critical",
+    "references": [
+      "aws_resource.fargate_tasks.execution_role_arn (overly permissive)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-019",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.fargate_tasks",
+    "description": "Fargate tasks might be deployed in public subnets instead of private subnets, exposing them directly to the internet.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.fargate_tasks.network_configuration.subnets (public)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-020",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.network_load_balancer",
+    "description": "Network Load Balancer lacks TLS listeners, transmitting data in plaintext between the client and the NLB.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Critical",
+    "references": [
+      "aws_resource.network_load_balancer.listener (missing TLS)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-021",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.network_load_balancer",
+    "description": "NLB is not protected by AWS Shield Advanced or strict rate limiting, making it susceptible to large-scale DDoS attacks.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.network_load_balancer.enable_deletion_protection (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-022",
+    "stride_category": "Tampering",
+    "component": "aws_resource.cloudwatch_logs",
+    "description": "CloudWatch log groups are not encrypted with a customer-managed KMS key, allowing potential tampering or unauthorized access by AWS admins.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.cloudwatch_logs.kms_key_id (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-023",
+    "stride_category": "Repudiation",
+    "component": "aws_resource.cloudwatch_logs",
+    "description": "CloudWatch log groups lack a defined retention period, potentially leading to logs being deleted too soon or kept indefinitely without compliance checks.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Low",
+    "references": [
+      "aws_resource.cloudwatch_logs.retention_in_days (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-024",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.kms",
+    "description": "KMS key policy may allow overly broad administrative access, enabling privilege escalation by modifying key permissions.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.kms.policy (overly permissive)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-025",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.parameter_store",
+    "description": "Parameter Store parameters may be created as String instead of SecureString, exposing sensitive configuration data in plaintext.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.parameter_store.type (String instead of SecureString)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-026",
+    "stride_category": "Tampering",
+    "component": "aws_resource.aws_codebuild",
+    "description": "CodeBuild project is not configured to run within a VPC, exposing the build environment to the public internet and increasing the risk of tampering during the build process.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.aws_codebuild.vpc_config (missing)"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "THR-027",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.aws_codestar",
+    "description": "CodeStar connections to GitHub may lack proper webhook secret validation, allowing attackers to spoof repository events and trigger unauthorized builds.",
+    "discrepancy_flag": false,
+    "discrepancy_detail": null,
+    "severity": "High",
+    "references": [
+      "aws_resource.aws_codestar.webhook_secret (missing)"
+    ],
+    "_confidence_score": 0.9
+  }
+]

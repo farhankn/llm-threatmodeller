@@ -1,0 +1,377 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R 7 0 R] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 9 0 R /F2 10 0 R /F3 11 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 839 >>
+stream
+BT
+/F2 18 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 760 Tm
+(Threat Modeling Report) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 744 Tm
+() Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 728 Tm
+(Generated: 2026-05-25T12:47:48+00:00) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 712 Tm
+(Tool Version: 0.1.0) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 696 Tm
+(Provider/Model: gemini / gemini-3.1-pro-preview) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 680 Tm
+() Tj
+/F2 12 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 664 Tm
+(IaC Inputs) Tj
+/F3 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 648 Tm
+(- tests/fixtures/acse/acse_030/main.tf) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 632 Tm
+() Tj
+/F2 12 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 616 Tm
+(Design Documents) Tj
+/F3 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 600 Tm
+(- tests/fixtures/acse/acse_030/design.md) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 9 0 R /F2 10 0 R /F3 11 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 4794 >>
+stream
+BT
+/F2 16 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 760 Tm
+(Executive Summary) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 744 Tm
+() Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 728 Tm
+(Total Threats: 27) Tj
+/F1 11 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 712 Tm
+(Discrepancies Flagged: 6) Tj
+/F2 12 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 696 Tm
+(Severity Breakdown) Tj
+/F1 11 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 680 Tm
+(- Critical: 7) Tj
+/F1 11 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 664 Tm
+(- High: 14) Tj
+/F1 11 Tf
+0.600 0.350 0.000 rg
+1 0 0 1 54 648 Tm
+(- Medium: 5) Tj
+/F1 11 Tf
+0.000 0.450 0.000 rg
+1 0 0 1 54 632 Tm
+(- Low: 1) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 616 Tm
+(- Unspecified: 0) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 600 Tm
+() Tj
+/F2 16 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 584 Tm
+(Threat Table) Tj
+/F3 10 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 568 Tm
+(ID | STRIDE | Component | Severity | Discrepancy) Tj
+/F3 10 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 552 Tm
+(-----------------------------------------------------------------------------------------------) Tj
+/F3 10 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 536 Tm
+(T-001 | Information Disclosure | aws_s3_bucket.aws-s3-emailarchivebucket | [Critical] | No) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 520 Tm
+(T-002 | Tampering | aws_s3_bucket.aws-s3-emailarchivebucket | [High] | No) Tj
+/F3 10 Tf
+0.000 0.450 0.000 rg
+1 0 0 1 54 504 Tm
+(T-003 | Denial of Service | aws_s3_bucket.aws-s3-emailarchivebucket | [Low] | No) Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 488 Tm
+(T-004 | Spoofing | aws_db_instance.aws-dynamodb-metricsstore | [High] | Yes) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 472 Tm
+(T-005 | Information Disclosure | aws_db_instance.aws-dynamodb-metricsstore | [High] | No) Tj
+/F3 10 Tf
+0.600 0.350 0.000 rg
+1 0 0 1 54 456 Tm
+(T-006 | Tampering | aws_db_instance.aws-dynamodb-metricsstore | [Medium] | No) Tj
+/F3 10 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 440 Tm
+(T-007 | Elevation of Privilege | aws_resource.aws-elasticbeanstalk-adminpanel | [Critical] |) Tj
+/F3 10 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 424 Tm
+(No) Tj
+/F3 10 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 408 Tm
+(T-008 | Spoofing | aws_resource.aws-elasticbeanstalk-adminpanel | [Critical] | No) Tj
+/F3 10 Tf
+0.600 0.350 0.000 rg
+1 0 0 1 54 392 Tm
+(T-009 | Denial of Service | aws_resource.aws-elasticbeanstalk-adminpanel | [Medium] | No) Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 376 Tm
+(T-010 | Information Disclosure | aws_resource.aws-elasticbeanstalk-adminpanel | [High] | Yes) Tj
+/F3 10 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 360 Tm
+(T-011 | Elevation of Privilege | aws_lambda_function.aws-lambda-emailprocessor | [Critical] |) Tj
+/F3 10 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 344 Tm
+(No) Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 328 Tm
+(T-015 | Denial of Service | aws_lambda_function.aws-lambda-emailprocessor | [Medium] | Yes) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 312 Tm
+(T-013 | Information Disclosure | aws_lambda_function.aws-lambda-emailprocessor | [High] | No) Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 296 Tm
+(T-014 | Tampering | aws_lambda_function.aws-lambda-emailprocessor | [High] | Yes) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 280 Tm
+(T-016 | Elevation of Privilege | aws_lambda_function.aws-lambda-notificationmanager | [High] |) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 264 Tm
+(No) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 248 Tm
+(T-017 | Spoofing | aws_lambda_function.aws-lambda-notificationmanager | [High] | No) Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 232 Tm
+(T-018 | Denial of Service | aws_lambda_function.aws-lambda-notificationmanager | [Medium] |) Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 216 Tm
+(Yes) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 200 Tm
+(T-019 | Information Disclosure | aws_resource.aws-sqs-emailqueue | [High] | No) Tj
+/F3 10 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 184 Tm
+(T-020 | Spoofing | aws_resource.aws-sqs-emailqueue | [Critical] | No) Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 168 Tm
+(T-021 | Denial of Service | aws_resource.aws-sqs-emailqueue | [High] | Yes) Tj
+/F3 10 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 152 Tm
+(T-022 | Elevation of Privilege | aws_resource.aws-sqs-emailqueue | [Critical] | No) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 136 Tm
+(T-023 | Spoofing | aws_resource.aws-ses | [High] | No) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 120 Tm
+(T-024 | Denial of Service | aws_resource.aws-ses | [High] | No) Tj
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 104 Tm
+(T-025 | Information Disclosure | aws_resource.aws-ses | [High] | No) Tj
+/F3 10 Tf
+0.600 0.350 0.000 rg
+1 0 0 1 54 88 Tm
+(T-026 | Spoofing | aws_route53_zone.aws-route53 | [Medium] | No) Tj
+/F3 10 Tf
+0.650 0.000 0.000 rg
+1 0 0 1 54 72 Tm
+(T-027 | Tampering | aws_route53_zone.aws-route53 | [Critical] | No) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 9 0 R /F2 10 0 R /F3 11 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 2313 >>
+stream
+BT
+/F3 10 Tf
+0.750 0.000 0.000 rg
+1 0 0 1 54 760 Tm
+(T-028 | Spoofing | aws_resource.aws-acm | [High] | No) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 744 Tm
+() Tj
+/F2 16 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 728 Tm
+(Discrepancy Details) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 712 Tm
+() Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 696 Tm
+(T-004 | Spoofing | aws_db_instance.aws-dynamodb-metricsstore) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 680 Tm
+(Design specifies DynamoDB \('Metrics Store'\), but IaC provisions an aws_db_instance \(RDS\).) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 664 Tm
+() Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 648 Tm
+(T-010 | Information Disclosure | aws_resource.aws-elasticbeanstalk-adminpanel) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 632 Tm
+(Design specifies a 'Load Balancer' \(ELB\) routing traffic, but it is missing from the IaC) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 616 Tm
+(summary.) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 600 Tm
+() Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 584 Tm
+(T-015 | Denial of Service | aws_lambda_function.aws-lambda-emailprocessor) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 568 Tm
+(Design specifies an 'Email Events Stream' \(Kinesis\), but it is missing from the IaC summary.) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 552 Tm
+() Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 536 Tm
+(T-014 | Tampering | aws_lambda_function.aws-lambda-emailprocessor) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 520 Tm
+(Design specifies an 'Email Templates' S3 bucket, but it is missing from the IaC summary.) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 504 Tm
+() Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 488 Tm
+(T-018 | Denial of Service | aws_lambda_function.aws-lambda-notificationmanager) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 472 Tm
+(Design specifies a 'Notifications' SNS topic, but it is missing from the IaC summary.) Tj
+/F1 11 Tf
+0.000 0.000 0.000 rg
+1 0 0 1 54 456 Tm
+() Tj
+/F3 10 Tf
+0.850 0.550 0.000 rg
+1 0 0 1 54 440 Tm
+(T-021 | Denial of Service | aws_resource.aws-sqs-emailqueue) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 424 Tm
+(Design specifies a 'Dead Letter Queue' for failed processing, but it is missing from the IaC) Tj
+/F1 11 Tf
+0.200 0.200 0.200 rg
+1 0 0 1 54 408 Tm
+(summary.) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+10 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+11 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+xref
+0 12
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000127 00000 n 
+0000000275 00000 n 
+0000001164 00000 n 
+0000001312 00000 n 
+0000006157 00000 n 
+0000006305 00000 n 
+0000008669 00000 n 
+0000008739 00000 n 
+0000008815 00000 n 
+trailer
+<< /Size 12 /Root 1 0 R >>
+startxref
+8884
+%%EOF

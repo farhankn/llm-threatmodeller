@@ -1,0 +1,14 @@
+{
+  "run_id": "run_20260517_211208",
+  "timestamp": "2026-05-17T23:04:50.207008+00:00",
+  "provider": "gemini",
+  "model": "gemini-3.1-pro-preview",
+  "total_scenarios": 100,
+  "completed_scenarios": 100,
+  "successful_scenarios": 98,
+  "failed_scenarios": 2,
+  "last_scenario_id": null,
+  "last_exit_code": null,
+  "last_error": null,
+  "done": true
+}

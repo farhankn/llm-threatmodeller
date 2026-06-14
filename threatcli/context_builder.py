@@ -29,7 +29,8 @@ def build_iac_prompt(
 ) -> dict[str, str]:
     """Build the system/user message pair for IaC-only threat analysis."""
     system_prompt = system_prompt_path.read_text(encoding="utf-8").strip()
-    summary = serialize_resource_map(resource_map)
+    # Pass a huge char_budget because we are managing token truncation here
+    summary = serialize_resource_map(resource_map, char_budget=999999)
 
     working_map = copy.deepcopy(resource_map)
     truncation_steps: list[str] = []
@@ -60,7 +61,9 @@ def build_iac_prompt(
         if not changed:
             break
 
-        summary = serialize_resource_map(working_map)
+        # Pass a huge char_budget because we are managing token truncation here
+        # and don't want serialize_resource_map to double-truncate.
+        summary = serialize_resource_map(working_map, char_budget=999999)
 
     if truncation_steps:
         warnings.warn(

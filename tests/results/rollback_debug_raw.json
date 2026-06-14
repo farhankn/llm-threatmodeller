@@ -1,0 +1,340 @@
+[
+  {
+    "threat_id": "T-002",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.aws_codebuild",
+    "description": "CodeBuild service role may possess overly broad permissions (e.g., wildcard access to ECR or IAM), allowing privilege escalation during the build process.",
+    "discrepancy_flag": false,
+    "severity": "Critical",
+    "references": [
+      "aws_resource.aws_codebuild"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-013",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_iam_role.iam_roles",
+    "description": "IAM roles may contain wildcard '*' permissions in their inline or attached policies, allowing broad privilege escalation across the AWS account.",
+    "discrepancy_flag": false,
+    "severity": "Critical",
+    "references": [
+      "aws_iam_role.iam_roles"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-020",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.secrets_manager",
+    "description": "Secrets Manager is incorrectly provisioned as an ECR repository in the IaC, which will fail to provide secret encryption, rotation, and access controls, leading to secret exposure.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "The design document specifies AWS Secrets Manager, but the Terraform summary defines an 'aws_ecr_repository' named 'secrets_manager'.",
+    "severity": "Critical",
+    "references": [
+      "aws_ecr_repository.secrets_manager"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-001",
+    "stride_category": "Tampering",
+    "component": "aws_resource.aws_codebuild",
+    "description": "CodeBuild artifacts and build logs may not be encrypted with a customer-managed KMS key, allowing unauthorized modification or exposure.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.aws_codebuild"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-003",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.aws_codestar",
+    "description": "CodeStar connections to GitHub may lack strict IAM condition keys, allowing unauthorized AWS accounts or roles to hijack the connection.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.aws_codestar"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-004",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "The ECR repository may lack immutable tags, allowing an attacker with push access to overwrite existing image tags with malicious container images.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-006",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.app_runner_service",
+    "description": "App Runner service lacks AWS WAF integration, leaving the application vulnerable to Layer 7 HTTP floods and application-layer attacks.",
+    "discrepancy_flag": true,
+    "discrepancy_detail": "Design shows an L7 Request Router but does not specify WAF protection for the App Runner service.",
+    "severity": "High",
+    "references": [
+      "aws_resource.app_runner_service"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-007",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.app_runner_service",
+    "description": "App Runner service configuration may expose sensitive environment variables in plaintext instead of referencing Secrets Manager ARNs.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.app_runner_service"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-009",
+    "stride_category": "Tampering",
+    "component": "aws_ecr_repository.customer_ecr",
+    "description": "The customer ECR repository may lack 'scan on push' configuration, allowing the deployment of container images with known critical vulnerabilities.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.customer_ecr"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-011",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.fargate_tasks",
+    "description": "Fargate tasks may be configured to run as the root user, increasing the impact of a container escape vulnerability.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.fargate_tasks"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-014",
+    "stride_category": "Spoofing",
+    "component": "aws_iam_role.iam_roles",
+    "description": "IAM AssumeRole trust policies may lack 'ExternalId' or 'MFA' conditions, making them susceptible to confused deputy attacks or unauthorized assumption.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_iam_role.iam_roles"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-015",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_resource.kms",
+    "description": "KMS key policies may allow overly broad administrative access (e.g., 'kms:*' to root), enabling unauthorized users to modify key policies or schedule deletion.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.kms"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-016",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.network_load_balancer",
+    "description": "The Network Load Balancer may use outdated TLS security policies or weak ciphers, allowing man-in-the-middle attacks to decrypt traffic.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.network_load_balancer"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-018",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.parameter_store",
+    "description": "Parameter Store may use 'String' instead of 'SecureString' for sensitive configuration data, exposing secrets in plaintext to anyone with read access.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.parameter_store"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-021",
+    "stride_category": "Information Disclosure",
+    "component": "aws_security_group.security_groups",
+    "description": "Security groups may contain overly broad ingress rules (e.g., 0.0.0.0/0 on sensitive ports), exposing internal services to the public internet.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_security_group.security_groups"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-022",
+    "stride_category": "Tampering",
+    "component": "aws_security_group.security_groups",
+    "description": "Security groups may allow unrestricted egress (0.0.0.0/0), facilitating data exfiltration or command-and-control (C2) communication if a container is compromised.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_security_group.security_groups"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-023",
+    "stride_category": "Tampering",
+    "component": "aws_resource.github_source_repo",
+    "description": "The GitHub source repository may lack branch protection rules and signed commit requirements, allowing unauthorized code changes to be merged and deployed.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.github_source_repo"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-024",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.fargate_tasks",
+    "description": "Fargate tasks may share a single IAM task role instead of using least-privilege per-task roles, allowing a compromised task to access resources intended for other tasks.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.fargate_tasks"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-026",
+    "stride_category": "Spoofing",
+    "component": "aws_resource.app_runner_service",
+    "description": "App Runner service may not enforce mutual TLS (mTLS) or strict IAM authentication for incoming requests, allowing unauthorized clients to invoke the service.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_resource.app_runner_service"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-027",
+    "stride_category": "Elevation of Privilege",
+    "component": "aws_ecr_repository.customer_ecr",
+    "description": "The customer ECR repository policy may be overly permissive, allowing unintended cross-account access to push or pull images.",
+    "discrepancy_flag": false,
+    "severity": "High",
+    "references": [
+      "aws_ecr_repository.customer_ecr"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-005",
+    "stride_category": "Information Disclosure",
+    "component": "aws_ecr_repository.app_runner_ecr",
+    "description": "The ECR repository may not enforce KMS encryption at rest, potentially exposing proprietary source code and container layers if underlying storage is compromised.",
+    "discrepancy_flag": false,
+    "severity": "Medium",
+    "references": [
+      "aws_ecr_repository.app_runner_ecr"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-008",
+    "stride_category": "Tampering",
+    "component": "aws_resource.cloudwatch_logs",
+    "description": "CloudWatch log groups may lack KMS encryption and strict IAM resource policies, allowing unauthorized users to tamper with or delete audit logs.",
+    "discrepancy_flag": false,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.cloudwatch_logs"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-010",
+    "stride_category": "Information Disclosure",
+    "component": "aws_vpc.customer_vpc",
+    "description": "The customer VPC may lack VPC Flow Logs, hindering network visibility, incident response, and the detection of unauthorized data exfiltration.",
+    "discrepancy_flag": false,
+    "severity": "Medium",
+    "references": [
+      "aws_vpc.customer_vpc"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-012",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.fargate_tasks",
+    "description": "Fargate tasks may lack encrypted ephemeral storage, potentially exposing sensitive data written to disk during task execution.",
+    "discrepancy_flag": false,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.fargate_tasks"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-017",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.network_load_balancer",
+    "description": "The Network Load Balancer may lack AWS Shield Advanced protection, leaving the infrastructure vulnerable to volumetric DDoS attacks.",
+    "discrepancy_flag": false,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.network_load_balancer"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-019",
+    "stride_category": "Spoofing",
+    "component": "aws_route53_zone.route_53",
+    "description": "The Route 53 hosted zone may lack DNSSEC signing, allowing attackers to perform DNS spoofing or cache poisoning attacks against clients.",
+    "discrepancy_flag": false,
+    "severity": "Medium",
+    "references": [
+      "aws_route53_zone.route_53"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-028",
+    "stride_category": "Information Disclosure",
+    "component": "aws_resource.internet_gateway",
+    "description": "Traffic routed through the Internet Gateway may not be inspected by a Network Firewall, allowing unmonitored data exfiltration.",
+    "discrepancy_flag": false,
+    "severity": "Medium",
+    "references": [
+      "aws_resource.internet_gateway"
+    ],
+    "_confidence_score": 0.9
+  },
+  {
+    "threat_id": "T-025",
+    "stride_category": "Denial of Service",
+    "component": "aws_resource.nat_gateway",
+    "description": "NAT Gateway may lack monitoring for SNAT port exhaustion, potentially causing outbound connectivity failures during high traffic spikes.",
+    "discrepancy_flag": false,
+    "severity": "Low",
+    "references": [
+      "aws_resource.nat_gateway"
+    ],
+    "_confidence_score": 0.9
+  }
+]

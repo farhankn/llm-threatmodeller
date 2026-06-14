@@ -36,7 +36,34 @@ def parse_iac(paths: Sequence[str | Path]) -> dict[str, Any]:
             _merge_into_resource_map(resource_map, parsed)
 
     resource_map["variables"] = sorted(set(resource_map["variables"]))
+    
+    # Fix type-drift: ensure resource names don't mislead the LLM
+    _normalize_resource_names(resource_map)
+    
     return resource_map
+
+
+def _normalize_resource_names(resource_map: dict[str, Any]) -> None:
+    """Detect and fix resource names that imply a different service than their type."""
+    for res in resource_map.get("resources", []):
+        r_type = str(res.get("type", "")).lower()
+        r_name = str(res.get("name", "")).lower()
+        
+        # Heuristic: if name contains a common service keyword but type is different
+        mismatch = False
+        if "ecr" in r_name and "ecr" not in r_type:
+            mismatch = True
+        elif "s3" in r_name and "s3" not in r_type:
+            mismatch = True
+        elif "db" in r_name and ("db" not in r_type and "rds" not in r_type):
+            mismatch = True
+        elif "lambda" in r_name and "lambda" not in r_type:
+            mismatch = True
+            
+        if mismatch:
+            # Append technical type to clarify for the LLM
+            short_type = r_type.replace("aws_", "")
+            res["name"] = f"{res['name']}_{short_type}"
 
 
 def serialize_resource_map(resource_map: dict[str, Any], char_budget: int = MAX_SUMMARY_CHARS) -> str:
@@ -59,12 +86,16 @@ def serialize_resource_map(resource_map: dict[str, Any], char_budget: int = MAX_
 
     # Truncate logic...
     summary["relationships"] = []
-    summary["variables"] = []
     text = json.dumps(summary, indent=2)
     if len(text) <= char_budget:
         return text
 
     summary["modules"] = []
+    text = json.dumps(summary, indent=2)
+    if len(text) <= char_budget:
+        return text
+
+    summary["variables"] = []
     text = json.dumps(summary, indent=2)
     if len(text) <= char_budget:
         return text

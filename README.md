@@ -5,7 +5,7 @@ Threat Model CLI is a Python command line tool that analyzes Terraform IaC and g
 ## CLI Interface Preview
 
 ```bash
-$ threatcli analyze --iac main.tf --doc design.md
+$ threatcli run --iac main.tf --doc design.md
 
 [Information Disclosure]
 - T-001 (Critical) aws_s3_bucket.data: Public read access enabled.
@@ -33,10 +33,10 @@ pip install -e ".[dev]"
 
 ```bash
 python -m threatcli --help
-python -m threatcli analyze --iac path/to/main.tf --format text
-python -m threatcli analyze --iac path/to/main.tf --provider gemini --format json
-python -m threatcli analyze --iac path/to/main.tf --provider gemini --format pdf --output threat-report.pdf
-python -m threatcli analyze --iac path/to/main.tf --doc design.md --doc-dir docs/ --format json
+python -m threatcli run --iac path/to/main.tf --format text
+python -m threatcli run --iac path/to/main.tf --provider gemini --format json
+python -m threatcli run --iac path/to/main.tf --provider gemini --format pdf --output threat-report.pdf
+python -m threatcli run --iac path/to/main.tf --doc design.md --doc-dir docs/ --format json
 python -m threatcli evaluation run --fixtures tests/fixtures --provider gemini --model gemini-2.5-flash-lite --include-docs --threat-log-dir evaluation/results/threat_logs --output evaluation/results/latest_run.json
 python -m threatcli evaluation import-acse --dataset acse_eval_export.json --output-root tests/fixtures/acse
 python -m threatcli evaluation import-acse --dataset data/acse_eval/train_0.parquet --resolve-paths --output-root tests/fixtures/acse
